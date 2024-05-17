@@ -1,28 +1,25 @@
-* {
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
-.profile-img {
-    width: 50px;
+profile-img{
+    width: 50 px;
     border-radius: 100%;
     border: 1px solid #0e0606;
 }
-
-.sidebar {
+.sidebar{
     position: absolute;
     top: 0;
     left: 0;
     height: 100vh;
     width: 80px;
-    background-color: #512da8;
+    background-color: #898591;
     padding: .4rem .8rem;
     transition: all 0.5s ease;
 }
-
-.sidebar.active ~ .main-content {
+.sidebar.active ~ .main-content{
     left: 250px;
     width: calc(100% - 250px);
 }
@@ -30,6 +27,7 @@
 .sidebar.active {
     width: 250px;
 }
+
 
 .sidebar #btn {
     position: absolute;
@@ -44,8 +42,14 @@
 .sidebar.active #btn {
     left: 80%;
 }
+.sidebar #btn:hover {
+    background-color:transparent;
+    transform: scale(1.2); /* Scale the button on hover */
+    transition: color 0.3s, transform 0.3s; /* Add smooth transition */
+    border-radius: 0.2rem;
+}
 
-.sidebar .top .logo {
+.sidebar .top .logo{
     color: #fff;
     display: flex;
     height: 50px;
@@ -54,41 +58,36 @@
     pointer-events: none;
     opacity: 0;
 }
-
-.sidebar.active .top .logo {
+.sidebar.active .top .logo{
     opacity: 1;
 }
-
 .top .logo mnq-img {
     font-size: 2rem;
     margin-right: 5px;
 }
 
-.user {
+.user{
     display: flex;
     align-items: center;
     margin: 1rem 0;
 }
 
-.user p {
+.user p{
     color: #fff;
     opacity: 1;
     margin-left: 1rem;
 }
 
-.bold {
+.bold{
     font-weight: 600;
 }
-
-.sidebar p {
+.sidebar p{
     opacity: 0;
 }
-
-.sidebar.active p {
+.sidebar.active p{
     opacity: 1;
 }
-
-.sidebar ul li {
+.sidebar ul li  {
     position: relative;
     list-style-type: none;
     height: 50px;
@@ -96,20 +95,17 @@
     margin: 0.8rem auto;
     line-height: 50px;
 }
-
-.sidebar ul li a {
+.sidebar ul li a{
     color: #fff;
     display: flex;
     align-items: center;
     text-decoration: none;
     border-radius: 0.8rem;
 }
-
-.sidebar ul li a:hover {
+.sidebar ul li a:hover{
     background-color: #fff;
     color: #000;
 }
-
 .sidebar ul li a mnq-img {
     min-width: 50px;
     text-align: center;
@@ -117,15 +113,12 @@
     border-radius: 12px;
     line-height: 50px;
 }
-
-.sidebar .nav-item {
+.sidebar .nav-item{
     opacity: 0;
 }
-
 .sidebar.active .nav-item {
     opacity: 1;
 }
-
 .sidebar ul li .tooltip {
     position: absolute;
     left: 135px;
@@ -137,28 +130,26 @@
     line-height: 1.8rem;
     z-index: 20;
     opacity: 0;
+
 }
 
-.sidebar ul li:hover .tooltip {
+.sidebar ul li:hover .tooltip{
     opacity: 1;
 }
-
-.sidebar.active ul li .tooltip {
+.sidebar.active ul li .tooltip{
     display: none;
 }
-
-.main-content {
+.main-content{
     position: relative;
     background-color: #eee;
     min-height: 100vh;
-    top: 0;
+    top:0 ;
     left: 80px;
     transition: all 0.5s ease;
     width: calc(100% - 80px);
     padding: 1rem;
 }
-
 /* container (can be used for dashboard){
     display:flex;
     justify-content: space-between
-} */
+}

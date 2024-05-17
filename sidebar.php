@@ -1,3 +1,4 @@
+
 <div class="sidebar">
         <div class="top">
             <div class="logo">
@@ -24,9 +25,9 @@
     <li>
         <a href="homeowneradmin.php">
             <img src="homeowner.png" alt="homeonwer" class="home-img">
-            <span class="nav-item">Homeonwer</span>
+            <span class="nav-item">Homeowner</span>
         </a>
-        <span class="tooltip">Homeonwer</span>
+        <span class="tooltip">Homeowner</span>
     </li>
     <li>
         <a href="billingadmin.php">

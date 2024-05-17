@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="usersidebar.css">
 </head>
 <body>
-    <?php include 'usersidebar.php'; ?>
+    <?php include 'sidebar.php'; ?>
 
     <div class="main-content">
         <div class="Container">

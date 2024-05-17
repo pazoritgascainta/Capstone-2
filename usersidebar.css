@@ -6,7 +6,7 @@
 }
 profile-img{
     width: 50 px;
-    border-radius: 90%;
+    border-radius: 100%;
     border: 1px solid #0e0606;
 }
 .sidebar{
@@ -15,7 +15,7 @@ profile-img{
     left: 0;
     height: 100vh;
     width: 80px;
-    background-color: #512da8;
+    background-color: #aa99d1;
     padding: .4rem .8rem;
     transition: all 0.5s ease;
 }
@@ -42,6 +42,13 @@ profile-img{
 .sidebar.active #btn {
     left: 80%;
 }
+.sidebar #btn:hover {
+    background-color:transparent;
+    transform: scale(1.2); /* Scale the button on hover */
+    transition: color 0.3s, transform 0.3s; /* Add smooth transition */
+    border-radius: 0.2rem;
+}
+
 .sidebar .top .logo{
     color: #fff;
     display: flex;
@@ -123,6 +130,7 @@ profile-img{
     line-height: 1.8rem;
     z-index: 20;
     opacity: 0;
+
 }
 
 .sidebar ul li:hover .tooltip{
