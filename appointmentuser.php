@@ -7,11 +7,10 @@
 </head>
 <body>
 <?php include 'usersidebar.php'; ?>
-    <div class="main-content">
-        <div class="Container">
-            <h1>St. Monique Appointment Schedule</h1>
-        </div>
 
+    <div class="main-content">
+        <div class="container">
+            <h1>St. Monique Appointment Schedule</h1>
         <div class="popup">
             <p>Book your appointment here:</p>
             <button id="popupButton">Book Appointment</button>
@@ -42,7 +41,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div>      
 
         <div class="calendar body">
             <div class="month"></div>
@@ -58,14 +57,8 @@
             <div class="dates"></div>
         </div>
     </div>
+    </div>
     <script src="date.js"></script>
-    <script>
-        let btn = document.querySelector('#btn')
-        let sidebar = document.querySelector('.sidebar')
 
-        btn.onclick = function () {
-            sidebar.classList.toggle('active');
-        }
-    </script>
 </body>
 </html>

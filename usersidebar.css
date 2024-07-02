@@ -1,55 +1,284 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-profile-img{
-    width: 50 px;
-    border-radius: 100%;
-    border: 1px solid #0e0606;
+
+nav {
+    background: #ffdab9;
+    width: 100%;
+    padding: 10px 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
 }
-.sidebar{
+
+.logo {
+    width: 60px;
+}
+
+.hide-logo {
+    display: none;
+}
+/* Styles for notifications submenu */
+#notificationsMenu {
     position: absolute;
+    top: 100%;
+    right: 10%;
+    width: 320px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s;
+    z-index: 2;
+}
+
+#notificationsMenu.open-menu {
+    max-height: 400px;
+}
+
+#notificationsMenu .sub-menu {
+    background: #fae2ce;
+    padding: 20px;
+    margin: 10px;
+}
+
+#notificationsMenu .sub-menu .user-info {
+    display: flex;
+    align-items: center;
+}
+
+#notificationsMenu .sub-menu .user-info h2 {
+    font-weight: 500;
+}
+
+#notificationsMenu .sub-menu .user-info img {
+    width: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+#notificationsMenu .sub-menu hr {
+    border: 0;
+    height: 1px;
+    width: 100%;
+    background: #ccc;
+    margin: 15px 0 10px;
+}
+
+#notificationsMenu .sub-menu a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #525252;
+    margin: 12px 0;
+}
+
+#notificationsMenu .sub-menu a p {
+    width: 100%;
+    margin-right: 150px;
+}
+
+#notificationsMenu .sub-menu a img {
+    width: 40px;
+    background: #e5e5e5;
+    border-radius: 50%;
+    padding: 8px;
+    margin-right: 15px;
+}
+
+#notificationsMenu .sub-menu a span {
+    font-size: 22px;
+}
+
+#notificationsMenu .sub-menu a:hover span {
+    transform: translateX(5px);
+}
+
+#notificationsMenu .sub-menu a:hover p {
+    font-weight: 600;
+}
+.user-pic {
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: 30px;
+}
+
+nav > ul {
+    width: 100%;
+    text-align: right;
+}
+
+nav > ul > li {
+    display: inline-block;
+    list-style: none;
+    margin: 10px 20px;
+}
+
+nav > ul > li > a {
+    color: #fff;
+    text-decoration: none;
+}
+.sub-menu-wrap {
+    position: absolute;
+    top: 100%;
+    right: 10%;
+    width: 320px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s;
+    z-index: 2;
+}
+
+.sub-menu-wrap.open-menu {
+    max-height: 400px;
+}
+
+.sub-menu {
+    background: #fae2ce;
+    padding: 20px;
+    margin: 10px;
+}
+
+.sub-menu .user-info {
+    display: flex;
+    align-items: center;
+}
+
+.sub-menu .user-info h2 {
+    font-weight: 500;
+}
+
+.sub-menu .user-info img {
+    width: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.sub-menu hr {
+    border: 0;
+    height: 1px;
+    width: 100%;
+    background: #ccc;
+    margin: 15px 0 10px;
+}
+
+.sub-menu a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #525252;
+    margin: 12px 0;
+}
+
+.sub-menu a p {
+    width: 100%;
+}
+
+.sub-menu a img {
+    width: 40px;
+    background: #e5e5e5;
+    border-radius: 50%;
+    padding: 8px;
+    margin-right: 15px; /* Adjust margin-right to create space */
+    vertical-align: middle; /* Align the image vertically */
+}
+
+.sub-menu a span {
+    font-size: 22px;
+}
+
+.sub-menu a:hover span {
+    transform: translateX(5px);
+}
+
+.sub-menu a:hover p {
+    font-weight: 600;
+}
+
+/* Sidebar */
+
+.profile-img {
+    width: 55px;
+    height: 55px;
+    border-radius: 100%;
+    border: 1px solid #eee;
+}
+
+.menu-img {
+    width: 26px;
+    height: 26px;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    width: 100%;
+    background: #000000;
+    margin: 15px 0 10px;
+    opacity: 0; 
+    transition: opacity 0.5s ease; 
+}
+hr.active {
+    opacity: 1;
+}
+
+.sidebar {
+    position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
     width: 80px;
-    background-color: #aa99d1;
+    background-color: #ffdab9;
     padding: .4rem .8rem;
     transition: all 0.5s ease;
+    z-index: 1000; /* Higher z-index than main-content */
 }
-.sidebar.active ~ .main-content{
-    left: 250px;
-    width: calc(100% - 250px);
+
+.sidebar.active ~ .main-content {
+    left: 170px;
+    width: calc(100% - 170px);
+}
+/* Adjust margin-left when sidebar is active */
+.sidebar.active + .main-content {
+    margin-left: 250px; /* Width of sidebar */
 }
 
 .sidebar.active {
     width: 250px;
 }
 
+.sidebar.active ~ .main-content hr {
+    opacity: 1; /* Show hr when sidebar is active */
+}
 
 .sidebar #btn {
     position: absolute;
     color: #fff;
-    top: .4rem;
-    left: 50%;
-    font-size: 1.2rem;
+    top: 1.6rem;
+    left: 35%;
+    font-size: 0.8rem;
     line-height: translateX(-50%);
     cursor: pointer;
 }
 
 .sidebar.active #btn {
     left: 80%;
+    top: 2.0rem;
 }
+
 .sidebar #btn:hover {
-    background-color:transparent;
+    background-color: transparent;
     transform: scale(1.2); /* Scale the button on hover */
     transition: color 0.3s, transform 0.3s; /* Add smooth transition */
     border-radius: 0.2rem;
 }
 
-.sidebar .top .logo{
+.sidebar .top .logo {
     color: #fff;
     display: flex;
     height: 50px;
@@ -58,67 +287,92 @@ profile-img{
     pointer-events: none;
     opacity: 0;
 }
-.sidebar.active .top .logo{
+
+.sidebar.active .top .logo {
     opacity: 1;
 }
-.top .logo mnq-img {
+
+.top .logo .mnq-img {
     font-size: 2rem;
     margin-right: 5px;
 }
 
-.user{
+.user {
     display: flex;
     align-items: center;
     margin: 1rem 0;
 }
 
-.user p{
-    color: #fff;
+.user p {
+    color: #000000;
     opacity: 1;
     margin-left: 1rem;
 }
 
-.bold{
+.bold {
     font-weight: 600;
 }
-.sidebar p{
+
+.sidebar p {
     opacity: 0;
 }
-.sidebar.active p{
+
+.sidebar.active p {
     opacity: 1;
 }
-.sidebar ul li  {
+
+.sidebar ul li {
     position: relative;
     list-style-type: none;
     height: 50px;
     width: 90%;
-    margin: 0.8rem auto;
+    margin: 1rem auto;
     line-height: 50px;
 }
-.sidebar ul li a{
-    color: #fff;
+
+.sidebar ul li a {
+    color: #000000;
     display: flex;
     align-items: center;
+    font-weight: 600;
     text-decoration: none;
     border-radius: 0.8rem;
 }
-.sidebar ul li a:hover{
+
+.sidebar ul li a img {
+    min-width: 26px;
+    height: 26px;
+    border-radius: 5px;
+    line-height: 50px;
+    text-align: center;
+    margin-right: 19px;
+}
+
+.sideimg {
+    margin-left: 10px;
+}
+
+.sidebar ul li a:hover {
     background-color: #fff;
     color: #000;
 }
-.sidebar ul li a mnq-img {
+
+.sidebar ul li a .mnq-img {
     min-width: 50px;
     text-align: center;
     height: 50px;
     border-radius: 12px;
     line-height: 50px;
 }
-.sidebar .nav-item{
+
+.sidebar .nav-item {
     opacity: 0;
 }
+
 .sidebar.active .nav-item {
     opacity: 1;
 }
+
 .sidebar ul li .tooltip {
     position: absolute;
     left: 135px;
@@ -130,25 +384,40 @@ profile-img{
     line-height: 1.8rem;
     z-index: 20;
     opacity: 0;
-
 }
 
-.sidebar ul li:hover .tooltip{
+.sidebar ul li:hover .tooltip {
     opacity: 1;
 }
-.sidebar.active ul li .tooltip{
+
+.sidebar.active ul li .tooltip {
     display: none;
 }
-.main-content{
+.main-content {
+    position: absolute;
+    margin-top: 60px; /* Adjust based on nav height */
+    padding: 20px;
+    background-color: #ffffff; /* Set background color */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    min-height: 100vh;
+    width: calc(100% - 80px);
+    z-index: 1; 
+}
+
+/* .main-content {
     position: relative;
     background-color: #eee;
     min-height: 100vh;
-    top:0 ;
-    left: 80px;
+    margin-top: 60px;
+    margin-left: -250px;
+    top: 0;
+    box-sizing: border-box; 
+    left: 80px; /* Width of the sidebar 
     transition: all 0.5s ease;
-    width: calc(100% - 80px);
-    padding: 1rem;
-}
+    width: calc(100% - 80px);  Adjust for sidebar width 
+    padding: 20px;
+    z-index: 1; /* Lower z-index to stay behind nav and sidebar 
+} */
 /* container (can be used for dashboard){
     display:flex;
     justify-content: space-between

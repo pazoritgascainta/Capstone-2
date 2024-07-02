@@ -1,0 +1,185 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.profile-img {
+    width: 55px;
+    height: 55px;
+    border-radius: 100%;
+    border: 1px solid #eee;
+}
+
+.menu-img {
+    width: 26px;
+    height: 26px;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    width: 100%;
+    background: #000000;
+    margin: 15px 0 10px;
+    opacity: 0; 
+    transition: opacity 0.5s ease; 
+}
+hr.active {
+    opacity: 1;
+}
+
+.sidebar {
+    position: fixed;
+    top: 60px; /* Adjust according to the height of your nav */
+    left: 0;
+    height: calc(100vh - 60px); /* Adjust according to the height of your nav */
+    width: 80px;
+    background-color: #ffdab9;
+    padding: .4rem .8rem;
+    transition: all 0.5s ease;
+    z-index: 100; /* Lower than the nav */
+}
+
+.sidebar.active {
+    width: 250px;
+}
+
+.sidebar #btn {
+    position: absolute;
+    color: #fff;
+    top: 1.6rem;
+    left: 35%;
+    font-size: 0.8rem;
+    line-height: translateX(-50%);
+    cursor: pointer;
+}
+
+.sidebar.active #btn {
+    left: 80%;
+    top: 2.0rem;
+}
+
+.sidebar #btn:hover {
+    background-color: transparent;
+    transform: scale(1.2); /* Scale the button on hover */
+    transition: color 0.3s, transform 0.3s; /* Add smooth transition */
+    border-radius: 0.2rem;
+}
+
+.sidebar .top .logo {
+    color: #fff;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.sidebar.active .top .logo {
+    opacity: 1;
+}
+
+.top .logo .mnq-img {
+    font-size: 2rem;
+    margin-right: 5px;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.user p {
+    color: #000000;
+    opacity: 1;
+    margin-left: 1rem;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+.sidebar p {
+    opacity: 0;
+}
+
+.sidebar.active p {
+    opacity: 1;
+}
+
+.sidebar ul li {
+    position: relative;
+    list-style-type: none;
+    height: 50px;
+    width: 90%;
+    margin: 1rem auto;
+    line-height: 50px;
+}
+
+.sidebar ul li a {
+    color: #000000;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0.8rem;
+}
+
+.sidebar ul li a img {
+    min-width: 26px;
+    height: 26px;
+    border-radius: 5px;
+    line-height: 50px;
+    text-align: center;
+    margin-right: 19px;
+}
+
+.sideimg {
+    margin-left: 10px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+.sidebar ul li a .mnq-img {
+    min-width: 50px;
+    text-align: center;
+    height: 50px;
+    border-radius: 12px;
+    line-height: 50px;
+}
+
+.sidebar .nav-item {
+    opacity: 0;
+}
+
+.sidebar.active .nav-item {
+    opacity: 1;
+}
+
+.sidebar ul li .tooltip {
+    position: absolute;
+    left: 135px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
+    border-radius: 0.6rem;
+    padding: 0.4rem 1.2rem;
+    line-height: 1.8rem;
+    z-index: 20;
+    opacity: 0;
+}
+
+.sidebar ul li:hover .tooltip {
+    opacity: 1;
+}
+
+.sidebar.active ul li .tooltip {
+    display: none;
+}

@@ -10,6 +10,7 @@ $name = "";
 $email = "";
 $phone = "";
 $address = "";
+$password = "";
 
 $errorMessage = "";
 $successMessage = "";
@@ -19,9 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST["email"];
     $phone = $_POST["phone"];
     $address = $_POST["address"];
+    $password = $_POST["password"];
+    $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
     do {
-        if (empty($name) || empty($email) || empty($phone) || empty($address)) {
+        if (empty($name) || empty($email) || empty($phone) || empty($address) || empty($password)) {
             $errorMessage = "All fields are required!";
             break;
         }
@@ -34,8 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             break;
         }
 
-        $sql = "INSERT INTO homeowners (name, email, phone_number, address) " .
-               "VALUES ('$name', '$email', '$phone', '$address')";
+        $sql = "INSERT INTO homeowners (name, email, phone_number, address, password, status) VALUES ('$name', '$email', '$phone', '$address', '$passwordHash', 'active')";
+
+               "VALUES ('$name', '$email', '$phone', '$address', '$password_hash')";
         if ($conn->query($sql) === TRUE) {
             $successMessage = "Homeowner added successfully!";
 
@@ -43,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = "";
             $phone = "";
             $address = "";
+            $password = "";
 
             header("location: homeowneradmin.php");
             exit;
@@ -55,36 +60,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homeowners</title>
+    <title>Create Homeowner</title>
     <link rel="stylesheet" href="createcss.css">
     <script>
     function checkEmail() {
-    var email = document.getElementById("email").value;
-    var emailError = document.getElementById("email-error");
-    emailError.innerHTML = "";
-    try {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                if (this.responseText == "taken") {
-                    emailError.innerHTML = "Email is already taken";
-                } else {
-                    emailError.innerHTML = "";
+        var email = document.getElementById("email").value;
+        var emailError = document.getElementById("email-error");
+        emailError.innerHTML = "";
+        try {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (this.responseText == "taken") {
+                        emailError.innerHTML = "Email is already taken";
+                    } else {
+                        emailError.innerHTML = "";
+                    }
                 }
-            }
-        };
-        xhttp.open("GET", "?action=check_email&email=" + email, true);
-        xhttp.send();
-    } catch (error) {
-        emailError.innerHTML = "An error occurred while checking email availability";
+            };
+            xhttp.open("GET", "?action=check_email&email=" + email, true);
+            xhttp.send();
+        } catch (error) {
+            emailError.innerHTML = "An error occurred while checking email availability";
+        }
     }
-}
-
     </script>
 </head>
 <body>
@@ -119,6 +124,12 @@ $conn->close();
                 <label class="col-form-label">Address</label>
                 <div class="col">
                     <input type="text" class="form-control" name="address" value="<?php echo $address; ?>">
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-form-label">Password</label>
+                <div class="col">
+                    <input type="password" class="form-control" name="password" value="<?php echo $password; ?>">
                 </div>
             </div>
             <div class="row mt-3">

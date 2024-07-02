@@ -6,9 +6,10 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    width: 90%;
     margin: 0 auto;
     padding: 20px;
+    margin-left: 70px;
 }
 
 h2 {
@@ -23,13 +24,13 @@ h2 {
 
 .table th,
 .table td {
-    padding: 10px;
+    padding: 20px;
     border-bottom: 3px solid #ddd;
 }
 
 .table th {
     background-color: #f2f2f2;
-    text-align: left;
+    text-align: center;
 }
 
 .table tbody tr:hover {
@@ -52,4 +53,12 @@ h2 {
 
 .btn:hover {
     background-color: #0056b3;
+}
+
+/* Add margin to the right of the "Edit" button */
+.btn-edit {
+    margin-right: 10px;
+}
+.button-margin {
+    margin-right: 5px; /* Adjust this value to add more or less space */
 }

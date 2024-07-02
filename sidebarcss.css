@@ -1,0 +1,95 @@
+.sidebar {
+    width: 250px;
+    height: 100%;
+    background-color: #333;
+    position: fixed;
+    top: 80px; /* Adjusted to start below the navbar */
+    left: 0;
+    transition: 0.3s;
+}
+
+.sidebar.active {
+    left: -250px;
+}
+
+.sidebar .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+.sidebar .menu-img {
+    width: 30px;
+    cursor: pointer;
+}
+
+.sidebar .user {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.sidebar .user img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.sidebar .bold {
+    font-weight: bold;
+    color: white;
+}
+
+.sidebar hr {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 10px 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 
+ChatGPT
+0;
+}
+
+.sidebar ul li {
+margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+display: flex;
+align-items: center;
+text-decoration: none;
+color: white;
+padding: 10px 20px;
+}
+
+.sidebar ul li a .sideimg {
+width: 20px;
+margin-right: 10px;
+}
+
+.sidebar ul li a .nav-item {
+flex: 1;
+}
+
+.tooltip {
+position: absolute;
+top: 50%;
+right: 20px;
+transform: translateY(-50%);
+background-color: #333;
+color: white;
+padding: 5px;
+border-radius: 5px;
+font-size: 12px;
+display: none;
+}
+
+.sidebar ul li
+.tooltip {
+display: block;
+}

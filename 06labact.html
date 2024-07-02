@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Age Comparison</title>
+    <script>
+        function compareAgeToGoogle(artistAge) {
+            if (artistAge < 25) {
+                return `They're ${artistAge} years old and they're younger than Google.`;
+            } else if (artistAge === 25) {
+                return `They're ${artistAge} years old and they're as old as Google.`;
+            } else {
+                return `They're ${artistAge} years old and they're older than Google.`;
+            }
+        }
+
+        function getArtistAge() {
+            const favArtAge = prompt("Enter the age of your favorite artist:");
+            const result = compareAgeToGoogle(parseInt(favArtAge));
+            document.getElementById('result').textContent = result;
+        }
+    </script>
+</head>
+<body>
+    <h1>Compare Your Favorite Artist's Age to Google</h1>
+    <button onclick="getArtistAge()">Enter Age</button>
+    <p id="result"></p>
+</body>
+</html>

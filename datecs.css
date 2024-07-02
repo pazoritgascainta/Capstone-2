@@ -1,3 +1,15 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 40;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+  padding: 20px;
+  margin-left: 70px;
+}
 .popup {
   text-align: left;
   position: relative;
