@@ -232,28 +232,31 @@ hr.active {
     top: 0;
     left: 0;
     height: 100vh;
-    width: 80px;
+    width: 80px; /* Default width */
     background-color: #ffdab9;
     padding: .4rem .8rem;
     transition: all 0.5s ease;
     z-index: 1000; /* Higher z-index than main-content */
 }
 
+/* Sidebar active state */
+.sidebar.active {
+    width: 250px; /* Expanded width */
+}
+
 .sidebar.active ~ .main-content {
-    left: 170px;
-    width: calc(100% - 170px);
+    margin-left: 250px; /* Adjust main-content margin */
 }
-/* Adjust margin-left when sidebar is active */
-.sidebar.active + .main-content {
-    margin-left: 250px; /* Width of sidebar */
-}
+
 
 .sidebar.active {
     width: 250px;
 }
 
-.sidebar.active ~ .main-content hr {
-    opacity: 1; /* Show hr when sidebar is active */
+.sidebar.active ~ .main-content {
+    opacity: 1;
+    width: calc(95% - 220px); /* Adjust width when sidebar is expanded */
+    height: 100vh; /* Extend height to match the height of the viewport */
 }
 
 .sidebar #btn {
@@ -351,7 +354,9 @@ hr.active {
 .sideimg {
     margin-left: 10px;
 }
-
+.sidebar .nav-item.disable-hover {
+    pointer-events: none; /* Disable hover */
+}
 .sidebar ul li a:hover {
     background-color: #fff;
     color: #000;
@@ -367,58 +372,60 @@ hr.active {
 
 .sidebar .nav-item {
     opacity: 0;
+    transition: opacity 0.3s ease;
 }
+
 
 .sidebar.active .nav-item {
     opacity: 1;
 }
 
+.sidebar ul li {
+    position: relative;
+    list-style-type: none;
+    height: 50px;
+    width: 90%;
+    margin: 1rem auto;
+    line-height: 50px;
+}
+
 .sidebar ul li .tooltip {
     position: absolute;
-    left: 135px;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
-    border-radius: 0.6rem;
-    padding: 0.4rem 1.2rem;
-    line-height: 1.8rem;
-    z-index: 20;
+    left: 60%; 
+    top: -30px; 
+    transform: translateX(-50%);
+    background-color: rgba(51, 51, 51, 0.9); 
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.4;
+    white-space: nowrap;
     opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, transform 0.3s ease-in-out;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 20;
 }
 
 .sidebar ul li:hover .tooltip {
     opacity: 1;
+    visibility: visible;
+    transform: translateX(-37%) translateY(-5px);
 }
 
 .sidebar.active ul li .tooltip {
     display: none;
 }
+
 .main-content {
     position: absolute;
-    margin-top: 60px; /* Adjust based on nav height */
+    margin-top: 60px; 
     padding: 20px;
-    background-color: #ffffff; /* Set background color */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    background-color: #ffffff;
+    box-sizing: border-box; 
     min-height: 100vh;
     width: calc(100% - 80px);
     z-index: 1; 
 }
 
-/* .main-content {
-    position: relative;
-    background-color: #eee;
-    min-height: 100vh;
-    margin-top: 60px;
-    margin-left: -250px;
-    top: 0;
-    box-sizing: border-box; 
-    left: 80px; /* Width of the sidebar 
-    transition: all 0.5s ease;
-    width: calc(100% - 80px);  Adjust for sidebar width 
-    padding: 20px;
-    z-index: 1; /* Lower z-index to stay behind nav and sidebar 
-} */
-/* container (can be used for dashboard){
-    display:flex;
-    justify-content: space-between
-}

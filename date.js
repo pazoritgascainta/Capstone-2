@@ -1,67 +1,83 @@
-const calendar = document.querySelector('.calendar');
-const monthElement = calendar.querySelector('.month');
-const datesElement = calendar.querySelector('.dates');
-
-function generateCalendar(year, month) {
-    monthElement.textContent = new Date(year, month).toLocaleString('default', { month: 'long', year: 'numeric' });
-
-    datesElement.innerHTML = '';
-
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const firstDayIndex = new Date(year, month, 1).getDay();
-
-    for (let i = 0; i < firstDayIndex; i++) {
-        const dateElement = document.createElement('div');
-        dateElement.classList.add('date', 'empty');
-        datesElement.appendChild(dateElement);
-    }
-
-    for (let i = 1; i <= daysInMonth; i++) {
-        const dateElement = document.createElement('div');
-        dateElement.classList.add('date');
-        dateElement.textContent = i;
-        datesElement.appendChild(dateElement);
-    }
-}
-// dates
-const currentDate = new Date();
-generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
-
-window.addEventListener('resize', () => {
-    // Re-generate calendar to adjust for responsive design
-    generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
-});
-
 document.addEventListener('DOMContentLoaded', function() {
-    const popupButton = document.getElementById('popupButton');
-    const overlay = document.querySelector('.overlay');
-    const formContainer = document.querySelector('.form-container');
+    const calendar = document.querySelector('.calendar');
+    const monthElement = calendar.querySelector('.month');
+    const datesElement = calendar.querySelector('.dates');
+    const prevMonthButton = document.getElementById('prevMonth');
+    const nextMonthButton = document.getElementById('nextMonth');
+    const selectedDateElement = document.getElementById('selectedDate');
+    const timetableContainer = document.getElementById('timetable-container');
 
-    popupButton.addEventListener('click', function() {
-        formContainer.style.display = 'block'; // Show the form container
-        document.body.style.overflow = 'hidden'; // Prevent scrolling on the body
-        overlay.style.display = 'block'; // Show the overlay
-    });
+    let currentDate = new Date(); // Initialize current date
 
-    overlay.addEventListener('click', function() {
-        if (formContainer.style.display === 'block') {
-            formContainer.style.display = 'none'; // Hide the form container
-            document.body.style.overflow = 'auto'; // Enable scrolling on the body
-            overlay.style.display = 'none'; // Hide the overlay
+    // Function to generate calendar
+    function generateCalendar(year, month) {
+        datesElement.innerHTML = ''; // Clear previous calendar dates
+
+        currentDate = new Date(year, month, 1); // Set current date to first day of the specified month
+
+        monthElement.textContent = currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+
+        const daysInMonth = new Date(year, month + 1, 0).getDate(); // Number of days in the current month
+        const firstDayIndex = new Date(year, month, 1).getDay(); // Index of the first day of the month (0-6)
+
+        // Create empty placeholders for days before the first day of the month
+        for (let i = 0; i < firstDayIndex; i++) {
+            const dateElement = document.createElement('div');
+            dateElement.classList.add('date', 'empty');
+            datesElement.appendChild(dateElement);
         }
+
+        // Create date elements for each day in the month
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateElement = document.createElement('div');
+            dateElement.classList.add('date');
+            dateElement.textContent = day;
+
+            const formattedDate = new Date(year, month, day).toISOString().split('T')[0];
+
+            dateElement.addEventListener('click', function() {
+                showTimetable(formattedDate);
+                selectedDateElement.textContent = `Selected Date: ${formattedDate}`;
+                selectedDateElement.classList.remove('hidden');
+            });
+
+            datesElement.appendChild(dateElement);
+        }
+    }
+
+    // Event listeners for month navigation
+    prevMonthButton.addEventListener('click', function() {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
     });
 
-    formContainer.addEventListener('click', function(event) {
-        event.stopPropagation(); // Prevent clicks on the form from closing the overlay
+    nextMonthButton.addEventListener('click', function() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
     });
-});
 
-const exitButton = document.getElementById('exitButton');
-const formContainer = document.getElementById('formContainer');
-const overlay = document.querySelector('.overlay');
+    // Initial calendar generation for the current month
+    generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
 
-exitButton.addEventListener('click', function() {
-    formContainer.style.display = 'none'; // Hide the form container
-    overlay.style.display = 'none'; // Hide the overlay
-    document.body.style.overflow = 'auto'; // Enable scrolling on the body
+    function showTimetable(date) {
+        fetch(`fetch_available_times.php?date=${encodeURIComponent(date)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (Array.isArray(data) && data.length > 0) {
+                    const times = data.map(slot => `<li>${slot.start_time} - ${slot.end_time}</li>`).join('');
+                    timetableContainer.innerHTML = `<p>Available Times for ${date}:</p><ul>${times}</ul>`;
+                } else {
+                    timetableContainer.innerHTML = `<p>No available times for ${date}</p>`;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching available times:', error);
+                timetableContainer.innerHTML = `<p>Error fetching available times.</p>`;
+            });
+    }
 });

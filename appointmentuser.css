@@ -1,0 +1,164 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 40px;
+}
+
+.container {
+    background-color: #ffffff;  
+    border: 1px solid #ccc; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    padding: 10px; 
+    margin-top: 10px; 
+}
+
+.main-content {
+    margin: 0 auto;
+    margin-left: 50px;
+     width: 90%;
+}
+.popup {
+    text-align: left;
+    position: relative;
+    margin-top: 20px;
+    z-index: 99; /* Ensure popup appears above overlay */
+}
+
+.popup p {
+    margin-bottom: 20px;
+}
+
+.popup button {
+    text-align: center;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    z-index: 100; /* Lower z-index to keep overlay below popup */
+}
+
+.exit-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 102; /* Ensured higher z-index for exit button */
+}
+
+.exit-button:hover {
+    color: red;
+}
+
+.form-container {
+    display: none;
+    position: fixed;
+    top: 50%; /* Centering the form vertically */
+    left: 50%; /* Centering the form horizontally */
+    transform: translate(-50%, -50%);
+    width: 80%; /* Adjusted width for better visibility */
+    max-width: 550px; /* Added max-width for responsiveness */
+    padding: 20px;
+    background-color: #878992; /* Background color for the panel */
+    border: 1px solid #ccc; /* Border around the panel */
+    border-radius: 10px; /* Rounded corners for the panel */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional shadow effect */
+    z-index: 102; /* Ensure form container appears above overlay */
+}
+
+.form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form input[type="date"],
+.form input[type="time"],
+.form input[type="text"],
+.form input[type="email"],
+.form select {
+    width: calc(100% - 20px); /* Adjusted width for input fields */
+    padding: 8px; /* Adjusted padding for input fields */
+    margin-bottom: 15px; /* Increased margin-bottom for input fields */
+    box-sizing: border-box;
+}
+
+.button-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.button-container button {
+    background-color: #0f0f0f;
+    padding: 12px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-container button:hover {
+    background-color: #c2c7cc;
+}
+
+.success-message {
+    display: none; /* Hide success message by default */
+    color: green;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.booked-date {
+    background-color: #f0f0f0; /* Light gray background for booked dates */
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    text-align: center;
+    line-height: 30px;
+    margin: 0 5px;
+}
+
+.booked-appointments {
+    margin-top: 20px;
+}
+
+.booked-appointments h2 {
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table,
+th,
+td {
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+th,
+td {
+    padding: 12px; /* Adjusted padding for table cells */
+}
+
+th {
+    background-color: #f0f0f0;
+}

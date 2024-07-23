@@ -1,12 +1,14 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: index.php"); // Redirect to login page if not logged in
-    exit();
+// Check if user is logged in
+if (!isset($_SESSION['homeowner_id'])) {
+    header("Location: login.php");
+    exit;
 }
 
-$user_name = $_SESSION['user_name'];
+// Retrieve user name from session
+$user_name = $_SESSION['homeowner_name'];
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +16,7 @@ $user_name = $_SESSION['user_name'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome, <?php echo $user_name; ?></title>
+    <title>Welcome, <?php echo htmlspecialchars($user_name); ?></title>
     <link rel="stylesheet" href="usersidebar.css">
     <link rel="stylesheet" href="dashusercss.css">
 </head>
@@ -24,7 +26,7 @@ $user_name = $_SESSION['user_name'];
     <div class="main-content">
         <div class="container">
             <h1>St. Monique User Dashboard</h1>
-            <h2>Welcome, <?php echo $user_name; ?></h2>
+            <h2>Welcome, <?php echo htmlspecialchars($user_name); ?></h2>
             <!-- DITO dashboard content  -->
         </div>
     </div>

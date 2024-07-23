@@ -1,0 +1,74 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+.calendar {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-bottom: 1px solid #ccc;
+}
+
+.btn-prev, .btn-next {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.calendar-weekdays {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+}
+
+.calendar-weekdays div {
+    text-align: center;
+    width: 14.28%; /* Each weekday occupies 1/7th of the width */
+}
+
+.calendar-days {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.calendar-days .day {
+    width: 14.28%; /* Each day occupies 1/7th of the width */
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.event-details {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    display: none; /* Hidden by default */
+}
+
+.event-details h2 {
+    margin-top: 0;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
+
+.event-details div {
+    margin-bottom: 10px;
+}

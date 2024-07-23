@@ -1,0 +1,51 @@
+<?php
+session_start();
+if (!isset($_SESSION['homeowner_id'])) {
+    header("Location: index.php");
+    exit;
+}
+include 'config.php';
+
+$homeowner_id = $_SESSION['homeowner_id'];
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Complaints</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <?php include 'sidebar.php'; ?>
+    <div class="main-content">
+        <h2>My Complaints</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Subject</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $sql = "SELECT id, subject, description, status, created_at FROM complaints WHERE homeowner_id = '$homeowner_id'";
+                $result = $conn->query($sql);
+
+                while ($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>{$row['id']}</td>";
+                    echo "<td>{$row['subject']}</td>";
+                    echo "<td>{$row['description']}</td>";
+                    echo "<td>{$row['status']}</td>";
+                    echo "<td>{$row['created_at']}</td>";
+                    echo "</tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

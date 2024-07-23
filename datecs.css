@@ -1,170 +1,103 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 40;
+  padding: 20px; /* Adjust padding as needed */
 }
-
-.container {
-  width: 90%;
-  margin: 0 auto;
-  padding: 20px;
-  margin-left: 70px;
-}
-.popup {
-  text-align: left;
-  position: relative;
-  margin-top: 20px;
-  z-index: 99; /* Ensure popup appears above overlay */
-}
-
-.popup p {
-  margin-bottom: 20px;
-}
-
-.popup button {
-  text-align: center;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-
-.overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
-  z-index: 100; /* Lower z-index to keep overlay below popup */
-}
-/*.form-container {
-  display: none; /* Hide the form container initially 
-  position: relative;
-  z-index: 102; /* Ensure form container appears above overlay 
-  
-}*/
-
-.exit-button {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  background-color: transparent;
-  color: rgb(255, 255, 255);
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  z-index: 102;
-}
-
-.exit-button:hover {
-  color: red;
-}
-
-.form-container {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
-  z-index: 102; /* Ensure overlay is above other elements */
-}
-
-.form {
-  position: relative;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #4f98e6;
-  max-width: 550px;
-  padding: 50px;
-  border: 1px solid #000000;
-  border-radius: 30px;
-}
-
-.form label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.form input[type="date"],
-.form input[type="time"],
-.form input[type="text"],
-.form input[type="email"],
-.form select {
-  width: 100%;
-  padding: 5px;
-  margin-bottom: 10px;
-  box-sizing: border-box;
-}
-
-.button-container {
-  text-align: center;
-}
-
-.button-container button {
-  background-color: #0f0f0f;
-  padding: 15px;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.button-container button:hover {
-  background-color: #c2c7cc;
-}
-
-
 
 /* Calendar styles */
 .calendar {
-  margin-top: 20px;
+  margin-top: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Ensure calendar contents do not overflow */
 }
 
 .month {
   text-align: center;
-  font-size: 20px;
+  font-size: 1.2em;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin: 10px 0;
+  padding: 10px 0;
+  background-color: #007BFF; /* Adjust background color */
+  color: #fff; /* Adjust text color */
 }
-
 .days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
+  gap: 3px;
+  background-color: #f0f0f0; /* Change to desired background color */
+  font-weight: bold;
+  padding: 10px 0;
 }
 
 .day {
   text-align: center;
-  font-weight: bold;
-  background-color: #f0f0f0;
-  padding: 5px;
+  padding: 10px;
 }
 
+
+.hidden {
+  display: none;
+}
+
+#selectedDate {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+/* Adjusted CSS for calendar days */
 .dates {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
+  gap: 10px; /* Increase gap between cells */
+  padding: 20px;
 }
 
 .date {
-  text-align: center;
-  padding: 5px;
-  border-radius: 5px;
-  cursor: pointer;
+  text-align: right; /* Align text to the right */
+  padding: 15px; /* Adjust padding as desired */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  display: table-cell;
+  vertical-align: middle;
+  box-sizing: border-box;
+  font-size: 1.2em;
+  height: 100px; /* Adjust height as needed */
+  line-height: 60px;
 }
 
 .date:hover {
-  background-color: #f0f0f0;
+  background-color: #007BFF; /* Change to desired hover color */
+  color: #fff; /* Change to desired text color */
 }
 
 .date.empty {
   visibility: hidden;
+}
+
+.month-navigation {
+  display: flex;
+  justify-content: space-between; /* Adjust spacing as needed */
+  align-items: center;
+  background-color: #007BFF; /* Change to desired background color */
+  padding: 10px;
+  color: #fff; /* Change to desired text color */
+}
+
+.month-navigation button {
+  background: none;
+  border: none;
+  font-size: 2em;
+  cursor: pointer;
+  margin: 0 15px; 
+  transition: color 0.3s, transform 0.3s;
+}
+
+.month-navigation button:hover {
+  color: #fff; /* Change to desired hover color */
+  transform: scale(1.2); /* Slightly increase size on hover */
 }

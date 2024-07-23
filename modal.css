@@ -1,0 +1,230 @@
+/* Modal styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1001; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+    transition: opacity 0.3s ease; /* Transition effect */
+    opacity: 0; /* Hidden by default */
+}
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 100; /* Ensures it is behind the modal content */
+    display: none; /* Initially hidden */
+}
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    z-index: 101; /* Ensures it is above the backdrop */
+    max-width: 500px;
+    width: 100%;
+}
+
+/* Show modal */
+.modal.show {
+    display: flex; /* Show modal */
+    opacity: 1; /* Fully visible */
+    align-items: center;
+    justify-content: center;
+}
+.modal.show .modal-backdrop {
+    display: block;
+}
+/* Modal content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* Centered with margin from the top */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 90%; /* Responsive width */
+    max-width: 600px; /* Maximum width */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+    overflow-y: auto; /* Enable scroll if content overflows */
+    max-height: 80vh; /* Limit height */
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Form styling */
+#timeslot-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Full width to fit inside modal */
+}
+
+/* Form fields container */
+#timeslot-form div {
+    margin-bottom: 20px; /* Space between form fields */
+}
+
+/* Label styling */
+#timeslot-form label {
+    font-weight: bold; /* Make labels bold */
+    margin-bottom: 8px; /* Space between label and input */
+    font-size: 16px; /* Larger font size for better readability */
+    color: #333; /* Dark color for contrast */
+    display: block; /* Ensure label takes full width */
+}
+
+/* Input field styling */
+#timeslot-form input[type="email"],
+#timeslot-form input[type="text"] {
+    width: 100%; /* Full width to fit container */
+    padding: 12px; /* Add padding inside the input */
+    border-radius: 6px; /* Rounded corners */
+    border: 1px solid #ccc; /* Light border color */
+    font-size: 16px; /* Larger font size for readability */
+    box-sizing: border-box; /* Include padding in width */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+    outline: none; /* Remove default outline */
+}
+
+/* Input focus styling */
+#timeslot-form input[type="email"]:focus,
+#timeslot-form input[type="text"]:focus {
+    border-color: #007BFF; /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* Add subtle shadow effect */
+}
+
+/* Submit button styling */
+#timeslot-form button {
+    padding: 12px 20px; /* Add padding inside button */
+    background-color: #007BFF; /* Button color */
+    color: white; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 6px; /* Rounded corners for button */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Increase font size for readability */
+    transition: background-color 0.3s ease; /* Smooth color transition */
+}
+
+/* Button hover effect */
+#timeslot-form button:hover {
+    background-color: #0056b3; /* Darker color on hover */
+}
+
+/* Collapsible section */
+.collapsible-container {
+    margin-bottom: 15px;
+}
+
+.collapsible {
+    background-color: #f1f1f1;
+    color: #444;
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-align: left;
+    outline: none;
+    font-size: 16px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.collapsible:hover {
+    background-color: #ddd;
+}
+
+.collapsible-content {
+    display: none;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-top: none;
+    overflow-y: auto; /* Enable scroll if content overflows */
+    max-height: 200px; /* Limit height to prevent overflow */
+}
+
+/* Scroll styling */
+.collapsible-content::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+.collapsible-content::-webkit-scrollbar-thumb {
+    background: #888; /* Scrollbar thumb color */
+    border-radius: 4px; /* Rounded corners */
+}
+
+.collapsible-content::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Darker color on hover */
+}
+
+/* Form field container */
+.form-field {
+    margin-bottom: 20px; /* Space between form fields */
+}
+
+/* Label styling */
+.form-field label {
+    font-weight: bold; /* Make labels bold */
+    margin-bottom: 8px; /* Space between label and input */
+    font-size: 16px; /* Larger font size for better readability */
+    color: #333; /* Dark color for contrast */
+    display: block; /* Ensure label takes full width */
+}
+
+/* Input field styling */
+.form-field input {
+    width: 100%; /* Full width to fit container */
+    padding: 12px; /* Add padding inside the input */
+    border-radius: 6px; /* Rounded corners */
+    border: 1px solid #ccc; /* Light border color */
+    font-size: 16px; /* Larger font size for readability */
+    box-sizing: border-box; /* Include padding in width */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+    outline: none; /* Remove default outline */
+}
+
+/* Input focus styling */
+.form-field input:focus {
+    border-color: #007BFF; /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* Add subtle shadow effect */
+}
+
+/* Submit button styling */
+.form-field button {
+    padding: 12px 20px; /* Add padding inside button */
+    background-color: #007BFF; /* Button color */
+    color: white; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 6px; /* Rounded corners for button */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Increase font size for readability */
+    transition: background-color 0.3s ease; /* Smooth color transition */
+}
+
+/* Button hover effect */
+.form-field button:hover {
+    background-color: #0056b3; /* Darker color on hover */
+}

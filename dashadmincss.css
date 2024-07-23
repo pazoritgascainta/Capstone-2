@@ -1,12 +1,19 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 40px;
 }
 
 .container {
-    width: 90%;
+    background-color: #ffffff;  
+    border: 1px solid #ccc; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    padding: 20px; 
+    margin-top: 20px; 
+}
+
+.main-content {
     margin: 0 auto;
-    padding: 20px;
-    margin-left: 70px;
+    margin-left: 50px;
+     width: 90%;
 }

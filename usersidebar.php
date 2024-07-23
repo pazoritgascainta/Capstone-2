@@ -1,6 +1,7 @@
+<link rel="stylesheet" href="usersidebar.css">
 <div class="headnavbar">
     <nav>
-        <img src="monique logo.png" width="120" height="30" alt="logo" id="logo-img">
+        <img src="monique logo.png" alt="logo" id="logo-img">
         <ul>
             <li><a href='dashuser.php'>Home</a></li>
             <li>
@@ -12,29 +13,7 @@
                             <p>Inbox</p>
                             <span>></span>
                         </a>
-                        <!-- <a href="#messages.php" class="sub-menu-link">
-                            <img src="messages.png" alt="">
-                            <p>Messages</p>
-                            <span>></span>
-                        </a> -->
-                        <!-- Add more submenu items as needed -->
-                        <!-- <li>
-                <a href="settingsuser.php">
-                    <img src="settings.png" alt="settings" class="sideimg">
-                    <span class="nav-item">Settings</span>
-                </a>
-                <span class="tooltip">Settings</span>
-            </li>
-            <li>
-                <a href="Homepage.php">
-                    <img src="logawt.png" alt="logout" class="sideimg">
-                    <span class="nav-item">Logout</span>
-                </a>
-                <span class="tooltip">Logout</span>
-            </li>
-                    </div>
-                </div>
-            </li> -->
+  `
         </ul>
         <img src="profile.png" class="user-pic" onclick="toggleProfileMenu()">
         <div class="sub-menu-wrap" id="profileMenu">
@@ -54,7 +33,7 @@
                     <p>Help</p>
                     <span>></span>
                 </a>
-                <a href="Homepage.php" class="sub-menu-link">
+                <a href="userlogout.php" class="sub-menu-link">
                     <img src="logawt.png" alt="">
                     <p>Logout</p>
                     <span>></span>
@@ -89,12 +68,12 @@
                 <span class="tooltip">Dashboard</span>
             </li>
             <li>
-                <a href="usercomplaint.php">
-                    <img src="complaint.png" alt="complaints" class="sideimg">
-                    <span class="nav-item">Complaints</span>
-                </a>
-                <span class="tooltip">Complaints</span>
-            </li>
+            <a href="usercomplaint.php">
+                <img src="complaint.png" alt="complaints" class="sideimg">
+                <span class="nav-item">Complaints</span>
+            </a>
+            <span class="tooltip">Complaints</span>
+        </li>
             <li>
                 <a href="payment.php">
                     <img src="bill.png" alt="billing" class="sideimg">
@@ -103,7 +82,7 @@
                 <span class="tooltip">Payment</span>
             </li>
             <li>
-                <a href="appointmentuser.php">
+                <a href="amenity_booking.php">
                     <img src="schedule.png" alt="schedule" class="sideimg">
                     <span class="nav-item">Appointment</span>
                 </a>
@@ -121,40 +100,55 @@
 </div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Sidebar toggle function
+    // FOR SIDEBAR
     let btn = document.querySelector('#btn');
     let sidebar = document.querySelector('.sidebar');
     let hr = document.querySelector('.sidebar hr');
     let logoImg = document.getElementById('logo-img');
-    let subMenu = document.getElementById("subMenu");
+    let navItems = document.querySelectorAll('.sidebar .nav-item');
+
+    // Function to toggle the disable-hover class
+    function updateHoverState() {
+        navItems.forEach(item => {
+            if (!sidebar.classList.contains('active')) {
+                item.classList.add('disable-hover');
+            } else {
+                item.classList.remove('disable-hover');
+            }
+        });
+    }
+
+    // Initial state setup
+    updateHoverState();
 
     btn.onclick = function () {
         sidebar.classList.toggle('active');
         hr.classList.toggle('active'); 
-        logoImg.classList.toggle('hide-logo'); // Toggle the class to hide/show the logo
+        logoImg.classList.toggle('hide-logo'); // PAG TOGGLE MAWAWALA LOGO
+        updateHoverState(); // Update hover state on toggle
     }
 
-    // Profile menu toggle function
+    // FOR PROFILE MENU TOGGLE
     function toggleProfileMenu() {
         const profileMenu = document.getElementById("profileMenu");
         const notificationsMenu = document.getElementById("notificationsMenu");
 
         profileMenu.classList.toggle("open-menu");
 
-        // Close notifications menu if open
+        // FOR CLOSING NOTIF
         if (notificationsMenu.classList.contains("open-menu")) {
             notificationsMenu.classList.remove("open-menu");
         }
     }
 
-    // Notifications menu toggle function
+    // FOR Notifications menu toggle 
     function toggleNotificationsMenu() {
         const notificationsMenu = document.getElementById("notificationsMenu");
         const profileMenu = document.getElementById("profileMenu");
 
         notificationsMenu.classList.toggle("open-menu");
 
-        // Close profile menu if open
+        // FOR CLOSING MENU
         if (profileMenu.classList.contains("open-menu")) {
             profileMenu.classList.remove("open-menu");
         }
@@ -178,14 +172,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const profileMenu = document.getElementById("profileMenu");
         const notificationsMenu = document.getElementById("notificationsMenu");
 
-        if (!event.target.closest('.user-pic') && profileMenu.classList.contains('open-menu')) {
-            profileMenu.classList.remove('open-menu');
+        if (!profileMenu.contains(event.target) && profileMenu.classList.contains("open-menu")) {
+            profileMenu.classList.remove("open-menu");
         }
 
-        if (!event.target.closest('nav li:nth-child(2)') && notificationsMenu.classList.contains('open-menu')) {
-            notificationsMenu.classList.remove('open-menu');
+        if (!notificationsMenu.contains(event.target) && notificationsMenu.classList.contains("open-menu")) {
+            notificationsMenu.classList.remove("open-menu");
         }
     });
 });
+
 </script>
 

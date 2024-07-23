@@ -37,12 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             break;
         }
 
-        $sql = "INSERT INTO homeowners (name, email, phone_number, address, password, status) VALUES ('$name', '$email', '$phone', '$address', '$passwordHash', 'active')";
+        $sql = "INSERT INTO homeowners (name, email, phone_number, address, password, status) VALUES (?, ?, ?, ?, ?, 'active')";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssss", $name, $email, $phone, $address, $password_hash);
 
-               "VALUES ('$name', '$email', '$phone', '$address', '$password_hash')";
-        if ($conn->query($sql) === TRUE) {
+        if ($stmt->execute()) {
             $successMessage = "Homeowner added successfully!";
-
+            
             $name = "";
             $email = "";
             $phone = "";
@@ -52,8 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header("location: homeowneradmin.php");
             exit;
         } else {
-            $errorMessage = "Error: " . $sql . "<br>" . $conn->error;
+            $errorMessage = "Error: " . $stmt->error;
         }
+
+        $stmt->close();
 
     } while (false);
 }
