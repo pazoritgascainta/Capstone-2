@@ -2,47 +2,52 @@
 <div class="headnavbar">
     <nav>
         <img src="monique logo.png" alt="logo" id="logo-img">
-        <ul>
-            <li><a href='dashuser.php'>Home</a></li>
-            <li>
-                <a href='#'>Notifications</a>
-                <div class="sub-menu-wrap" id="notificationsMenu">
-                    <div class="sub-menu">
-                        <a href="userinbox.php" class="sub-menu-link">
-                            <img src="inbox.png" alt="">
-                            <p>Inbox</p>
-                            <span>></span>
-                        </a>
-  `
-        </ul>
-        <img src="profile.png" class="user-pic" onclick="toggleProfileMenu()">
-        <div class="sub-menu-wrap" id="profileMenu">
-            <div class="sub-menu">
-                <a href="useredit.php" class="sub-menu-link">
-                    <img src="account.png" alt="">
-                    <p>Edit Profile</p>
-                    <span>></span>
-                </a>
-                <a href="usersettings.php" class="sub-menu-link">
-                    <img src="settings.png" alt="">
-                    <p>Settings</p>
-                    <span>></span>
-                </a>
-                <a href="userhelp.php" class="sub-menu-link">
-                    <img src="help.png" alt="">
-                    <p>Help</p>
-                    <span>></span>
-                </a>
-                <a href="userlogout.php" class="sub-menu-link">
-                    <img src="logawt.png" alt="">
-                    <p>Logout</p>
-                    <span>></span>
-                </a>
-                <!-- Add more submenu items as needed -->
+        <div class="nav-links-wrapper">
+            <ul>
+                <li><a href="dashuser.php" class="nav-link home-link">Home</a></li>
+                <li>
+                    <a href="#" class="nav-link notifications-link">Notifications</a>
+                    <div class="sub-menu-wrap" id="notificationsMenu">
+                        <div class="sub-menu">
+                            <a href="userinbox.php" class="sub-menu-link">
+                                <img src="inbox.png" alt="">
+                                <p>Inbox</p>
+                                <span>></span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <img src="profile.png" class="user-pic" onclick="toggleProfileMenu()">
+            <div class="sub-menu-wrap" id="profileMenu">
+                <div class="sub-menu">
+                    <a href="useredit.php" class="sub-menu-link">
+                        <img src="account.png" alt="">
+                        <p>Edit Profile</p>
+                        <span>></span>
+                    </a>
+                    <a href="usersettings.php" class="sub-menu-link">
+                        <img src="settings.png" alt="">
+                        <p>Settings</p>
+                        <span>></span>
+                    </a>
+                    <a href="userhelp.php" class="sub-menu-link">
+                        <img src="help.png" alt="">
+                        <p>Help</p>
+                        <span>></span>
+                    </a>
+                    <a href="userlogout.php" class="sub-menu-link">
+                        <img src="logawt.png" alt="">
+                        <p>Logout</p>
+                        <span>></span>
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
 </div>
+
+
 
 <div class="sidebar">
         <div class="top">

@@ -1,56 +1,59 @@
  <link rel="stylesheet" href="dashbcss.css">  -
-<div class="headnavbar">
+ <div class="headnavbar">
     <nav>
-        <img src="monique logo.png" width="120" height="30" alt="logo" id="logo-img">
-        <ul>
-            <li><a href='dashadmin.php'>Home</a></li>
-            <li>
-                <a href='#'>Notifications</a>
-                <div class="sub-menu-wrap" id="notificationsMenu">
-                    <div class="sub-menu">
-                        <a href="inbox.php" class="sub-menu-link">
-                            <img src="inbox.png" alt="">
-                            <p>Inbox</p>
-                            <span>></span>
-                        </a>
-                        <!-- <a href="#messages.php" class="sub-menu-link">
-                            <img src="messages.png" alt="">
-                            <p>Messages</p>
-                            <span>></span>
-                        </a> -->
-                        <!-- Add more submenu items as needed -->
+        <img src="monique logo.png" alt="logo" id="logo-img">
+        <div class="nav-links-wrapper">
+            <ul>
+                <li><a href="dashadmin.php" class="nav-link home-link">Home</a></li>
+                <li>
+                    <a href="#" class="nav-link notifications-link">Notifications</a>
+                    <div class="sub-menu-wrap" id="notificationsMenu">
+                        <div class="sub-menu">
+                            <a href="inbox.php" class="sub-menu-link">
+                                <img src="inbox.png" alt="">
+                                <p>Inbox</p>
+                                <span>></span>
+                            </a>
+                            <!-- <a href="messages.php" class="sub-menu-link">
+                                <img src="messages.png" alt="">
+                                <p>Messages</p>
+                                <span>></span>
+                            </a> -->
+                            <!-- Add more submenu items as needed -->
+                        </div>
                     </div>
+                </li>
+            </ul>
+            <img src="profile.png" class="user-pic" onclick="toggleProfileMenu()">
+            <div class="sub-menu-wrap" id="profileMenu">
+                <div class="sub-menu">
+                    <a href="EditPro.php" class="sub-menu-link">
+                        <img src="account.png" alt="">
+                        <p>Edit Profile</p>
+                        <span>></span>
+                    </a>
+                    <a href="settingsadmin.php" class="sub-menu-link">
+                        <img src="settings.png" alt="">
+                        <p>Settings</p>
+                        <span>></span>
+                    </a>
+                    <a href="help.php" class="sub-menu-link">
+                        <img src="help.png" alt="">
+                        <p>Help</p>
+                        <span>></span>
+                    </a>
+                    <a href="Homepage.php" class="sub-menu-link">
+                        <img src="logawt.png" alt="">
+                        <p>Logout</p>
+                        <span>></span>
+                    </a>
+                    <!-- Add more submenu items as needed -->
                 </div>
-            </li>
-        </ul>
-        <img src="profile.png" class="user-pic" onclick="toggleProfileMenu()">
-        <div class="sub-menu-wrap" id="profileMenu">
-            <div class="sub-menu">
-                <a href="EditPro.php" class="sub-menu-link">
-                    <img src="account.png" alt="">
-                    <p>Edit Profile</p>
-                    <span>></span>
-                </a>
-                <a href="settingsadmin.php" class="sub-menu-link">
-                    <img src="settings.png" alt="">
-                    <p>Settings</p>
-                    <span>></span>
-                </a>
-                <a href="help.php" class="sub-menu-link">
-                    <img src="help.png" alt="">
-                    <p>Help</p>
-                    <span>></span>
-                </a>
-                <a href="Homepage.php" class="sub-menu-link">
-                    <img src="logawt.png" alt="">
-                    <p>Logout</p>
-                    <span>></span>
-                </a>
-                <!-- Add more submenu items as needed -->
             </div>
         </div>
     </nav>
 </div>
+
 
 <!-- Sidebar -->
 

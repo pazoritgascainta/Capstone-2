@@ -1,0 +1,47 @@
+/* Container for the select element */
+div {
+    margin-bottom: 20px; /* Space below the container */
+}
+
+/* Label styling */
+label[for="amenity"] {
+    font-weight: bold; /* Make the label text bold */
+    margin-bottom: 8px; /* Space below the label */
+    font-size: 16px; /* Larger font size for better readability */
+    color: #333; /* Dark color for contrast */
+    display: block; /* Make sure the label takes the full width */
+}
+
+/* Select styling */
+select {
+    width: 100%; /* Full width to fit the container */
+    padding: 12px; /* Padding inside the select box */
+    border-radius: 6px; /* Rounded corners */
+    border: 1px solid #ccc; /* Light border color */
+    font-size: 16px; /* Larger font size for readability */
+    box-sizing: border-box; /* Include padding in the width */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+    outline: none; /* Remove default outline */
+}
+
+/* Select focus styling */
+select:focus {
+    border-color: #007BFF; /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3); /* Add subtle shadow effect */
+}
+
+/* Option styling (default) */
+option {
+    padding: 10px; /* Padding inside option */
+    font-size: 16px; /* Font size for options */
+}
+
+/* Option styling (hover) */
+select option:hover {
+    background-color: #f1f1f1; /* Background color on hover */
+}
+
+/* Placeholder styling */
+option[value=""] {
+    color: #888; /* Placeholder text color */
+}

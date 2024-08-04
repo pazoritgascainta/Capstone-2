@@ -7,6 +7,9 @@ if (!isset($_SESSION['homeowner_id'])) {
     exit();
 }
 
+// Retrieve the homeowner ID from the session
+$homeowner_id = $_SESSION['homeowner_id'];
+
 // Database connection
 $servername = "localhost";
 $username = "root";
@@ -24,6 +27,18 @@ function sanitize_input($data) {
     return $conn->real_escape_string(trim(htmlspecialchars($data)));
 }
 
+// Function to check if a timeslot is already booked by the same homeowner
+function is_timeslot_booked($conn, $homeowner_id, $date, $timeslot_id, $amenity_id) {
+    $sql_check = "SELECT COUNT(*) FROM appointments WHERE homeowner_id = ? AND date = ? AND timeslot_id = ? AND amenity_id = ?";
+    $stmt_check = $conn->prepare($sql_check);
+    $stmt_check->bind_param("issi", $homeowner_id, $date, $timeslot_id, $amenity_id);
+    $stmt_check->execute();
+    $stmt_check->bind_result($count);
+    $stmt_check->fetch();
+    $stmt_check->close();
+    return $count > 0;
+}
+
 // Handle form submission to book an appointment
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['book_appointment'])) {
     $date = sanitize_input($_POST['date']);
@@ -31,29 +46,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['book_appointment'])) {
     $email = sanitize_input($_POST['email']);
     $purpose = sanitize_input($_POST['purpose']);
     $amenity_id = sanitize_input($_POST['amenity_id']);
-    $timeslot_ids = isset($_POST['timeslot_ids']) ? $_POST['timeslot_ids'] : []; // Handle array of timeslot IDs
+    $timeslot_ids = isset($_POST['timeslot_ids']) ? $_POST['timeslot_ids'] : [];
 
     $homeowner_id = $_SESSION['homeowner_id'];
     $status = 'Pending';
 
-    // Insert appointments for each selected timeslot
+    $errors = [];
     foreach ($timeslot_ids as $timeslot_id) {
-        // Ensure timeslot_id is an integer
         $timeslot_id = intval($timeslot_id);
 
-        // Insert each appointment with the selected timeslot
+        // Check if the timeslot is already booked
+        if (is_timeslot_booked($conn, $homeowner_id, $date, $timeslot_id, $amenity_id)) {
+            $errors[] = "You already booked timeslot ID $timeslot_id.";
+            continue;
+        }
+
+        // Insert the new appointment
         $sql_insert = "INSERT INTO appointments (homeowner_id, date, name, email, purpose, status, timeslot_id, amenity_id) 
                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt_insert = $conn->prepare($sql_insert);
+        if (!$stmt_insert) {
+            $errors[] = "Failed to prepare SQL statement: " . $conn->error;
+            continue;
+        }
         $stmt_insert->bind_param("isssssii", $homeowner_id, $date, $name, $email, $purpose, $status, $timeslot_id, $amenity_id);
 
         if (!$stmt_insert->execute()) {
-            echo "<p>Error: " . $stmt_insert->error . "</p>";
+            $errors[] = "Failed to execute SQL statement: " . $stmt_insert->error;
         }
     }
 
-    // Redirect to avoid form resubmission
-    header('Location: ' . $_SERVER['PHP_SELF']);
+    // Prepare response and redirect
+    if (empty($errors)) {
+        $_SESSION['message'] = ['status' => 'success', 'message' => 'Appointment booked successfully.'];
+    } else {
+        $_SESSION['message'] = ['status' => 'error', 'message' => implode(', ', $errors)];
+    }
+
+    // Redirect to the booking page
+    header('Location: amenity_booking.php');
     exit();
 }
 
@@ -80,14 +111,30 @@ if (isset($_GET['date']) && isset($_GET['amenity_id'])) {
 $sql_remove_past_rejected = "DELETE FROM appointments WHERE date < CURDATE() OR status = 'Rejected'";
 $conn->query($sql_remove_past_rejected);
 
-// Fetch booked appointments
+// Pagination settings
+$limit = 10; // Number of appointments per page
+$current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$offset = ($current_page - 1) * $limit;
+
+// Fetch total number of appointments
+$sql_count = "SELECT COUNT(*) as total FROM appointments WHERE homeowner_id = ? AND status = 'Pending' AND date >= CURDATE()";
+$stmt_count = $conn->prepare($sql_count);
+$stmt_count->bind_param("i", $homeowner_id);
+$stmt_count->execute();
+$result_count = $stmt_count->get_result();
+$row_count = $result_count->fetch_assoc();
+$total_appointments = $row_count['total'];
+$total_pages = max(ceil($total_appointments / $limit), 1);
+
+// Fetch booked appointments with pagination
 $sql_booked_appointments = "SELECT a.id, a.date, a.name, a.email, a.purpose, a.status, t.time_start, t.time_end, am.name AS amenity_name
                             FROM appointments a
                             JOIN timeslots t ON a.timeslot_id = t.id
                             JOIN amenities am ON a.amenity_id = am.id
-                            WHERE a.homeowner_id = ? AND a.status = 'Pending' AND a.date >= CURDATE()";
+                            WHERE a.homeowner_id = ? AND a.status = 'Pending' AND a.date >= CURDATE()
+                            LIMIT ?, ?";
 $stmt_booked_appointments = $conn->prepare($sql_booked_appointments);
-$stmt_booked_appointments->bind_param("i", $_SESSION['homeowner_id']);
+$stmt_booked_appointments->bind_param("iii", $_SESSION['homeowner_id'], $offset, $limit);
 $stmt_booked_appointments->execute();
 $result_booked_appointments = $stmt_booked_appointments->get_result();
 $booked_appointments = $result_booked_appointments->fetch_all(MYSQLI_ASSOC);
@@ -101,57 +148,58 @@ $booked_appointments = $result_booked_appointments->fetch_all(MYSQLI_ASSOC);
     <link rel="stylesheet" href="custom_calendar.css">
     <link rel="stylesheet" href="modal.css">
     <link rel="stylesheet" href="amenity_booking.css">
+    <link rel="stylesheet" href="amenity.css">
 </head>
+
 <body>
 <?php include 'usersidebar.php'; ?>
 
-   <!-- TIMESLOTS MODAL -->
-   <div id="timeslot-modal" class="modal">
-        <div class="modal-backdrop"></div>
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Select Time Slots</h2>
-                <form id="timeslot-form" method="POST" action="book_appointment.php" onsubmit="return validateTimeslotSelection()">
-                    <div class="form-section">
-                        <button type="button" class="collapsible">Available Time Slots</button>
-                        <div class="collapsible-content" id="timeslot-container">
-                            <!-- Checkboxes will be populated here -->
-                        </div>
-                    </div>
-                    <p id="no-timeslots" style="display: none;">No timeslots available.</p>
 
-                    <!-- Error message for timeslot selection -->
-                    <p id="timeslot-error-message" style="color: red; display: none;">Please select at least one timeslot.</p>
 
-                    <!-- Form fields -->
-                    <div class="form-field">
-                        <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-
-                    <div class="form-field">
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-
-                    <div class="form-field">
-                        <label for="purpose">Purpose:</label>
-                        <input type="text" id="purpose" name="purpose" required>
-                    </div>
-
-                    <input type="hidden" id="selected-date" name="date">
-                    <input type="hidden" id="amenity-id" name="amenity_id">
-
-                    <div class="form-field">
-                        <button type="submit" name="book_appointment">Book Appointment</button>
-                    </div>
-                </form>
+<!-- TIMESLOTS MODAL -->
+<div id="timeslot-modal" class="modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Select Time Slots</h2>
+        <form id="timeslot-form" method="POST" onsubmit="handleFormSubmit(event)">
+            <div class="form-section">
+                <button type="button" class="collapsible">Available Time Slots</button>
+                <div class="collapsible-content" id="timeslot-container">
+                    <!-- Checkboxes will be populated here -->
+                </div>
             </div>
-        </div>
+            <p id="no-timeslots" style="display: none;">No timeslots available.</p>
+            <p id="timeslot-error-message" style="color: red; display: none;">Please select at least one timeslot.</p>
+
+            <!-- Hidden fields -->
+            <input type="hidden" id="hidden-amenity-id" name="amenity_id">
+            <input type="hidden" id="selected-date" name="date">
+            <input type="hidden" id="homeowner-id" name="homeowner_id" value="<?php echo htmlspecialchars($homeowner_id, ENT_QUOTES, 'UTF-8'); ?>">
+
+            <!-- Form fields -->
+            <div class="form-field">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-field">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-field">
+                <label for="purpose">Purpose:</label>
+                <input type="text" id="purpose" name="purpose" required>
+            </div>
+
+            <button type="submit" name="book_appointment">Book Appointment</button>
+        </form>
+    </div>
+</div>
 
 <div class="main-content">
     <div class="container">
         <h1>Appointment</h1>
+    
         <!-- Booking Form -->
         <form method="GET" action="">
             <div>
@@ -165,94 +213,210 @@ $booked_appointments = $result_booked_appointments->fetch_all(MYSQLI_ASSOC);
                     <?php endforeach; ?>
                 </select>
             </div>
+            <input type="hidden" id="hidden-amenity-id" name="amenity_id">
+            <div id="message-container">
+                <?php
+// Display session message if it exists
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    echo '<div class="alert alert-' . ($message['status'] == 'success' ? 'success' : 'danger') . '">';
+    echo htmlspecialchars($message['message']);
+    echo '</div>';
+    unset($_SESSION['message']);
+}
+?>
+<div id="message-container">
+    <?php
+    // Check for status and message parameters in the URL
+    $status = isset($_GET['status']) ? $_GET['status'] : '';
+    $message = isset($_GET['message']) ? htmlspecialchars($_GET['message'], ENT_QUOTES, 'UTF-8') : '';
 
+    if ($status === 'success'): ?>
+        <div id="message" class="message-success">
+            Appointment booked successfully.
+        </div>
+    <?php elseif ($status === 'error'): ?>
+        <div id="message" class="message-error">
+            <?php echo $message; ?>
+        </div>
+    <?php endif; ?>
+</div>
+                <!-- Messages will be displayed here -->
+            </div>
             <!-- CALENDAR -->
-            <div id="calendar-container">
-                <div id="calendar-nav">
-                    <button id="prev-month" type="button">&lt;</button>
-                    <span id="month-year"></span>
-                    <button id="next-month" type="button">&gt;</button>
-                </div>
-                <div id="calendar">
-                    <!-- Header cells for days of the week -->
-                    <div class="calendar-header-cell">Sun</div>
-                    <div class="calendar-header-cell">Mon</div>
-                    <div class="calendar-header-cell">Tue</div>
-                    <div class="calendar-header-cell">Wed</div>
-                    <div class="calendar-header-cell">Thu</div>
-                    <div class="calendar-header-cell">Fri</div>
-                    <div class="calendar-header-cell">Sat</div>
-                    <!-- Calendar cells for days will be inserted here -->
+            <div id="calendar-box">
+                <div id="calendar-container">
+                    <div id="calendar-nav">
+                        <button id="prev-month" type="button">&lt;</button>
+                        <span id="month-year"></span>
+                        <button id="next-month" type="button">&gt;</button>
+                    </div>
+                    <div id="calendar">
+                        <div class="calendar-header-cell">Sun</div>
+                        <div class="calendar-header-cell">Mon</div>
+                        <div class="calendar-header-cell">Tue</div>
+                        <div class="calendar-header-cell">Wed</div>
+                        <div class="calendar-header-cell">Thu</div>
+                        <div class="calendar-header-cell">Fri</div>
+                        <div class="calendar-header-cell">Sat</div>
+                        <!-- Days will be generated by JavaScript -->
+                    </div>
                 </div>
             </div>
-
-            <input type="hidden" id="selected-date" name="date">
-  
+    
         </form>
 
-     
+        <!-- Appointments Table -->
+        <h2>Upcoming Appointments</h2>
+        <table id="appointments-table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Purpose</th>
+            <th>Status</th>
+            <th>Amenity</th> <!-- Added Amenity column header -->
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($booked_appointments as $appointment): ?>
+            <tr id="appointment-<?php echo $appointment['id']; ?>">
+                <td><?php echo htmlspecialchars($appointment['date']); ?></td>
+                <td><?php echo htmlspecialchars($appointment['time_start']) . ' - ' . htmlspecialchars($appointment['time_end']); ?></td>
+                <td><?php echo htmlspecialchars($appointment['name']); ?></td>
+                <td><?php echo htmlspecialchars($appointment['email']); ?></td>
+                <td><?php echo htmlspecialchars($appointment['purpose']); ?></td>
+                <td><?php echo htmlspecialchars($appointment['status']); ?></td>
+                <td><?php echo htmlspecialchars($appointment['amenity_name']); ?></td> <!-- Display Amenity name -->
+                <td>
+                    <button onclick="cancelAppointment(<?php echo $appointment['id']; ?>)">Cancel</button>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
-        <!-- Display Booked Appointments -->
-        <h2>My Booked Appointments</h2>
-        <?php if (!empty($booked_appointments)): ?>
-            <table border="1">
-                <tr>
-                    <th>Seq. ID</th>
-                    <th>Date</th>
-                    <th>Amenity</th>
-                    <th>Time Slot</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Purpose</th>
-                    <th>Status</th>
-                </tr>
-                <?php
-                $seq_id = 1; // Initialize sequential ID counter
-                foreach ($booked_appointments as $appointment): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($seq_id++); // Display sequential ID ?></td>
-                        <td><?php echo htmlspecialchars($appointment['date']); ?></td>
-                        <td><?php echo htmlspecialchars($appointment['amenity_name']); ?></td>
-                        <td><?php echo htmlspecialchars($appointment['time_start'] . ' - ' . $appointment['time_end']); ?></td>
-                        <td><?php echo htmlspecialchars($appointment['name']); ?></td>
-                        <td><?php echo htmlspecialchars($appointment['email']); ?></td>
-                        <td><?php echo htmlspecialchars($appointment['purpose']); ?></td>
-                        <td><?php echo htmlspecialchars($appointment['status']); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-        <?php else: ?>
-            <p>You have no booked appointments.</p>
-        <?php endif; ?>
+        <!-- Pagination Controls -->
+<div id="pagination">
+    <?php if ($current_page > 1): ?>
+        <button onclick="window.location.href='?page=<?php echo $current_page - 1; ?>'"><</button>
+    <?php else: ?>
+      
+    <?php endif; ?>
+
+    <!-- Page input for user to change the page -->
+    <form method="GET" action="" style="display: inline;">
+        <input type="number" name="page" value="<?php echo $current_page; ?>" min="1" max="<?php echo $total_pages; ?>" style="width: 50px;">
+    </form>
+
+    <!-- "of" text and last page link -->
+    <?php if ($total_pages > 1): ?>
+        <span>of</span>
+        <a href="?page=<?php echo $total_pages; ?>" class="<?php echo ($current_page == $total_pages) ? 'active' : ''; ?>"><?php echo $total_pages; ?></a>
+    <?php endif; ?>
+
+    <!-- Next button -->
+    <?php if ($current_page < $total_pages): ?>
+        <button onclick="window.location.href='?page=<?php echo $current_page + 1; ?>'">></button>
+    <?php else: ?>
+        
+    <?php endif; ?>
+</div>
     </div>
 </div>
 
-<script src="custom_calendar.js" defer></script>
+<script src="custom_calendar.js"></script>
+<script src="modal.js"></script>
 <script>
-    function validateTimeslotSelection() {
-        var checkboxes = document.querySelectorAll('#timeslot-container input[type="checkbox"]');
-        var errorMessage = document.getElementById('timeslot-error-message');
-        var atLeastOneChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+function handleFormSubmit(event) {
+    event.preventDefault(); // Prevent default form submission
 
-        if (!atLeastOneChecked) {
-            errorMessage.style.display = 'block';
-            return false; // Prevent form submission
+    const form = event.target;
+    const formData = new FormData(form);
+
+    fetch('book_appointment.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text()) // Get response as text
+    .then(responseText => {
+        console.log('Raw Response:', responseText); // Log the raw response for debugging
+
+        // Split the response into status and message
+        const [status, ...messageParts] = responseText.split(':');
+        const message = messageParts.join(':'); // Join remaining parts as message
+
+        const messageElement = document.getElementById('message');
+        messageElement.textContent = message; // Set the message text
+
+        // Clear any previous classes
+        messageElement.className = '';
+
+        // Apply the appropriate class based on the status
+        if (status === 'success') {
+            messageElement.classList.add('message-success');
+            
+            // Clear the form fields
+            form.reset();
+            document.getElementById('timeslot-container').innerHTML = ''; // Clear time slots
+            document.getElementById('hidden-amenity-id').value = ''; // Clear hidden fields
+            document.getElementById('selected-date').value = ''; // Clear hidden fields
+        } else if (status === 'error') {
+            messageElement.classList.add('message-error');
         } else {
-            errorMessage.style.display = 'none'; // Hide error message if valid
+            messageElement.classList.add('message-unexpected');
         }
-        return true; // Allow form submission
+    })
+    .catch(error => {
+        const messageElement = document.getElementById('message');
+        messageElement.textContent = 'An error occurred: ' + error.message; // Display fetch error
+        messageElement.className = 'message-error'; // Apply error class
+    });
+}
+
+
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Function to hide the message after a delay
+    function hideMessage() {
+        var messageElement = document.getElementById('message-container');
+        if (messageElement) {
+            setTimeout(function() {
+                messageElement.style.display = 'none';
+            }, 5000); // Hide after 5 seconds
+        }
     }
 
-  
-
-    document.querySelector('.modal .close').addEventListener('click', function() {
-        document.getElementById('timeslot-modal').style.display = 'none';
-    });
+    // Call hideMessage if there's a success or error message
+    hideMessage();
+});
 </script>
+<script>
+function cancelAppointment(appointmentId) {
+    if (confirm('Are you sure you want to cancel this appointment?')) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'cancel_appointment.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    document.getElementById('appointment-' + appointmentId).remove();
+                    alert('Appointment canceled successfully.');
+                } else {
+                    alert('Failed to cancel the appointment: ' + response.message);
+                }
+            }
+        };
+        xhr.send('appointment_id=' + appointmentId);
+    }
+}
+</script>
+
 </body>
 </html>
-
-<?php
-// Close the database connection
-$conn->close();
-?>
+<?php $conn->close(); ?>

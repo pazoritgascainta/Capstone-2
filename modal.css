@@ -1,3 +1,4 @@
+
 /* Modal styles */
 .modal {
     display: none; /* Hidden by default */
@@ -12,6 +13,7 @@
     transition: opacity 0.3s ease; /* Transition effect */
     opacity: 0; /* Hidden by default */
 }
+
 .modal-backdrop {
     position: fixed;
     top: 0;
@@ -22,9 +24,10 @@
     z-index: 100; /* Ensures it is behind the modal content */
     display: none; /* Initially hidden */
 }
+
 .modal-content {
     position: fixed;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     background: #fff;
@@ -33,6 +36,9 @@
     z-index: 101; /* Ensures it is above the backdrop */
     max-width: 500px;
     width: 100%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+    overflow-y: auto; /* Enable scroll if content overflows */
+    max-height: 80vh; /* Limit height */
 }
 
 /* Show modal */
@@ -42,21 +48,9 @@
     align-items: center;
     justify-content: center;
 }
+
 .modal.show .modal-backdrop {
     display: block;
-}
-/* Modal content */
-.modal-content {
-    background-color: #fefefe;
-    margin: 5% auto; /* Centered with margin from the top */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 90%; /* Responsive width */
-    max-width: 600px; /* Maximum width */
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
-    overflow-y: auto; /* Enable scroll if content overflows */
-    max-height: 80vh; /* Limit height */
 }
 
 /* Close button */
@@ -81,7 +75,6 @@
     width: 100%; /* Full width to fit inside modal */
 }
 
-/* Form fields container */
 #timeslot-form div {
     margin-bottom: 20px; /* Space between form fields */
 }
@@ -166,7 +159,7 @@
     max-height: 200px; /* Limit height to prevent overflow */
 }
 
-/* Scroll styling */
+/* Scrollbar styling */
 .collapsible-content::-webkit-scrollbar {
     width: 8px; /* Width of the scrollbar */
 }

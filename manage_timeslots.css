@@ -1,0 +1,210 @@
+/* General Container Styling */
+.container {
+    background-color: #ffffff;  
+    border: 1px solid #ccc; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    padding: 10px; 
+    margin-top: 10px; 
+}
+h1, h2 {
+    color: #333;
+}
+/* Main Content Styling */
+.main-content {
+    margin: 0 auto; /* Center the content horizontally */
+    margin-left: 80px;
+    max-width: 90%; /* Optional: Set a maximum width to prevent it from becoming too wide */
+}
+.page-link {
+    display: none;
+}
+.page-link.active {
+    background-color: #007BFF; /* Primary color for active link */
+    color: white; /* White text color */
+    border: 1px solid #007BFF; /* Match border color with active background */
+}
+#pagination {
+    margin-top: 20px;
+    text-align: center; /* Center align pagination controls */
+}
+#pagination a {
+    display: inline-block; /* Ensure pagination links are inline */
+    margin: 0 8px; /* Space between pagination links */
+    text-decoration: none; /* Remove underline from links */
+    color: #007BFF; /* Link color */
+    padding: 8px 12px; /* Padding inside pagination links */
+    border: 1px solid #ddd; /* Light gray border */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+}
+#pagination a.active {
+    background-color: #007bff;
+    color: white;
+}
+#pagination input {
+    text-align: center;
+    width: 50px;
+    padding: 8px;
+    color: #007BFF; /* Link color */
+}
+#pagination a:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+}
+
+button {
+    margin: 0 6px; /* Slightly increased margin for better spacing */
+    padding: 10px 15px; /* Added padding inside buttons */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #007BFF; /* Primary button color */
+    color: white; /* Text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Larger font size for readability */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+#auto_btn, #manual_btn {
+    display: inline-block; /* Ensure the buttons are displayed in a row */
+    padding: 10px 20px; /* Add padding for size */
+    margin: 10px; /* Add margin between buttons */
+    border: none; /* Remove default border */
+    background-color: #007bff; /* Button background color */
+    color: white; /* Button text color */
+    font-size: 16px; /* Button text size */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+#auto_btn:hover, #manual_btn:hover {
+    background-color: #0056b3; /* Darker background on hover */
+}
+.button-container {
+    text-align: center; /* Center the buttons horizontally */
+    margin: 20px 0; /* Add margin for spacing */
+}
+.btn-admin_approval {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.btn-admin_approval:hover {
+    background-color: #0056b3;
+}
+form {
+    margin-bottom: 20px;
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="date"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Space above the table */
+}
+
+/* Table Headers and Cells */
+th, td {
+    border: 1px solid #ddd; /* Light gray border */
+    padding: 12px; /* Added padding for readability */
+    text-align: left; /* Align text to the left */
+    max-width: 200px; /* Set a max-width for the cells */
+    word-wrap: break-word; /* Allow text to wrap within the cell */
+    white-space: normal; /* Allow text to wrap to the next line */
+}
+
+/* Table Header Styling */
+th {
+    background-color: #007BFF; /* Light gray background for headers */
+    color: #fff; /* Darker text color for better contrast */
+    font-weight: bold; /* Bold text for headers */
+}
+/* General Styles for <select> */
+input[type="text"],
+input[type="number"],
+input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 16px;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+/* Hover and focus states for <input> */
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="date"]:hover,
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+/* Styles for select elements */
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 16px;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+/* Hover and focus states for <select> */
+select:hover,
+select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+/* General Styles for <textarea> */
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 16px;
+    line-height: 1.5;
+    box-sizing: border-box;
+    resize: vertical; /* Allows vertical resizing only */
+}
+
+/* Hover and focus states for <textarea> */
+textarea:hover,
+textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+/* Optional: Remove default styling for textarea */
+textarea::-webkit-resizer {
+    display: none;
+}

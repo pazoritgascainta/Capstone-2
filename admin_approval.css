@@ -1,31 +1,158 @@
+/* General Container Styling */
+.container {
+    background-color: #ffffff;  
+    border: 1px solid #ccc; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    padding: 10px; 
+    margin-top: 10px; 
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        button {
-            margin: 0 4px;
-        }
-        .pagination {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .pagination a {
-            margin: 0 5px;
-            text-decoration: none;
-            color: #000;
-            padding: 5px 10px;
-            border: 1px solid #ddd;
-        }
-        .pagination a.active {
-            background-color: #4CAF50;
-            color: white;
-            border: 1px solid #4CAF50;
-        }
+/* Main Content Styling */
+.main-content {
+    margin: 0 auto; /* Center the content horizontally */
+margin-left: 80px;
+    max-width: 90%; /* Optional: Set a maximum width to prevent it from becoming too wide */
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        width: 90%; /* Increase width for medium-sized screens */
+        padding: 0 10px; /* Reduce padding for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        width: 100%; /* Full width for very small screens */
+        padding: 0 5px; /* Minimal padding for very small screens */
+    }
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Space above the table */
+}
+
+/* Table Headers and Cells */
+th, td {
+    border: 1px solid #ddd; /* Light gray border */
+    padding: 12px; /* Added padding for readability */
+    text-align: left; /* Align text to the left */
+    max-width: 200px; /* Set a max-width for the cells */
+    word-wrap: break-word; /* Allow text to wrap within the cell */
+    white-space: normal; /* Allow text to wrap to the next line */
+}
+
+/* Table Header Styling */
+th {
+    background-color: #007BFF; /* Light gray background for headers */
+    color: #fff; /* Darker text color for better contrast */
+    font-weight: bold; /* Bold text for headers */
+}
+
+/* Button Styling */
+button {
+    margin: 0 6px; /* Slightly increased margin for better spacing */
+    padding: 10px 15px; /* Added padding inside buttons */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #007BFF; /* Primary button color */
+    color: white; /* Text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Larger font size for readability */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+/* Button Hover Effect */
+button:hover {
+    background-color: #0056b3; /* Darker color on hover */
+}
+.button-container {
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+
+    gap: 10px; /* Space between buttons */
+    /* Add margin or padding to the container if needed */
+}
+
+.btn-manage-timeslots, .btn-view-accepted {
+    display: inline-block;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-manage-timeslots:hover, .btn-view-accepted:hover {
+    background-color: #0056b3;
+}
+
+/* Pagination Styling */
+.page-link {
+    display: none;
+}
+.page-link.active {
+    background-color: #007BFF; /* Primary color for active link */
+    color: white; /* White text color */
+    border: 1px solid #007BFF; /* Match border color with active background */
+}
+#pagination {
+    margin-top: 20px;
+    text-align: center; /* Center align pagination controls */
+}
+#pagination a {
+    display: inline-block; /* Ensure pagination links are inline */
+    margin: 0 8px; /* Space between pagination links */
+    text-decoration: none; /* Remove underline from links */
+    color: #007BFF; /* Link color */
+    padding: 8px 12px; /* Padding inside pagination links */
+    border: 1px solid #ddd; /* Light gray border */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+}
+#pagination a.active {
+    background-color: #007bff;
+    color: white;
+}
+#pagination input {
+    text-align: center;
+    width: 50px;
+    padding: 8px;
+    color: #007BFF; /* Link color */
+}
+#pagination a:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+}
+
+.centered-actions {
+    text-align: center; /* Center-align text and inline elements */
+}
+/* Manage Timeslots Button Styling */
+.manage-timeslots {
+    margin-bottom: 20px; /* Space below the link */
+    text-align: left; /* Center the link */
+}
+
+.btn-manage-timeslots {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-manage-timeslots:hover {
+    background-color: #0056b3;
+}

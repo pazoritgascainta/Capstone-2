@@ -11,10 +11,18 @@ nav {
     padding: 10px 10%; /* Adjust padding as needed */
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Space between logo and nav links */
+    flex: 1;
+    justify-content: flex-end; /* Space between logo and nav links */
     position: fixed;
     z-index: 1000;
     top: 0;
+}
+.home-link {
+    /* Additional styling for Home link if needed */
+}
+
+.notifications-link {
+    /* Additional styling for Notifications link if needed */
 }
 nav ul {
     display: flex; /* Align items horizontally */
@@ -25,16 +33,16 @@ nav ul {
 }
 
 /* Move the "Home" and "Notifications" links to the right */
-nav .nav-links {
-    display: flex;
-    justify-content: flex-end; /* Align items to the right */
-    flex: 1; /* Allow this container to take up remaining space */
-}
 .nav-links-wrapper {
     display: flex;
     align-items: center;
-    flex: 1;
-    justify-content: flex-end; /* Align items to the right */
+}
+
+.nav-link {
+    margin: 0 -10px; /* Space between links */
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
 }
 /* Style the individual nav links */
 nav li {
@@ -63,12 +71,12 @@ nav li a {
 }
 
 #logo-img {
-    position: absolute; /* Position logo absolutely within .headnavbar */
-    left:  80px; /* Adjust to move logo to the left */
-    top: 50%; /* Center vertically */
-    transform: translateY(-50%); /* Adjust vertical centering */
-    height: 50px; /* Adjust size as needed */
-    z-index: 1001; /* Ensure logo is above other elements */
+    position: absolute;
+    left: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 64px;
+    z-index: 1001;
 }
 
 .headnavbar ul {
@@ -84,11 +92,7 @@ nav li a {
     margin: 0 15px; /* Space between list items */
 }
 
-.user-pic {
-    cursor: pointer;
-    height: 40px; /* Adjust size as needed */
-    margin-left: 15px; /* Space from other elements */
-}
+
 
 /* Ensure profile and notifications menus are positioned correctly */
 .sub-menu-wrap {
@@ -105,16 +109,16 @@ nav li a {
 .hide-logo {
     display: none;
 }
-/* Styles for notifications submenu */
+/* Notifications submenu styles */
 #notificationsMenu {
     position: absolute;
     top: 100%;
-    right: 10%;
+    right: 13%;
     width: 320px;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.5s;
-    z-index: 900;
+    z-index: 2;
 }
 
 #notificationsMenu.open-menu {
@@ -125,29 +129,8 @@ nav li a {
     background: #fae2ce;
     padding: 20px;
     margin: 10px;
-}
-
-#notificationsMenu .sub-menu .user-info {
-    display: flex;
-    align-items: center;
-}
-
-#notificationsMenu .sub-menu .user-info h2 {
-    font-weight: 500;
-}
-
-#notificationsMenu .sub-menu .user-info img {
-    width: 60px;
-    border-radius: 50%;
-    margin-right: 15px;
-}
-
-#notificationsMenu .sub-menu hr {
-    border: 0;
-    height: 1px;
-    width: 100%;
-    background: #ccc;
-    margin: 15px 0 10px;
+    position: relative; /* Ensure the sub-menu is positioned relative to its normal position */
+    left: -10px; /
 }
 
 #notificationsMenu .sub-menu a {
@@ -182,13 +165,13 @@ nav li a {
 #notificationsMenu .sub-menu a:hover p {
     font-weight: 600;
 }
+
 .user-pic {
     width: 40px;
     border-radius: 50%;
     cursor: pointer;
     margin-left: 30px;
 }
-
 nav > ul {
     width: 100%;
     text-align: right;

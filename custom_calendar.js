@@ -20,12 +20,18 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentYear = new Date().getFullYear();
     let selectedDate = '';
 
+    // Function to fetch timeslots based on selected date and amenity
     function fetchTimeslots() {
         const amenityId = amenitySelect.value;
         const selectedDate = selectedDateInput.value;
-
-        if (!amenityId || !selectedDate) return;
-
+    
+        if (!amenityId || !selectedDate) {
+            console.log('No amenity or date selected.');
+            return;
+        }
+    
+        console.log(`Fetching timeslots for Amenity ID: ${amenityId}, Date: ${selectedDate}`);
+    
         fetch(`fetch_timeslots.php?date=${encodeURIComponent(selectedDate)}&amenity_id=${encodeURIComponent(amenityId)}`)
             .then(response => {
                 if (!response.ok) {
@@ -34,13 +40,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
+                console.log('Fetched timeslots:', data);
                 handleTimeslots(data);
             })
             .catch(error => {
                 console.error('Error fetching timeslots:', error);
             });
     }
-
+    
+    // Function to handle and display fetched timeslots
     function handleTimeslots(timeslots) {
         if (!timeslotContainer || !noTimeslotsMessage) {
             console.error('Timeslot container or noTimeslotsMessage element not found');
@@ -73,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Function to render the calendar
     function renderCalendar() {
         calendar.innerHTML = ''; // Clear previous calendar content
 
@@ -107,39 +116,42 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Function to handle date clicks
     function handleDateClick(event) {
         selectedDate = event.target.dataset.date;
         if (selectedDateInput) {
             selectedDateInput.value = selectedDate; // Set hidden input value
         }
 
-        // Check if amenity is selected before showing the modal
         if (amenitySelect.value) {
             fetchTimeslots(); // Fetch timeslots when a date is clicked
             showModal(); // Show the modal
         } else {
-            alert('Please select an amenity first.'); // Alert user to select an amenity
+            alert('Please select an amenity first.'); // Alert if no amenity is selected
         }
     }
 
+    // Function to validate timeslot selection
     function validateTimeslotSelection() {
-        var checkboxes = document.querySelectorAll('#timeslot-container input[type="checkbox"]');
-        var atLeastOneChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+        const checkboxes = document.querySelectorAll('#timeslot-container input[type="checkbox"]');
+        const isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
 
-        if (!atLeastOneChecked) {
+        if (!isChecked) {
             timeslotErrorMessage.style.display = 'block'; // Show error message
             return false; // Prevent form submission
-        } else {
-            timeslotErrorMessage.style.display = 'none'; // Hide error message if valid
         }
+
+        timeslotErrorMessage.style.display = 'none'; // Hide error message
         return true; // Allow form submission
     }
 
+    // Function to show the modal
     function showModal() {
         modal.classList.add('show');
         backdrop.style.display = 'block'; // Show the backdrop
     }
 
+    // Function to hide the modal
     function hideModal() {
         modal.classList.remove('show');
         backdrop.style.display = 'none'; // Hide the backdrop
@@ -154,9 +166,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Attach event listener to amenity select element
-    amenitySelect.addEventListener('change', fetchTimeslots);
+    // Event listener for changes in the amenity select element
+    amenitySelect.addEventListener('change', function() {
+        console.log('Amenity selected:', this.value);
+        document.getElementById('hidden-amenity-id').value = this.value; // Update hidden input
+        fetchTimeslots(); // Fetch timeslots when an amenity is selected
+    });
 
+    // Event listener for calendar navigation buttons
     prevMonthButton.addEventListener('click', function() {
         currentMonth -= 1;
         if (currentMonth < 0) {
@@ -175,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
         renderCalendar();
     });
 
-    // Ensure to add the event listener for date clicks
+    // Event listener for clicks on the calendar
     calendar.addEventListener('click', function(event) {
         if (event.target.classList.contains('calendar-cell')) {
             handleDateClick(event);

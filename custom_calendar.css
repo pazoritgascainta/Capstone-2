@@ -4,83 +4,114 @@ body {
     padding: 20px; /* Adjust padding as needed */
 }
 
-
-/* Additional styling to ensure internal elements align well */
-#calendar-container {
-    margin-bottom: 20px;
-    text-align: center; /* Center-align content */
+/* FOR MESSAGE SUCCESS */
+#message-container {
+   align-items: center;
 }
 
-#calendar-nav {
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: center; /* Center-align navigation */
-    align-items: center;
-    background-color: #007BFF; /* Background color for navigation */
+#message {
     padding: 10px;
-    color: #fff; /* Text color for navigation */
+    border-radius: 5px;
+    font-weight: bold;
 }
 
+.message-success {
+    color: green;
+}
+
+.message-error {
+    color: red;
+}
+/* Calendar container styles */
+/* Calendar box styling */
+#calendar-box {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%; /* Ensure it occupies full width of its container */
+}
+
+/* Calendar navigation styling */
+#calendar-nav {
+    flex-shrink: 0; /* Prevent shrinking */
+    background-color: #007BFF; /* Adjust background color */
+    color: #fff; /* Adjust text color */
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc; /* Optional border to separate from calendar */
+}
+
+/* Calendar navigation buttons styling */
 #calendar-nav button {
-    background: none; /* Remove background */
-    border: none; /* Remove border */
-    font-size: 2em; /* Larger font size */
+    background: none;
+    border: none;
+    font-size: 2em;
     cursor: pointer;
-    margin: 0 15px; /* Spacing around buttons */
-    color: #fff; /* Text color */
-    transition: color 0.3s, transform 0.3s; /* Smooth transitions */
+    margin: 0 15px;
+    transition: color 0.3s, transform 0.3s;
 }
 
-/* Hover effect for navigation buttons */
 #calendar-nav button:hover {
-    color: #e0e0e0; /* Light text color on hover */
+    color: #fff; /* Change to desired hover color */
     transform: scale(1.2); /* Slightly increase size on hover */
 }
 
 #calendar-nav #month-year {
     font-size: 1.5em;
     font-weight: bold;
-    color: #333;
+    color: #000000;
     margin: 0 15px;
     padding: 10px 0;
-    background-color: #f9f9f9;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: inline-block;
     text-align: center;
-    width: auto;
 }
 
-/* Ensure calendar styles remain consistent */
+/* Calendar grid styling */
 #calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 2px;
-    max-width: 100%;
+    gap: 5px;
+    width: 100%; /* Ensure it occupies full width */
     margin: 0 auto;
+    padding: 10px; /* Optional padding for spacing */
 }
 
-.calendar-header-cell, .calendar-cell {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-}
-
+/* Calendar header cell styling */
 .calendar-header-cell {
-    background-color: #f4f4f4;
+    text-align: center;
+    padding: 10px;
+    background-color: #f4f4f4; /* Light gray background for header */
     font-weight: bold;
-    cursor: default;
+    /* Remove border from header cells */
+    border: none;
 }
 
+/* Calendar cell styling */
 .calendar-cell {
+    text-align: right;
+    padding: 15px;
+    border: 1px solid #ccc; /* Apply border only to day cells */
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1.2em;
+    height: 100px;
+    line-height: 60px;
     cursor: pointer;
 }
 
+/* Hover effect for calendar cells */
 .calendar-cell:hover {
-    background-color: #f0f0f0;
+    background-color: #007BFF; /* Light gray background on hover */
 }
 
+/* Empty date cell styling */
 .date.empty {
-    background-color: #f0f0f0;
+    background-color: #f0f0f0; /* Light gray background for empty cells */
 }

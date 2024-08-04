@@ -1,74 +1,98 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
+    margin: 0;
+    padding: 20px; /* Adjust padding as needed */
 }
 
-.calendar {
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-}
-
-.calendar-header {
+/* Calendar container styles */
+#calendar-box {
     display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 100%; /* Ensure it occupies full width of its container */
+}
+
+/* Calendar navigation styling */
+#calendar-nav {
+    flex-shrink: 0; /* Prevent shrinking */
+    background-color: #007BFF; /* Adjust background color */
+    color: #fff; /* Adjust text color */
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: #e9ecef;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #ccc; /* Optional border to separate from calendar */
 }
 
-.btn-prev, .btn-next {
-    background-color: transparent;
+/* Calendar navigation buttons styling */
+#calendar-nav button {
+    background: none;
     border: none;
+    font-size: 2em;
     cursor: pointer;
-    font-size: 20px;
+    margin: 0 15px;
+    transition: color 0.3s, transform 0.3s;
 }
 
-.calendar-weekdays {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #ccc;
-    padding: 10px;
+#calendar-nav button:hover {
+    color: #fff; /* Change to desired hover color */
+    transform: scale(1.2); /* Slightly increase size on hover */
 }
 
-.calendar-weekdays div {
+#calendar-nav #month-year {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #000000;
+    margin: 0 15px;
+    padding: 10px 0;
+    border-radius: 8px;
     text-align: center;
-    width: 14.28%; /* Each weekday occupies 1/7th of the width */
 }
 
-.calendar-days {
-    display: flex;
-    flex-wrap: wrap;
+/* Calendar grid styling */
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    width: 100%; /* Ensure it occupies full width */
+    margin: 0 auto;
+    padding: 10px; /* Optional padding for spacing */
 }
 
-.calendar-days .day {
-    width: 14.28%; /* Each day occupies 1/7th of the width */
-    padding: 10px;
+/* Calendar header cell styling */
+.calendar-header-cell {
     text-align: center;
-    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f4f4f4; /* Light gray background for header */
+    font-weight: bold;
+    /* Remove border from header cells */
+    border: none;
+}
+
+/* Calendar cell styling */
+.calendar-cell {
+    text-align: right;
+    padding: 15px;
+    border: 1px solid #ccc; /* Apply border only to day cells */
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1.2em;
+    height: 100px;
+    line-height: 60px;
     cursor: pointer;
 }
 
-.event-details {
-    max-width: 800px;
-    margin: 20px auto;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    display: none; /* Hidden by default */
+/* Hover effect for calendar cells */
+.calendar-cell:hover {
+    background-color: #007BFF; /* Light blue background on hover */
 }
 
-.event-details h2 {
-    margin-top: 0;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 5px;
-}
-
-.event-details div {
-    margin-bottom: 10px;
+/* Empty date cell styling */
+.date.empty {
+    background-color: #f0f0f0; /* Light gray background for empty cells */
 }
