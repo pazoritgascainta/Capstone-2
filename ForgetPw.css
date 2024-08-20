@@ -48,7 +48,7 @@ body{
 }
 
 .container button{
-    background-color: #512da8;
+    background-color: #b0a4ce;
     color: #fff;
     font-size: 12px;
     padding: 10px 45px;
@@ -122,7 +122,7 @@ body{
     z-index: 1000;
 }
 .toggle{
-    background-color: #512da8;
+    background-color: #f1d176;
     height: 100%;
     background: linear-gradient(to right, #5c6bc0, #512da8);
     color: #fff;

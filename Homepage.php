@@ -5,9 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="HomepageStyle.css">
-
-
+    <link rel="stylesheet" href="HomepageImgSlider.css">
+    <link rel="stylesheet" href="HomepageAnnouncement.css">
+    <link rel="stylesheet" href="HomepageaboutUs.css">
+    <link rel="stylesheet" href="HomepageHeader.css">
+    <link rel="stylesheet" href="HomepageLoginForm.css">
+    <link rel="stylesheet" href="HomepageAmenities.css">
+    <link rel="stylesheet" href="HomepageLogo.css">
     <title>St. Monique</title>
 </head>
 
@@ -15,9 +21,11 @@
     <div class="logo">
         <p>St. Monique Valais Homeowners' Association</p>
     </div>
+    <section class = "HomeLogo">
     <div class="logoo">
-    <a href="#"><img src="https://scontent.fmnl25-3.fna.fbcdn.net/v/t1.15752-9/436198750_975421137542976_1645205689955435346_n.png?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEL8Vkpr0Jpsu0g8wLT7ALd6j3Doeu5tmrqPcOh67m2aoZg0c9FYmQJIa26wea7OGkAC0afXjvYpXq53cjGWoqM&_nc_ohc=-6DUKtCORYMQ7kNvgHC5smh&_nc_ht=scontent.fmnl25-3.fna&oh=03_Q7cD1QGtM29RYwFCMKEX1SE7-r4hzlCW-JU83jcL7lBkaQ-wzQ&oe=66750BD9" alt="Your Logo"></a>
+    <a href="Homepage.php"><img src="monique logo.png" alt="Your Logo"></a>
     </div>
+    </section>
     <header>
         <nav>
             <ul>
@@ -25,12 +33,9 @@
                 <li><a href="Homepage.php">Home</a></li>
                 <li><a href="#" id="loginBtn">Login</a></li>
                 <li><a href="ContacUS.php">Contact</a></li>
-                <li><a href="Homepage.php">Amenities</a></li>
+                <li><a href="Amenities.php">Amenities</a></li>
                 <!-- New login button -->
-                <li class="dropdown">
-                <a href="#" class="dropbtn"></a>
                 <div>
-                    <button id="modeToggle">Toggle Dark Mode</button>
                 </div>
         </nav>
     </header>
@@ -68,72 +73,75 @@
         </div>
     </div>
     <!-- Img Slider Section -->
-<div class="ImageSlider">
-    <input type="radio" id="trigger1" name="slider"checked autofocus>
-    <label for="trigger1"><span class="sr-only"></span></label>
-    <div class="slide bg1">
-        <div class="description">
-            <h3>St Monique Main Building</h3>
+    <section class="ImageSlider1">
+    <div class="ImageSlider">
+        <input type="radio" id="trigger1" name="slider" checked autofocus>
+        <label for="trigger1"><span class="sr-only"></span></label>
+        <div class="slide bg1">
+            <div class="description">
+                <h3>St.Monique Landmark</h3>
+            </div>
+        </div>
+
+        <input type="radio" id="trigger2" name="slider">
+        <label for="trigger2"><span class="sr-only"></span></label>
+        <div class="slide bg2">
+            <div class="description">
+                <h3>St.Monique School</h3>
+            </div>
+        </div>
+
+        <input type="radio" id="trigger3" name="slider">
+        <label for="trigger3"><span class="sr-only"></span></label>
+        <div class="slide bg3">
+            <div class="description">
+                <h3>St.Monique Church</h3>
+            </div>
+        </div>
+
+        <input type="radio" id="trigger4" name="slider">
+        <label for="trigger4"><span class="sr-only"></span></label>
+        <div class="slide bg4">
+            <div class="description">
+                <h3>Clubhouse</h3>
+            </div>
+        </div>
+
+        <input type="radio" id="trigger5" name="slider">
+        <label for="trigger5"><span class="sr-only"></span></label>
+        <div class="slide bg5">
+            <div class="description">
+                <h3>St.Monique Valais</h3>
+            </div>
         </div>
     </div>
-    
-    <input type="radio" id="trigger2" name="slider" checked autofocus>
-    <label for="trigger2"><span class="sr-only"></span></label>
-    <div class="slide bg2">
-        <div class="description">
-            <h3>Wide Parking Slots</h3>
-        </div>
-    </div>
-    
-    <input type="radio" id="trigger3" name="slider" checked autofocus>
-    <label for="trigger3"><span class="sr-only"></span></label>
-    <div class="slide bg3">
-        <div class="description">
-            <h3>St Monique Chapel</h3>
-        </div>
-    </div>
-    
-    <input type="radio" id="trigger4" name="slider" checked autofocus>
-    <label for="trigger4"><span class="sr-only"></span></label>
-    <div class="slide bg4">
-        <div class="description">
-            <h3>Clubhouse</h3>
-        </div>
-    </div>
-    
-    <input type="radio" id="trigger5" name="slider" checked autofocus>
-    <label for="trigger5"><span class="sr-only"></span></label>
-    <div class="slide bg5">
-        <div class="description">
-            <h3>St Monique Valais</h3>
-        </div>
-    </div>
-</div>
+</section>
+
      <!-- Images Highlights -->
-    <section>
+    <section class="Amenities1">
         <div class="Amenities">
             <h2>St Monique Valais' Amenities</h2>
             <ul>
                 <li>
-                    <img src="https://scontent.fmnl25-1.fna.fbcdn.net/v/t1.15752-9/432737758_1123670605645215_6395987856012548444_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_ohc=-vg_A8E0724Q7kNvgHfHBl6&_nc_ht=scontent.fmnl25-1.fna&oh=03_Q7cD1QE8mObTGrxqAwOx1qDKxfryDAQPbpjugHVJ66q_3r3i0A&oe=6666B752" alt="Swimming Pool">
+                    <img src="SwimmingPool.jpg" alt="Swimming Pool">
                     <div class="text">
                         <h3>Swimming Pool</h3>
                     </div>
                 </li>
-                <li><img src="https://scontent.fmnl25-1.fna.fbcdn.net/v/t1.15752-9/433447835_837376578223957_712533863247073136_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_ohc=X_azpxCDfSwQ7kNvgHOHlZL&_nc_ht=scontent.fmnl25-1.fna&oh=03_Q7cD1QGZ4k3BQK89ArK9TaoTysDsyap3gkwC3LQhYTnUjkTpGA&oe=6666CEEE" alt="Basketball Court">
+                <li><img src="courtth1.jpg" alt="Basketball Court">
                     
                     <div class="text">
                         <h3>Basketball Court</h3>
                     </div>
                 </li>
-                <li><img src="https://scontent.fmnl34-1.fna.fbcdn.net/v/t39.30808-6/337172853_550043030530126_2270268773605201229_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFLKqhHDJ8z51Z6He4Tup9hwyyll8Trx4vDLKWXxOvHi520vmFq06l-j66C5zCuNQEAkDi1jnVxvpzx4dmYBAi8&_nc_ohc=9rEAFmGzTvoQ7kNvgEmH7K-&_nc_zt=23&_nc_ht=scontent.fmnl34-1.fna&oh=00_AYDrvbEHn5saQoM5ofV2WWAoPHg-UqlY_WrYTHN_4mfGzw&oe=664FFD00" alt="Playground">
+                <li><img src="Playground.jpg" alt="Playground">
                     <div class="text">
                         <h3>Playground</h3>
                     </div>
                 </li>
-                <li><img src="https://scontent.fmnl25-1.fna.fbcdn.net/v/t1.15752-9/431354655_733075685644924_3848879267469360538_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_ohc=dExEOMrmAJ4Q7kNvgFz3TIK&_nc_ht=scontent.fmnl25-1.fna&oh=03_Q7cD1QGPyT_D4nSyAERctVYJ7wnCUWXLPYjP8UmRzRXZX2IOJA&oe=6666C4C4" alt="Swimming Pool">
+                <li><img src="clubhouse.jpg" alt="Clubhouse">
                     <div class="text">
-                        <h3>Clubhouse</h3>
+                        <h3>Cafe Delfino</h3>
                     </div>
                 </li>                            
             </ul>
@@ -142,7 +150,7 @@
     <h1 style="text-align: center;">St.Monique Valais HOA Drone Fly Over</h1>
 <div class="video-container">
 <video autoplay muted controls>
-    <source src="St. Monique Valais.mp4" type="video/mp4">
+    <source src="StMoniqueValais2.mp4" type="video/mp4">
     Your browser does not support the video tag.
 </video>
 </div>
@@ -153,17 +161,17 @@
                     <div class="carousel-item active">
                         <img src="https://thumbs.dreamstime.com/b/under-maintenance-detailed-illustration-grungy-maintanance-construction-background-61865170.jpg" alt="Announcement Image 1">
                     </div>
-                    <div class="carousel-item active">
-                        <img src="https://thumbs.dreamstime.com/b/under-maintenance-detailed-illustration-grungy-maintanance-construction-background-61865170.jpg" alt="Announcement Image 2">
+                    <div class="carousel-item">
+                        <img src="Meeting.jpg" alt="Announcement Image 2">
                     </div>
                     <div class="carousel-item">
-                        <img src="https://thumbs.dreamstime.com/b/under-maintenance-detailed-illustration-grungy-maintanance-construction-background-61865170.jpg" alt="Announcement Image 3">
+                        <img src="basketball-poster.jpg" alt="Announcement Image 3">
                     </div>
                 </div>
-                <a class="carousel-control-prev" href="#" role="button">
-                    <span class="carousel-control-prev-icon" aria-hidden="true">&lt;</span>
+                <a class="carousel-control-prev" role="button">
+                    <span class="carousel-control-prev-icon" aria-hidden="false">&lt;</span>
                 </a>
-                <a class="carousel-control-next" href="#" role="button">
+                <a class="carousel-control-next" role="button">
                     <span class="carousel-control-next-icon" aria-hidden="true">&gt;</span>
                 </a>
             </div>
@@ -183,7 +191,7 @@
         <div class="footer-container">
             <div id="aboutUs">
                 <h2>About Us</h2>
-                <img src="https://scontent.fmnl25-3.fna.fbcdn.net/v/t1.15752-9/436198750_975421137542976_1645205689955435346_n.png?_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEL8Vkpr0Jpsu0g8wLT7ALd6j3Doeu5tmrqPcOh67m2aoZg0c9FYmQJIa26wea7OGkAC0afXjvYpXq53cjGWoqM&_nc_ohc=-6DUKtCORYMQ7kNvgHC5smh&_nc_ht=scontent.fmnl25-3.fna&oh=03_Q7cD1QGtM29RYwFCMKEX1SE7-r4hzlCW-JU83jcL7lBkaQ-wzQ&oe=66750BD9" width="550" height="250" alt="St Monique Valais Logo">
+                <img src="monique logo.png" width="500" height="225" alt="St Monique Valais Logo">
                 <h2>St Monique Valais Homeowners Association</h2>
                 <p>Welcome to St. Monique Valais, a beacon of modern living nestled in the heart of our region.
                     Established in 2005 by a visionary in the real estate industry, our community stands as a testament to meticulous planning, upscale amenities, and well-designed homes.
@@ -191,14 +199,10 @@
                      Experience the hallmark of modern living at St. Monique Valais!.</p>
             <ul>
             <h2>Contact Us</h2>
-                <li><i class="fa fa-envelope"></i> Email: example@example.com</li>
-                <li><i class="fa fa-phone"></i> Phone: +1234567890</li>
-            </ul>
-            <h2>Follow Us</h2>
-            <ul class="social-links">
-                <li><a href="https://www.facebook.com/SMVRizal"><i class="fa fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                <li><i class="fa fa-envelope"></i> Email: saintmoniquev@gmail.com</li>
+                <li><i class="fa fa-phone"></i> Phone: 0917 719 7908</li>
+
+                <li><a href="https://www.facebook.com/saintmoniquevalais"><i class="fa-brands fa-square-facebook fa-sm"></i></a></li>
             </ul>
         </div>
             <div class="location-map">
@@ -210,7 +214,7 @@
     </footer>
 
     <div class="footer">
-        <p>© 2024 St. Monique Valais Homeowners' Association. All rights reserved.</p>
+        <p>© 2024 St. Monique Valais Homeowners Association. All rights reserved.</p>
     </div>
     <script src="HomepageJS.js"></script>
 </body>

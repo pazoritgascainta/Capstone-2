@@ -16,10 +16,45 @@
 <div>
   <!-- dito ilagay ang contents -->
             <div class="container">   
-              <h1>Admin EDITH</h1>
+              <h1>Admin Information</h1>
+              <div class="container">
+        <div class="breadcrumb">
+           <span>Admin info</span>
+        </div>
+        <div class="info-section">
+            <div class="info">
+                <label>UserName</label>
+                <div class="value">Admin 01</div>
+                <a href="#" class="edit">Edit</a>
+            </div>
+        </div>
+        <div class="info-section">
+            <div class="info">
+                <label>Email address</label>
+                <div class="value">SMVHOAdmin01@gmail.com</div>
+                <a href="#" class="edit">Edit</a>
+            </div>
+        </div>
+        <div class="info-section">
+            <div class="info">
+                <label>Phone number</label>
+                <div class="value">Add a number</div>
+                <a href="#" class="edit">Add</a>
+            </div>
+        </div>
+        <div class="info-section">
+            <div class="info">
+                <label>Address</label>
+                <div class="value">Not provided</div>
+                <a href="#" class="edit">Edit</a>
+            </div>
+        </div>
+    </div>
          
 </div>
+
 </div>
+
 </div>
 
 </body>

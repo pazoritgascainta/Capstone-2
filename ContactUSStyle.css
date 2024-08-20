@@ -34,7 +34,7 @@ body{
   min-height: 100vh;
   padding: 10px;
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(115deg, #56d8e4 10%, #9f01ea 90%);
+  background: linear-gradient(115deg, #ffdab9 10%, #ffdcb2 90%);
 }
 .container{
   max-width: 800px;
@@ -165,39 +165,4 @@ form .form-row .textarea{
   .submit-btn .input-data{
     width: 40%!important;
   }
-}
-
-
-header {
-    width: 100%;
-    background-color: #512da8;
-    position: fixed; /* Fixed positioning */
-    top: 0; /* Position at the top */
-    z-index: 1000; /* Ensure it's above other content */
-}
-nav {
-    width: 100%;
-    max-width: 1200px; /* Set your desired max-width */
-    margin: 0 auto;
-}
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-li {
-    float: left;
-}
-
-a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration: none;
-}
-a:hover {
-    background-color: #5c6bc0;
 }

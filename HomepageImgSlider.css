@@ -1,0 +1,231 @@
+/*Slider Section*/
+body, html {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    user-select: none;
+    overflow-x: hidden; /* Hide horizontal overflow */
+}
+.ImageSlider body,.ImageSlider html {
+    padding: 0;
+    width: 100%;
+    text-align: center;
+    user-select: none;
+}
+
+.ImageSlider1{
+    margin:0;
+    padding: 10;
+}
+.ImageSlider1 .ImageSlider body {
+    background-color: #ffffff;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.ImageSlider1 .ImageSlider .sr-only {
+    position: absolute;
+    pointer-events: none;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    color: transparent;
+    align-content: center;
+}
+
+.ImageSlider1 .ImageSlider input {
+    position: absolute;
+    opacity: 0;
+    margin-top: calc(50vh - 10px);
+    cursor: pointer;
+    align-content: center;
+}
+
+.ImageSlider1 .ImageSlider label {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: solid 2px white;
+    border-radius: 999px;
+    background-color: transparent 10%;
+    margin-right: 40vh;
+    margin: calc(50vh - 5px) 5px 0;
+    z-index: 2;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    box-shadow: 0 0 20px 0 #000;
+    opacity: 1;
+    margin-left: 10vh;
+    margin-left: 20px;
+}
+
+.ImageSlider1 .ImageSlider input:checked + label {
+    background-color: white;
+}
+
+.ImageSlider1 .ImageSlider input + label::after {
+    content: '';
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 512' width='100' style='fill:white'%3E%3Cpath d='M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z' /%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center 55%;
+    background-size: 80px 80px;
+    line-height: 100vh;
+    transition: background-size 200ms;
+    position: absolute;
+    color: white;
+    height: calc(50vh - 12px);
+    width: 60px;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    opacity: 0;
+}
+
+.ImageSlider1 .ImageSlider input + label:hover::after {
+    background-size: 90px 90px;
+    opacity: 1;
+}
+
+.ImageSlider1 .ImageSlider input:checked + label::after {
+    background-image: none;
+    width: 100vw;
+    left: 0;
+    z-index: 10;
+    opacity: 0;
+}
+
+.ImageSlider1 .ImageSlider input:checked + label + .slide ~ input + label::after {
+    display: none;
+    opacity: 0;
+}
+
+.ImageSlider1 .ImageSlider input:checked + label + .slide + input + label::after {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 512' width='100' fill='white'%3E%3Cpath d='M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z' /%3E%3C/svg%3E");
+    display: block;
+    width: 60px;
+    right: 0;
+    left: auto;
+    opacity: 0.2;
+}
+
+.ImageSlider1 .ImageSlider input:focus + label {
+    box-shadow: 0 0 0 2px teal, 0 0 18px white;
+    opacity: 0.5;
+}
+
+.ImageSlider1 .ImageSlider .slider-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.ImageSlider1 .ImageSlider .slider {
+    width: 100%;
+}
+
+.ImageSlider1 .ImageSlider .slide {
+    position: absolute;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 60vh;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transform: translateX(-100%);
+    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    opacity: 1;
+    overflow: hidden;
+}
+
+.ImageSlider1 .ImageSlider input:checked ~ .slide {
+    transform: translateX(100%);
+}
+
+.ImageSlider1 .ImageSlider input:checked + label + .slide {
+    transform: translateX(0%);
+    opacity: 1;
+}
+
+.ImageSlider1 .ImageSlider input:checked + label + .slide:hover + input + label::after {
+    opacity: 1; 
+}
+
+.ImageSlider1 .ImageSlider .bg1 {
+    background-image: url(StMoniqueLogo.jpg);
+}
+
+.ImageSlider1 .ImageSlider .bg2 {
+    background-image: url(stmonqschool.jpg);
+
+}
+
+.ImageSlider1 .ImageSlider .bg3 {
+    background-image: url(stmoniquechurch.jpg);
+
+}
+
+.ImageSlider1 .ImageSlider .bg4 {
+    background-image: url(clubhouse.jpg);
+
+}
+
+.ImageSlider1 .ImageSlider .bg5 {
+    background-image: url(WideshotMonique.jpg);
+}
+
+.ImageSlider1 .ImageSlider .slide .description {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+    color: white;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.ImageSlider1 .ImageSlider input[type="radio"]:checked ~ .slide .description {
+    transform: translateY(0);
+    overflow: hidden;
+}
+
+.ImageSlider1 input[type="radio"]:checked ~ .slide .description {
+    transform: translateY(0);
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .ImageSlider input {
+        margin-top: calc(50vh - 5px);
+    }
+
+    .ImageSlider label {
+        width: 10px;
+        height: 10px;
+        margin: 5px;
+        margin-top: calc(45vh - 3px);
+    }
+
+    .ImageSlider input + label::after {
+        background-size: 60px 60px;
+        height: calc(50vh - 8px);
+        width: 50px;
+    }
+
+    .ImageSlider input + label:hover::after {
+        background-size: 70px 70px;
+    }
+
+    .ImageSlider .slide {
+        height: 50vh;
+    }
+    
+    .ImageSlider .slide .description {
+        padding: 10px;
+    }
+}
