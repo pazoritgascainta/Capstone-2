@@ -26,7 +26,7 @@ $user_name = $_SESSION['homeowner_name'];
     <div class="main-content">
         <div class="container">
             <h1>St. Monique User Dashboard</h1>
-            <h2>Welcome, <?php echo htmlspecialchars($user_name); ?></h2>
+            <h2>Welcome, <?php echo htmlspecialchars($homeowner['name']); ?></h2>
             <!-- DITO dashboard content  -->
         </div>
     </div>

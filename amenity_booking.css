@@ -10,8 +10,8 @@
 /* Main Content Styling */
 .main-content {
     margin: 0 auto; /* Center the content horizontally */
-margin-left: 80px;
-    max-width: 90%; /* Optional: Set a maximum width to prevent it from becoming too wide */
+    margin-left: 80px;
+      max-width: 90%; /* Optional: Set a maximum width to prevent it from becoming too wide */
 }
 
 /* Responsive Design */

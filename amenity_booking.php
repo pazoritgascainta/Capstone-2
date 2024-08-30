@@ -419,4 +419,4 @@ function cancelAppointment(appointmentId) {
 
 </body>
 </html>
-<?php $conn->close(); ?>
+

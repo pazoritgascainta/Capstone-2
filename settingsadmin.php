@@ -18,6 +18,10 @@
   <!-- dito ilagay ang contents -->
             <div class="container">   
               <h1>ADMIN SETTINGS</h1>
+             
+              <a href="EditPro.php">Edit Admin Profile</a>
+              <br>
+              <a href="adminpw.php">Change Password</a>
          
 </div>
 </div>

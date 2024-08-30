@@ -1,0 +1,26 @@
+/* Style the link to look like a button */
+.btn-admin-approval {
+    display: inline-block; /* Make the link behave like a button */
+    margin: 0 6px; /* Slightly increased margin for better spacing */
+    padding: 10px 15px; /* Added padding inside buttons */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #007BFF; /* Primary button color */
+    color: white; /* Text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Larger font size for readability */
+    text-decoration: none; /* Remove underline from the link */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+/* Button Hover Effect */
+.btn-admin-approval:hover {
+    background-color: #0056b3; /* Darker color on hover */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    gap: 10px; /* Space between buttons */
+    /* Add margin or padding to the container if needed */
+}

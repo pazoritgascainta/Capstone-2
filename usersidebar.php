@@ -1,7 +1,60 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "homeowner";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Ensure homeowner_id is set in the session
+if (!isset($_SESSION['homeowner_id'])) {
+    die("Homeowner ID not found in session.");
+}
+
+$homeowner_id = $_SESSION['homeowner_id'];
+
+// Fetch the homeowner's current information
+$sql = "SELECT * FROM homeowners WHERE id = ?";
+$stmt = $conn->prepare($sql);
+
+if ($stmt === false) {
+    die("Failed to prepare SQL statement: " . $conn->error);
+}
+
+$stmt->bind_param("i", $homeowner_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $homeowner = $result->fetch_assoc();
+} else {
+    die("Homeowner not found.");
+}
+
+$stmt->close();
+$conn->close();
+
+// Default profile image
+$default_image = 'profile.png';
+$profile_image = $homeowner['profile_image'] ? $homeowner['profile_image'] : $default_image;
+?>
+
 <link rel="stylesheet" href="usersidebar.css">
 <div class="headnavbar">
     <nav>
-        <img src="monique logo.png" alt="logo" id="logo-img">
+        <a href="dashuser.php">
+            <img src="monique logo.png" alt="logo" id="logo-img">
+        </a>
         <div class="nav-links-wrapper">
             <ul>
                 <li><a href="dashuser.php" class="nav-link home-link">Home</a></li>
@@ -14,18 +67,21 @@
                                 <p>Inbox</p>
                                 <span>></span>
                             </a>
+                            <!-- Add more links if needed -->
                         </div>
                     </div>
                 </li>
             </ul>
-            <img src="profile.png" class="user-pic" onclick="toggleProfileMenu()">
+            
+            <a href="#" class="nav-link user-profile-link" onclick="toggleProfileMenu()">
+                <img src="<?php echo htmlspecialchars($profile_image); ?>" class="user-pic" alt="profile picture">
+            </a>
+            
             <div class="sub-menu-wrap" id="profileMenu">
                 <div class="sub-menu">
-                    <a href="useredit.php" class="sub-menu-link">
-                        <img src="account.png" alt="">
-                        <p>Edit Profile</p>
-                        <span>></span>
-                    </a>
+                    <img src="<?php echo htmlspecialchars($profile_image); ?>" alt="Profile Image" class="profile-img" id="sidebarProfileImage">
+                    <p class="user-names"><?php echo htmlspecialchars($homeowner['name']); ?></p>
+
                     <a href="usersettings.php" class="sub-menu-link">
                         <img src="settings.png" alt="">
                         <p>Settings</p>
@@ -47,145 +103,60 @@
     </nav>
 </div>
 
-
-
 <div class="sidebar">
-        <div class="top">
-            <div class="logo">
-            <img src="Monique logo.png" width="170" height="80"alt="monique" class="mnq-img">
-            </div>
-            <img src="menu.png" alt="menu" class="menu-img" id="btn">
+    <div class="top">
+        <div class="logo">
+            <img src="Monique logo.png" width="170" height="80" alt="monique" class="mnq-img">
         </div>
+        <img src="menu.png" alt="menu" class="menu-img" id="btn">
+    </div>
+    <div>
         <div class="user">
-            <img src="profile.png" alt="monique" class="profile-img">
+            <img src="<?php echo htmlspecialchars($profile_image); ?>" alt="<?php echo htmlspecialchars($homeowner['name']); ?>" class="profile-img" id="sidebarProfileImage">
             <div>
-            <p class="bold">John Doe</p>
-            <p>User</p>
+                <p class="user-names"><?php echo htmlspecialchars($homeowner['name']); ?></p>
+                <p>User</p>
+            </div>
         </div>
-        </div>
-        <hr>
-        <ul>
-            <li>
-                <a href="dashuser.php">
-                    <img src="dashboard.png" alt="dashboard" class="sideimg">
-                    <span class="nav-item">Dashboard</span>
-                </a>
-                <span class="tooltip">Dashboard</span>
-            </li>
-            <li>
+    </div>
+    <hr>
+    <ul>
+        <li>
+            <a href="dashuser.php">
+                <img src="dashboard.png" alt="dashboard" class="sideimg">
+                <span class="nav-item">Dashboard</span>
+            </a>
+            <span class="tooltip">Dashboard</span>
+        </li>
+        <li>
             <a href="usercomplaint.php">
                 <img src="complaint.png" alt="complaints" class="sideimg">
                 <span class="nav-item">Complaints</span>
             </a>
             <span class="tooltip">Complaints</span>
         </li>
-            <li>
-                <a href="payment.php">
-                    <img src="bill.png" alt="billing" class="sideimg">
-                    <span class="nav-item">Payment</span>
-                </a>
-                <span class="tooltip">Payment</span>
-            </li>
-            <li>
-                <a href="amenity_booking.php">
-                    <img src="schedule.png" alt="schedule" class="sideimg">
-                    <span class="nav-item">Appointment</span>
-                </a>
-                <span class="tooltip">Appointment</span>
-            </li>
-            <li>
-                <a href="serviceuser.php">
-                    <img src="service.png" alt="service" class="sideimg">
-                    <span class="nav-item">Service </span>
-                </a>
-                <span class="tooltip">Service Requests</span>
-            </li>
-        </ul>
+        <li>
+            <a href="payment.php">
+                <img src="bill.png" alt="billing" class="sideimg">
+                <span class="nav-item">Payment</span>
+            </a>
+            <span class="tooltip">Payment</span>
+        </li>
+        <li>
+            <a href="amenity_booking.php">
+                <img src="schedule.png" alt="schedule" class="sideimg">
+                <span class="nav-item">Appointment</span>
+            </a>
+            <span class="tooltip">Appointment</span>
+        </li>
+        <li>
+            <a href="serviceuser.php">
+                <img src="service.png" alt="service" class="sideimg">
+                <span class="nav-item">Service</span>
+            </a>
+            <span class="tooltip">Service Requests</span>
+        </li>
+    </ul>
 </div>
-</div>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // FOR SIDEBAR
-    let btn = document.querySelector('#btn');
-    let sidebar = document.querySelector('.sidebar');
-    let hr = document.querySelector('.sidebar hr');
-    let logoImg = document.getElementById('logo-img');
-    let navItems = document.querySelectorAll('.sidebar .nav-item');
-
-    // Function to toggle the disable-hover class
-    function updateHoverState() {
-        navItems.forEach(item => {
-            if (!sidebar.classList.contains('active')) {
-                item.classList.add('disable-hover');
-            } else {
-                item.classList.remove('disable-hover');
-            }
-        });
-    }
-
-    // Initial state setup
-    updateHoverState();
-
-    btn.onclick = function () {
-        sidebar.classList.toggle('active');
-        hr.classList.toggle('active'); 
-        logoImg.classList.toggle('hide-logo'); // PAG TOGGLE MAWAWALA LOGO
-        updateHoverState(); // Update hover state on toggle
-    }
-
-    // FOR PROFILE MENU TOGGLE
-    function toggleProfileMenu() {
-        const profileMenu = document.getElementById("profileMenu");
-        const notificationsMenu = document.getElementById("notificationsMenu");
-
-        profileMenu.classList.toggle("open-menu");
-
-        // FOR CLOSING NOTIF
-        if (notificationsMenu.classList.contains("open-menu")) {
-            notificationsMenu.classList.remove("open-menu");
-        }
-    }
-
-    // FOR Notifications menu toggle 
-    function toggleNotificationsMenu() {
-        const notificationsMenu = document.getElementById("notificationsMenu");
-        const profileMenu = document.getElementById("profileMenu");
-
-        notificationsMenu.classList.toggle("open-menu");
-
-        // FOR CLOSING MENU
-        if (profileMenu.classList.contains("open-menu")) {
-            profileMenu.classList.remove("open-menu");
-        }
-    }
-
-    // Click event listener for user-pic to toggle profile menu
-    document.querySelector('.user-pic').addEventListener('click', function(event) {
-        toggleProfileMenu();
-        event.stopPropagation(); // Prevent the click from bubbling to document
-    });
-
-    // Click event listener for Notifications to toggle notifications menu
-    document.querySelector('nav li:nth-child(2) a').addEventListener('click', function(event) {
-        toggleNotificationsMenu();
-        event.preventDefault(); // Prevent default link behavior
-        event.stopPropagation(); // Prevent the click from bubbling to document
-    });
-
-    // Close menus if user clicks outside of them
-    document.addEventListener('click', function(event) {
-        const profileMenu = document.getElementById("profileMenu");
-        const notificationsMenu = document.getElementById("notificationsMenu");
-
-        if (!profileMenu.contains(event.target) && profileMenu.classList.contains("open-menu")) {
-            profileMenu.classList.remove("open-menu");
-        }
-
-        if (!notificationsMenu.contains(event.target) && notificationsMenu.classList.contains("open-menu")) {
-            notificationsMenu.classList.remove("open-menu");
-        }
-    });
-});
-
-</script>
+<script src="usersidebar.js"></script>
 

@@ -11,6 +11,7 @@ $name = "";
 $email = "";
 $phone = "";
 $address = "";
+$password = ""; // Keep track of password field
 
 $errorMessage = "";
 $successMessage = "";
@@ -20,8 +21,11 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
     // Retrieve the homeowner's data from the database
-    $sql = "SELECT * FROM homeowners WHERE id = '$id'";
-    $result = $conn->query($sql);
+    $sql = "SELECT * FROM homeowners WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
@@ -54,15 +58,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute();
         $check_result = $stmt->get_result();
         if ($check_result->num_rows > 0) {
-            throw new Exception("Email is already taken");
+            throw new Exception("Email is already taken.");
         }
 
-        // Update password only if provided
-        $password_sql = !empty($password) ? ", password = '" . password_hash($password, PASSWORD_DEFAULT) . "'" : "";
+        // Check if password was provided
+        if (!empty($password)) {
+            // Hash the new password
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            
+            // Update with new password
+            $sql = "UPDATE homeowners SET name = ?, email = ?, phone_number = ?, address = ?, password = ? WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sssssi", $name, $email, $phone, $address, $hashed_password, $id);
+        } else {
+            // Update without changing the password
+            $sql = "UPDATE homeowners SET name = ?, email = ?, phone_number = ?, address = ? WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ssssi", $name, $email, $phone, $address, $id);
+        }
 
-        $sql = "UPDATE homeowners SET name = ?, email = ?, phone_number = ?, address = ?" . $password_sql . " WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssssi", $name, $email, $phone, $address, $id);
         if ($stmt->execute()) {
             $successMessage = "Homeowner updated successfully!";
         } else {
@@ -73,9 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

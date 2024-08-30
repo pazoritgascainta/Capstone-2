@@ -121,6 +121,8 @@ $total_pages_accepted = ceil($total_accepted_appointments / $records_per_page);
     <meta charset="UTF-8">
     <title>Appointments Management</title>
     <link rel="stylesheet" href="admin_approval.css">
+    <link rel="stylesheet" href="accepted_appointments.css">
+    
 </head>
 <body>
 <?php include 'sidebar.php'; ?>

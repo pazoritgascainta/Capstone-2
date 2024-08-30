@@ -13,11 +13,15 @@
 
         <?php include 'usersidebar.php'; ?>
         <div class="main-content">
-            <h1></h1>
 <div>
   <!-- dito ilagay ang contents -->
             <div class="container">   
               <h1>USER SETTINGS</h1>
+              <a href="useredit.php">Edit User Profile</a>
+              <br>
+              <a href="change_pass.php">Change Password</a>
+
+
          
 </div>
 </div>

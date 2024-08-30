@@ -22,13 +22,6 @@ nav {
     
 }
 
-.home-link {
-    /* Additional styling for Home link if needed */
-}
-
-.notifications-link {
-    /* Additional styling for Notifications link if needed */
-}
 nav ul {
     display: flex; /* Align items horizontally */
     list-style: none;

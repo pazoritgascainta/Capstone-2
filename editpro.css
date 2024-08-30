@@ -1,12 +1,141 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+/* General Container Styling */
+.container {
+    background-color: #ffffff;  
+    border: 1px solid #ccc; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    padding: 20px; /* Increased padding for a more spacious layout */
+    margin-top: 20px; /* Increased margin for better separation */
+    border-radius: 8px; /* Rounded corners for a softer look */
 }
 
-.container {
-    width: 90%;
-    margin: 0 auto;
-    padding: 20px;
-    margin-left: 70px;
+/* Main Content Styling */
+.main-content {
+    margin: 0 auto; /* Center the content horizontally */
+    margin-left: 380px;
+    max-width: 50%; /* Adjusted width for better alignment */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        width: 90%; /* Increase width for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        width: 100%; /* Full width for very small screens */
+    }
+}
+/* Editable fields styling */
+.editable {
+    display: flex; /* Show the input fields */
+    width: 100%; /* Ensure input fields take up full width */
+}
+
+/* Edit and Save Button Styling */
+.edit-button, .save-button {
+    cursor: pointer;
+    color: #007bff; /* Blue color for buttons */
+    text-decoration: none; /* Remove underline */
+    font-size: 14px; /* Slightly larger text */
+    margin-left: 10px; /* Space between text and button */
+    border: 1px solid transparent; /* Border to adjust button layout */
+    padding: 5px 10px; /* Padding inside buttons */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transitions */
+}
+
+/* Button Hover Effects */
+.edit-button:hover, .save-button:hover {
+    background-color: #f0f0f0; /* Light grey background on hover */
+    color: #0056b3; /* Darker blue color on hover */
+}
+
+/* Form Section Styling */
+form div {
+    margin-bottom: 15px; /* Space between form sections */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align items to the start */
+    position: relative;
+    padding: 10px; /* Padding inside form sections */
+    border: 1px solid #ddd; /* Border around sections */
+    border-radius: 4px; /* Rounded corners for form sections */
+    background-color: #fafafa; /* Light background color */
+}
+
+/* Form Label Styling */
+form label {
+    flex: 1; /* Labels take up space before inputs */
+    font-weight: bold;
+    margin-right: 15px; /* Space between label and input */
+    color: #333; /* Dark grey color for labels */
+}
+
+/* Form Input Styling */
+form input[type="text"], 
+form input[type="email"] {
+    flex: 2; /* Inputs take up more space */
+    padding: 10px; /* Padding inside input fields */
+    border: 1px solid #ccc; /* Border around input fields */
+    border-radius: 4px; /* Slightly rounded corners */
+    font-size: 16px; /* Larger font size */
+    transition: border-color 0.3s; /* Smooth border color transition */
+}
+
+/* Input Focus Styling */
+form input[type="text"]:focus, 
+form input[type="email"]:focus {
+    border-color: #007bff; /* Blue border on focus */
+    outline: none; /* Remove default focus outline */
+}
+
+/* Display Span Styling */
+#name_display,
+#email_display,
+#phone_number_display,
+#address_display {
+    display: inline-block; /* Inline display for span elements */
+    margin-right: 10px; /* Space to the right of the span */
+    font-size: 16px; /* Font size for readability */
+    color: #333; /* Dark grey color for text */
+}
+
+/* Profile Image Styling */
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; /* Circular shape */
+    border: 2px solid #ddd; /* Light border */
+}
+
+/* Profile Image Display Styling */
+#profile_image_displays {
+    margin-right: 200px;
+    display: flex;
+    align-items: center; /* Vertically center if needed */
+    justify-content: flex-start; /* Align items to the left */
+    width: 100px; /* Ensure width and height are equal */
+    height: 100px;
+    object-fit: cover; /* Cover the area without distortion */
+    border-radius: 50%; /* Circular shape */
+    border: 2px solid #ddd; /* Light border */
+}
+
+/* Submit Button Styling */
+input[type="submit"] {
+    background-color: #007bff; /* Blue color */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 12px 24px; /* Padding for better click area */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Larger font size */
+    margin-top: 20px; /* Space above the submit button */
+    transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3; /* Darker blue on hover */
 }
