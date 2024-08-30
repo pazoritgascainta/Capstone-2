@@ -7,15 +7,17 @@
 
 <title>About Us</title>
 <link rel="stylesheet" href="ContactUSStyle.css">
+<link rel="stylesheet" href="HomepageLogo.css">
+<link rel="stylesheet" href="HomepageHeader.css">
+
 </head>
 <body>
 
-<header>
-  <nav>
-    <ul>
-        <li><a href="Homepage.php">Home</a></li>
-    </ul>
-  </nav>
+    <section class = "HomeLogo">
+    <div class="logoo">
+    <a href="Homepage.php"><img src="monique logo.png" alt="Monique Logo"></a>
+    </div>
+    </section>
 </header>
 <!-- Contact Us Section -->
 <div class="container">
@@ -62,7 +64,5 @@
 		  </div>
 	</form>
 	</div>
-
-<!-- Contact Us Section -->
 </body>
 </html>

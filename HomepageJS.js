@@ -27,7 +27,7 @@ function carousel() {
     slideIndex++;
     if (slideIndex > x.length) {slideIndex = 1}    
     x[slideIndex-1].checked = true;
-    setTimeout(carousel, 10000); // Change slide every 5 seconds
+    setTimeout(carousel, 7000); // Change slide every 7 seconds
 }
 
 //Lightmode/Darkmode Functions
@@ -58,49 +58,35 @@ document.getElementById('exitBtn').addEventListener('click', function() {
 });
 //NewsCarousel
 document.addEventListener('DOMContentLoaded', function () {
-    const carousel = document.querySelector('.carousel-inner');
+    const carouselInner = document.querySelector('.carousel-inner');
     const items = document.querySelectorAll('.carousel-item');
     const prevButton = document.querySelector('.carousel-control-prev');
     const nextButton = document.querySelector('.carousel-control-next');
     let currentIndex = 0;
-    const intervalTime = 3000; // Time in milliseconds between automatic transitions
-    let interval;
+    const totalItems = items.length;
 
     function updateCarousel() {
-        const width = items[0].clientWidth;
-        carousel.style.transform = `translateX(${-width * currentIndex}px)`;
-    }
-
-    function startAutoSlide() {
-        interval = setInterval(() => {
-            nextSlide();
-        }, intervalTime);
-    }
-
-    function resetAutoSlide() {
-        clearInterval(interval);
-        startAutoSlide();
+        const offset = -currentIndex * 100;
+        carouselInner.style.transform = `translateX(${offset}%)`;
     }
 
     function nextSlide() {
-        currentIndex = (currentIndex < items.length - 1) ? currentIndex + 1 : 0;
+        currentIndex = (currentIndex + 1) % totalItems;
         updateCarousel();
     }
 
-    prevButton.addEventListener('click', function () {
-        currentIndex = (currentIndex > 0) ? currentIndex - 1 : items.length - 1;
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + totalItems) % totalItems;
         updateCarousel();
-        resetAutoSlide();
-    });
+    }
 
-    nextButton.addEventListener('click', function () {
-        nextSlide();
-        resetAutoSlide();
-    });
+    nextButton.addEventListener('click', nextSlide);
+    prevButton.addEventListener('click', prevSlide);
 
-    window.addEventListener('resize', updateCarousel);
-    updateCarousel();
-    startAutoSlide();
+    setInterval(nextSlide, 5000); // Auto slide every 5 seconds
 });
+
+
+
 
 

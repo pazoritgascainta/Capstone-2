@@ -1,0 +1,209 @@
+/* CSS for Announcement Section */
+#announcements {
+    background-color: #f9f9f9;
+    padding: 20px;
+    margin: 50px 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    height: fit-content;
+    width: 50%;
+}
+
+#announcements h2 {
+    color: #000000;
+    margin-bottom: 20px;
+}
+
+#announcements ul {
+    height: auto;
+    list-style-type: none;
+    padding: 0;
+}
+
+#announcements li {
+    width: 80%;
+    height: 70px;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+#announcements li:last-child {
+    border-bottom: none;
+}
+
+#announcements h3 {
+    color: #444;
+    margin: 0 0 5px;
+}
+
+#announcements p {
+    margin: 0;
+    color: #666;
+}
+
+/* General Announcement Section Styles */
+.announcement-container {
+    display: flex;
+    justify-content: center; /* Centering the announcement-main */
+    padding: 30px;
+    background-image: url('Announcement.jpg');
+    background-size: cover; /* Ensures background image covers the entire container */
+    background-position: center;
+}
+
+.announcement-main {
+    width: 100%;
+    max-width: 800px; /* Set a max width for better responsiveness */
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Ensures positioning of controls relative to this container */
+}
+
+.carousel {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /* Set max width for responsiveness */
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+    min-width: 100%;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+
+}
+
+.carousel-control-prev, .carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10; /* Ensure controls are above other elements */
+    font-size: 1em; /* Larger font size for controls */
+}
+
+.carousel-control-prev {
+    left: 10px; /* Adjust positioning as needed */
+}
+
+.carousel-control-next {
+    right: 10px; /* Adjust positioning as needed */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    font-size: 2em; /* Ensure icons are visible */
+}
+
+
+.announcement-news {
+    width: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
+    opacity: .8;;
+    margin-right: 5ch;
+}
+
+.announcement-news h3 {
+    font-size: 18px;
+    margin-top: 0;
+}
+
+.announcement-news ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.announcement-news li {
+    margin: 10px 0;
+    position: relative;
+    transition: background-color 0.3s;
+}
+
+.announcement-news li:hover {
+    background-color: #ffdab9;
+}
+
+.announcement-news li span {
+    display: block;
+    font-size: 12px;
+    color: #888;
+}
+
+
+@media (max-width: 768px) {
+    #announcements {
+        width: 90%;
+        padding: 15px;
+        margin: 20px 0;
+    }
+
+    #announcements h2 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+    }
+
+    #announcements li {
+        width: 100%;
+        height: auto;
+        padding: 10px 0;
+    }
+
+    #announcements h3 {
+        font-size: 1.2em;
+    }
+
+    #announcements p {
+        font-size: 1em;
+    }
+        .announcement-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .announcement-main, .announcement-news {
+        max-width: 100%;
+        width: 90%;
+        margin-bottom: 20px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .carousel {
+        margin-bottom: 20px;
+    }
+
+    .announcement-news h3 {
+        font-size: 1.2em;
+    }
+
+    .announcement-news li {
+        margin: 5px 0;
+    }
+
+    .announcement-news li span {
+        font-size: 10px;
+    }
+}

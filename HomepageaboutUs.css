@@ -1,0 +1,129 @@
+/* CSS for About Us Section */
+.footer-container {
+    display: flex;
+    justify-content: space-around;
+    background-color: #ffdab9;
+    color: rgb(0, 0, 0);
+    padding: 20px;
+}
+/*About us CSS Section*/
+
+#aboutUs, .location-map {
+    flex: 1;
+    max-width: 45%;
+}
+.contact-info {
+    margin-top: 20px;
+}
+
+.contact-info h2, .location-map h2 {
+    color: #ffcc00;
+}
+
+.contact-info ul, .social-links {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-info li {
+    margin-bottom: 10px;
+}
+
+.social-links li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.social-links a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.social-links a:hover {
+    color: #ffcc00;
+}
+#aboutUs {
+    background-color: #ffdab9;
+    padding: 20px;
+}
+#aboutUs img {
+    display: block; 
+    margin: 0 auto; 
+}
+
+#aboutUs h2, .location-map h2 {
+    color: #000000; /* Yellow color for headings */
+    text-align: center;
+}
+
+#aboutUs p {
+    color: #666;
+    line-height: 1.6;
+    text-align: center;
+}
+
+
+
+.more-link {
+    display: block;
+    text-align: right;
+    color: #3498db;
+    text-decoration: none;
+}
+
+.more-link:hover {
+    text-decoration: underline;
+}
+
+/* Media Queries for Mobile Devices */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+    #aboutUs, .location-map {
+        max-width: 100%;
+        width: 90%;
+        margin-bottom: 20px;
+    }
+
+    .contact-info {
+        margin-top: 10px;
+    }
+
+    .contact-info h2, .location-map h2 {
+        font-size: 1.5em;
+    }
+
+    .contact-info li, .social-links li {
+        margin-bottom: 5px;
+    }
+
+    .social-links li {
+        margin-right: 5px;
+    }
+
+    .social-links a {
+        font-size: 18px;
+    }
+
+    #aboutUs {
+        padding: 15px;
+    }
+
+    #aboutUs h2, .location-map h2 {
+        font-size: 1.5em;
+    }
+
+    #aboutUs p {
+        font-size: 1em;
+        line-height: 1.4;
+    }
+
+    .more-link {
+        font-size: 0.9em;
+    }
+}
