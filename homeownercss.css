@@ -23,7 +23,6 @@ margin-left: 80px;
 h2 {
     margin-top: 0;
 }
-
 /* Table styles */
 .table {
     width: 100%;
@@ -34,11 +33,12 @@ h2 {
 .table td {
     padding: 20px;
     border-bottom: 3px solid #ddd;
+    text-align: center; /* Center-align text horizontally */
+    vertical-align: middle; /* Center-align text vertically */
 }
 
 .table th {
     background-color: #f2f2f2;
-    text-align: center;
 }
 
 .table tbody tr:hover {
@@ -69,4 +69,41 @@ h2 {
 }
 .button-margin {
     margin-right: 5px; /* Adjust this value to add more or less space */
+}
+
+/* Pagination Styling */
+.page-link {
+    display: none;
+}
+.page-link.active {
+    background-color: #007BFF; /* Primary color for active link */
+    color: white; /* White text color */
+    border: 1px solid #007BFF; /* Match border color with active background */
+}
+#pagination {
+    margin-top: 20px;
+    text-align: center; /* Center align pagination controls */
+}
+#pagination a {
+    display: inline-block; /* Ensure pagination links are inline */
+    margin: 0 8px; /* Space between pagination links */
+    text-decoration: none; /* Remove underline from links */
+    color: #007BFF; /* Link color */
+    padding: 8px 12px; /* Padding inside pagination links */
+    border: 1px solid #ddd; /* Light gray border */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+}
+#pagination a.active {
+    background-color: #007bff;
+    color: white;
+}
+#pagination input {
+    text-align: center;
+    width: 50px;
+    padding: 8px;
+    color: #007BFF; /* Link color */
+}
+#pagination a:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
 }

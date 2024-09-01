@@ -1,6 +1,10 @@
 <?php
 // Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
+// Database connection variables
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -14,34 +18,46 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Ensure homeowner_id is set in session
-if (isset($_SESSION['homeowner_id'])) {
-    $homeowner_id = $_SESSION['homeowner_id'];
-
-    // Fetch the homeowner's current information
-    $sql = "SELECT * FROM homeowners WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $homeowner_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $homeowner = $result->fetch_assoc();
-    } else {
-        $homeowner = null; // Handle case where homeowner is not found
-    }
-
-    $stmt->close();
-} else {
-    $homeowner = null; // Handle case where session ID is not set
+// Ensure admin_id is set in the session
+if (!isset($_SESSION['admin_id'])) {
+    // Optionally, you may want to redirect to a login page
+    echo "Admin ID not found in session.";
+    return;  // Avoid using exit to allow the rest of the page to render
 }
 
-// Default profile image
-$default_image = 'profile.png';
-$profile_image = $homeowner['profile_image'] ?? $default_image;
+$admin_id = $_SESSION['admin_id'];
 
-$conn->close();
+// Fetch the admin's current information
+$sql = "SELECT * FROM admin WHERE id = ?";
+$stmt = $conn->prepare($sql);
+
+if ($stmt === false) {
+    error_log("Failed to prepare SQL statement: " . $conn->error);
+    return;  // Avoid using exit here to allow the rest of the page to render
+}
+
+$stmt->bind_param("i", $admin_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Fetch the admin data if it exists
+if ($result->num_rows > 0) {
+    $admin = $result->fetch_assoc();
+} else {
+    error_log("Admin not found for ID " . $admin_id);
+    return;  // Avoid using exit here to allow the rest of the page to render
+}
+
+$stmt->close();
+
+// Default profile image handling
+$default_image = 'profile.png';
+$profile_image = isset($admin['profile_image']) && !empty($admin['profile_image']) ? $admin['profile_image'] : $default_image;
+
+// Do not close the connection here if it is needed in another script
+
 ?>
+
 
 <!-- Your HTML and rest of the code here -->
 
@@ -109,7 +125,7 @@ $conn->close();
     <div class="user">
         <img src="<?php echo htmlspecialchars($admin['profile_image'] ?? 'profile.png'); ?>" alt="profile picture" class="profile-img">
         <div>
-            <p class="bold"><?php echo htmlspecialchars($admin['username'] ?? 'Admin Name'); ?></p> <!-- Dynamic admin name -->
+            <p class="user-names"><?php echo htmlspecialchars($admin['username'] ?? 'Admin Name'); ?></p> <!-- Dynamic admin name -->
             <p>Admin</p>
         </div>
     </div>

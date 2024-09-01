@@ -1,10 +1,15 @@
 <?php
 session_start();
 
-// Check if admin is logged in
-if (!isset($_SESSION['admin_logged_in'])) {
-    header("Location: admin_login.php?error=not_logged_in");
-    exit;
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "homeowner";
+
+$conn = new mysqli($servername, $username, $password, $database);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 ?>
 <!DOCTYPE html>

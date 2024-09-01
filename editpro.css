@@ -8,7 +8,6 @@
     border-radius: 8px; /* Rounded corners for a softer look */
 }
 
-<<<<<<< HEAD
 /* Main Content Styling */
 .main-content {
     margin: 0 auto; /* Center the content horizontally */
@@ -139,60 +138,4 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
     background-color: #0056b3; /* Darker blue on hover */
-=======
-.container {
-    width: 90%;
-    margin: 0 auto;
-    padding: 20px;
-    margin-left: 70px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.breadcrumb {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 20px;
-}
-.breadcrumb a {
-    text-decoration: none;
-    color: #1a73e8;
-}
-.breadcrumb a:hover {
-    text-decoration: underline;
-}
-.title {
-    font-size: 24px;
-    margin-bottom: 30px;
-}
-.info-section {
-    margin-bottom: 20px;
-}
-.info-section h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #333;
-}
-.info-section .info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-top: 1px solid #ddd;
-}
-.info-section .info:first-child {
-    border-top: none;
-}
-.info-section .info label {
-    font-weight: bold;
-    color: #333;
-}
-.info-section .info .value {
-    color: #666;
-}
-.info-section .info .edit {
-    color: #1a73e8;
-    text-decoration: none;
-}
-.info-section .info .edit:hover {
-    text-decoration: underline;
->>>>>>> origin/main
 }

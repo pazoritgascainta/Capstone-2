@@ -62,73 +62,30 @@ $conn->close();
 <div class="main-content">
     <h1>Edit Profile</h1>
     <div class="container">
+
         <form id="profileForm" action="update_admin_profile.php" method="post" enctype="multipart/form-data">
-        <div>
-    <label for="profile_image_input">Profile Image:</label>
-    <img src="<?php echo htmlspecialchars($admin['profile_image'] ?? 'profile.png'); ?>" alt="Profile Image" id="profile_image_displays">
-    <input type="file" id="profile_image_input" name="profile_image" class="editable" style="display:none;">
-    <span id="profile_image_input_edit" class="edit-button" onclick="enableEdit('profile_image_input', 'profile_image_input_save')">edit</span>
-    <span id="profile_image_input_save" class="save-button" onclick="saveChanges('profile_image_input')">save</span>
-</div><br>
+                <div>
+            <label for="profile_image_input">Profile Image:</label>
+            <img src="<?php echo htmlspecialchars($admin['profile_image'] ?? 'profile.png'); ?>" alt="Profile Image" id="profile_image_displays">
+            <input type="file" id="profile_image_input" name="profile_image" class="editable" style="display:none;">
+            <span id="profile_image_input_edit" class="edit-button" onclick="enableEdit('profile_image_input', 'profile_image_input_save')">edit</span>
+            <span id="profile_image_input_save" class="save-button" onclick="saveChanges('profile_image_input')">save</span>
+              </div><br>
 
             <div>
-    <label for="id">ID:</label>
-    <span id="id" class="editable"><?php echo htmlspecialchars($admin['id']); ?></span>
-</div><br>
+                <label for="id">ID:</label>
+                <span id="id" class="editable"><?php echo htmlspecialchars($admin['id']); ?></span>
+            </div><br>
 
-<div>
-<<<<<<< HEAD
+            <div>
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($admin['username']); ?>" class="editable">
             <span id="username_save" class="save-button" onclick="saveChanges('username')">save</span>
-        </div><br>
+            </div><br>
 
             <input type="submit" value="Update Profile">
         </form>
     </div>
-=======
-  <!-- dito ilagay ang contents -->
-            <div class="container">   
-              <h1>Admin Information</h1>
-              <div class="container">
-        <div class="breadcrumb">
-           <span>Admin info</span>
-        </div>
-        <div class="info-section">
-            <div class="info">
-                <label>UserName</label>
-                <div class="value">Admin 01</div>
-                <a href="#" class="edit">Edit</a>
-            </div>
-        </div>
-        <div class="info-section">
-            <div class="info">
-                <label>Email address</label>
-                <div class="value">SMVHOAdmin01@gmail.com</div>
-                <a href="#" class="edit">Edit</a>
-            </div>
-        </div>
-        <div class="info-section">
-            <div class="info">
-                <label>Phone number</label>
-                <div class="value">Add a number</div>
-                <a href="#" class="edit">Add</a>
-            </div>
-        </div>
-        <div class="info-section">
-            <div class="info">
-                <label>Address</label>
-                <div class="value">Not provided</div>
-                <a href="#" class="edit">Edit</a>
-            </div>
-        </div>
-    </div>
-         
-</div>
-
-</div>
-
->>>>>>> origin/main
 </div>
 
 <script src="editpro.js"></script>
