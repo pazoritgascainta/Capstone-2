@@ -12,3 +12,151 @@
 margin-left: 80px;
   max-width: 90%; /* Optional: Set a maximum width to prevent it from becoming too wide */
 }
+.dashboard {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+.payment-history {
+  grid-column: 1 / 2;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.payment-history h2 {
+  margin-bottom: 10px;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 10px;
+}
+
+.view-toggle button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.payment-history ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.payment-history li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.payment-history img {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.payment-info p {
+  margin: 5px 0;
+}
+
+.status {
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.status.pending {
+  background-color: #7c63ef;
+  color: white;
+}
+
+.status.completed {
+  background-color: #6a2c5f;
+  color: white;
+}
+
+.status.failed {
+  background-color: #46b4a4;
+  color: white;
+}
+
+.payment-summary {
+  grid-column: 2 / 3;
+  background-color: #e7d8fd;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.payment-summary h2 {
+  font-size: 24px;
+  color: #513ccf;
+}
+
+.payment-summary button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.pay-now {
+  background-color: #51e5a1;
+  color: black;
+}
+
+.transfer {
+  background-color: #513ccf;
+  color: white;
+}
+
+.appointments,
+.services {
+  grid-column: 2 / 3;
+  margin-top: 20px;
+}
+
+.appointments button,
+.services button {
+  width: 100%;
+  padding: 15px;
+  background-color: #ccc;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.calendar {
+  grid-column: 1 / 2;
+  background-color: white;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.calendar table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar td {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
