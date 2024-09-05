@@ -1,3 +1,13 @@
+<?php
+session_name('user_session'); // Set a unique session name for admins
+session_start();
+
+// Check if admin is logged in
+if (!isset($_SESSION['homeowner_id'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
