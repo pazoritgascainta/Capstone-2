@@ -1,8 +1,9 @@
 <?php
+session_name('user_session'); 
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
 
     $servername = "localhost";
@@ -17,19 +18,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "SELECT id, name, password FROM homeowners WHERE email = ?";
+    $sql = "SELECT id, name, password, status FROM homeowners WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
-    $stmt->bind_result($id, $name, $hashed_password);
+    $stmt->bind_result($id, $name, $hashed_password, $status);
 
     if ($stmt->num_rows > 0) {
         $stmt->fetch();
-        if (password_verify($password, $hashed_password)) {
+        if ($status === 'archived') {
+            $error = "Your account has been archived and cannot be accessed.";
+        } elseif (password_verify($password, $hashed_password)) {
             $_SESSION['homeowner_id'] = $id;
             $_SESSION['homeowner_name'] = $name;
-            header("location: dashuser.php");
+            header("Location: dashuser.php");
             exit;
         } else {
             $error = "Invalid email or password.";
@@ -43,9 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Display logout message if redirected from logout
-if (isset($_GET['message']) && $_GET['message'] == 'loggedout') {
-    $logout_message = "You have been logged out successfully.";
-}
+$logout_message = isset($_GET['message']) && $_GET['message'] == 'loggedout' ? "You have been logged out successfully." : '';
 ?>
 
 <!DOCTYPE html>
@@ -59,25 +60,23 @@ if (isset($_GET['message']) && $_GET['message'] == 'loggedout') {
 <body>
     <div class="container my-5">
         <h2>Login</h2>
-        <?php
-        if (!empty($error)) {
-            echo "<div style='color: red;'>$error</div>";
-        }
-        if (!empty($logout_message)) {
-            echo "<div style='color: green;'>$logout_message</div>";
-        }
-        ?>
+        <?php if (!empty($error)): ?>
+            <div style="color: red;"><?= htmlspecialchars($error); ?></div>
+        <?php endif; ?>
+        <?php if (!empty($logout_message)): ?>
+            <div style="color: green;"><?= htmlspecialchars($logout_message); ?></div>
+        <?php endif; ?>
         <form method="post">
             <div class="row">
-                <label class="col-form-label">Email</label>
+                <label class="col-form-label" for="email">Email</label>
                 <div class="col">
-                    <input type="text" class="form-control" name="email">
+                    <input type="email" id="email" class="form-control" name="email" required>
                 </div>
             </div>
             <div class="row">
-                <label class="col-form-label">Password</label>
+                <label class="col-form-label" for="password">Password</label>
                 <div class="col">
-                    <input type="password" class="form-control" name="password">
+                    <input type="password" id="password" class="form-control" name="password" required>
                 </div>
             </div>
             <div class="row mt-3">

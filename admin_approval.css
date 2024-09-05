@@ -115,23 +115,65 @@ button:hover {
     text-decoration: none; /* Remove underline from links */
     color: #007BFF; /* Link color */
     padding: 8px 12px; /* Padding inside pagination links */
-    border: 1px solid #ddd; /* Light gray border */
+    border: 1px solid #007BFF; /* Blue border to match theme */
     border-radius: 4px; /* Rounded corners */
     transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
 }
 #pagination a.active {
-    background-color: #007bff;
-    color: white;
+    background-color: #007BFF; /* Active background color */
+    color: white; /* White text color */
 }
+#pagination a:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+    color: #007BFF; /* Blue text color */
+}
+
 #pagination input {
     text-align: center;
     width: 50px;
     padding: 8px;
-    color: #007BFF; /* Link color */
+    color: #007BFF; /* Blue text color */
+    border: 1px solid #007BFF; /* Blue border */
+    border-radius: 4px; /* Rounded corners */
+    margin: 0 8px; /* Space around the input */
 }
-#pagination a:hover {
-    background-color: #f0f0f0; /* Light gray background on hover */
+
+/* Button styling */
+#pagination button {
+    background-color: #007BFF; /* Blue background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    padding: 8px 12px; /* Add padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Display inline */
+    font-size: 16px; /* Font size */
+    margin: 4px 2px; /* Add margin */
+    cursor: pointer; /* Add pointer cursor on hover */
+    border-radius: 4px; /* Rounded corners */
+    transition-duration: 0.4s; /* Add transition effect */
 }
+
+#pagination button:hover {
+    background-color: white; /* White background on hover */
+    color: #007BFF; /* Blue text on hover */
+    border: 1px solid #007BFF; /* Blue border on hover */
+}
+
+#pagination button:disabled {
+    background-color: #ddd; /* Grey background for disabled buttons */
+    color: #999; /* Grey text for disabled buttons */
+    cursor: not-allowed; /* No pointer cursor for disabled buttons */
+}
+
+#pagination input[type="number"] {
+    border: 1px solid #007BFF; /* Blue border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 5px;
+    font-size: 14px;
+    width: 60px;
+}
+
 
 .centered-actions {
     text-align: center; /* Center-align text and inline elements */

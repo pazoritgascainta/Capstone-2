@@ -1,7 +1,3 @@
-/* Container for the select element */
-div {
-    margin-bottom: 20px; /* Space below the container */
-}
 
 /* Label styling */
 label[for="amenity"] {

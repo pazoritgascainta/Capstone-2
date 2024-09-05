@@ -1,4 +1,5 @@
 <?php
+session_name('admin_session'); // Set a unique session name for admins
 session_start();
 
 // Database connection
@@ -223,8 +224,9 @@ $conn->close();
 <body>
 <?php include 'sidebar.php'; ?>
     <div class="main-content">
+    <h1>Manage Timeslots</h1>
         <div class="container">
-            <h1>Manage Timeslots</h1>
+     
             <a href="admin_approval.php" class="btn-admin_approval">Back to Admin Approval</a>
 
             <!-- Buttons for choosing form type -->

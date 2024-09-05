@@ -1,4 +1,5 @@
 <?php
+session_name('admin_session'); // Set a unique session name for admins
 session_start();
 
 // Database connection
@@ -20,8 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['homeowner_id']) && iss
     $homeowner_id = intval($_POST['homeowner_id']);
     $new_status = $_POST['new_status'];
 
-    // Update the homeowner status
-    if (in_array($new_status, ['active', 'inactive'])) {
+    // Update the homeowner status to archived
+    if (in_array($new_status, ['active', 'inactive', 'archived'])) {
         $sql_update_status = "UPDATE homeowners SET status = ? WHERE id = ?";
         $stmt_update = $conn->prepare($sql_update_status);
         if ($stmt_update) {
@@ -47,23 +48,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['homeowner_id']) && iss
 // Pagination settings
 $records_per_page = 10;
 $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$current_page = max($current_page, 1); // Ensure the page number is at least 1
+
+// Calculate offset
 $offset = ($current_page - 1) * $records_per_page;
 
-// Fetch active homeowners with pagination
+// Handle search query
+$search_query = isset($_GET['search']) ? $_GET['search'] : '';
+$search_condition = !empty($search_query) ? " AND (name LIKE ? OR email LIKE ?)" : '';
+
+// Fetch active homeowners with pagination and search
 $sql_homeowners = "
     SELECT id, name, email, phone_number, address, created_at, status 
     FROM homeowners 
+    WHERE status != 'archived'
+    $search_condition
     LIMIT $records_per_page OFFSET $offset
 ";
-$result_homeowners = $conn->query($sql_homeowners);
+$stmt_homeowners = $conn->prepare($sql_homeowners);
+if (!empty($search_query)) {
+    $search_term = "%$search_query%";
+    $stmt_homeowners->bind_param("ss", $search_term, $search_term);
+}
+$stmt_homeowners->execute();
+$result_homeowners = $stmt_homeowners->get_result();
 
-// Get total homeowners count
-$sql_total_homeowners = "SELECT COUNT(*) AS total FROM homeowners";
-$result_total_homeowners = $conn->query($sql_total_homeowners);
-$total_homeowners = $result_total_homeowners->fetch_assoc()['total'];
+// Get total homeowners count with search
+$sql_total_homeowners = "SELECT COUNT(*) AS total FROM homeowners WHERE status != 'archived' $search_condition";
+$stmt_total_homeowners = $conn->prepare($sql_total_homeowners);
+if (!empty($search_query)) {
+    $stmt_total_homeowners->bind_param("ss", $search_term, $search_term);
+}
+$stmt_total_homeowners->execute();
+$total_homeowners = $stmt_total_homeowners->get_result()->fetch_assoc()['total'];
 
 // Calculate total pages
 $total_pages = ceil($total_homeowners / $records_per_page);
+
+// Ensure current page is within range
+$current_page = min($current_page, $total_pages); // Ensure page is not greater than total pages
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,14 +101,21 @@ $total_pages = ceil($total_homeowners / $records_per_page);
     <?php include 'sidebar.php'; ?>
     
     <div class="main-content">
+    <h2>List of Homeowners</h2>
+
+<!-- Action Buttons -->
+<a class="btn btn-primary" href="create.php" role="button">New Homeowner</a>
+<a class="btn btn-primary" href="archive.php" role="button">Archived Homeowners</a>
+
+
+
+
         <div class="container">
-            <h2>List of Homeowners</h2>
-
-            <!-- Action Buttons -->
-            <a class="btn btn-primary" href="create.php" role="button">New Homeowner</a>
-            <a class="btn btn-primary" href="archive.php" role="button">Archived Homeowners</a>
-
-            <br><br>
+         <!-- Search Form -->
+        <form method="GET" action="homeowneradmin.php" class="search-form">
+            <input type="text" name="search" placeholder="Search by name or email" value="<?= htmlspecialchars($search_query); ?>">
+            <button type="submit">Search</button>
+        </form>
 
             <!-- Display message if no homeowners are found -->
             <?php if (!empty($_SESSION['message'])): ?>
@@ -119,10 +149,13 @@ $total_pages = ceil($total_homeowners / $records_per_page);
                                 <td><?php echo htmlspecialchars($row['address']); ?></td>
                                 <td><?php echo htmlspecialchars($row['created_at']); ?></td>
                                 <td>
-                                    <!-- Edit and Archive buttons -->
-                                    <a class="btn btn-primary btn-sm" href="edit.php?id=<?php echo $row['id']; ?>">Edit</a>
+                                    <a class="btn btn-primary btn-sm" href="edit.php?id=<?= $row['id']; ?>">Edit</a>
                                     <span class="button-margin"></span>
-                                    <a class="btn btn-primary btn-sm archive-btn" href="archive.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to archive this homeowner?');">Archive</a>
+                                    <form method="POST" action="homeowneradmin.php" style="display:inline;">
+                                        <input type="hidden" name="homeowner_id" value="<?= $row['id']; ?>">
+                                        <input type="hidden" name="new_status" value="archived">
+                                        <button class="btn btn-primary btn-sm archive-btn" type="submit" onclick="return confirm('Are you sure you want to archive this homeowner?');">Archive</button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -138,6 +171,7 @@ $total_pages = ceil($total_homeowners / $records_per_page);
                     // Previous button
                     if ($current_page > 1): ?>
                         <form method="GET" action="homeowneradmin.php" style="display: inline;">
+                            <input type="hidden" name="search" value="<?= htmlspecialchars($search_query); ?>">
                             <input type="hidden" name="page" value="<?= $current_page - 1 ?>">
                             <button type="submit">&lt;</button>
                         </form>
@@ -145,20 +179,22 @@ $total_pages = ceil($total_homeowners / $records_per_page);
 
                     <!-- Page input for user to change the page -->
                     <form method="GET" action="homeowneradmin.php" style="display: inline;">
+                        <input type="hidden" name="search" value="<?= htmlspecialchars($search_query); ?>">
                         <input type="number" name="page" value="<?= $input_page ?>" min="1" max="<?= $total_pages ?>" style="width: 50px;">
                     </form>
 
                     <!-- "of" text and last page link -->
                     <?php if ($total_pages > 1): ?>
                         <span>of</span>
-                        <a href="?page=<?= $total_pages ?>" class="<?= ($current_page == $total_pages) ? 'active' : '' ?>"><?= $total_pages ?></a>
+                        <a href="?search=<?= urlencode($search_query); ?>&page=<?= $total_pages ?>" class="<?= ($current_page == $total_pages) ? 'active' : '' ?>"><?= $total_pages ?></a>
                     <?php endif; ?>
 
                     <!-- Next button -->
                     <?php if ($current_page < $total_pages): ?>
                         <form method="GET" action="homeowneradmin.php" style="display: inline;">
+                            <input type="hidden" name="search" value="<?= htmlspecialchars($search_query); ?>">
                             <input type="hidden" name="page" value="<?= $current_page + 1 ?>">
-                            <button type="submit"></button>
+                            <button type="submit">></button>
                         </form>
                     <?php endif; ?>
                 </div>

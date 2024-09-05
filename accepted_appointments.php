@@ -1,4 +1,5 @@
 <?php
+session_name('admin_session'); // Set a unique session name for admins
 session_start();
 
 // Database connection
@@ -126,10 +127,12 @@ $total_pages_accepted = ceil($total_accepted_appointments / $records_per_page);
 </head>
 <body>
 <?php include 'sidebar.php'; ?>
+
     <div class="main-content">
+    <h1>Accepted Appointments</h1>
         <div class="container">
 
-            <h1>Accepted Appointments</h1>
+      
              <div class="admin_approval">
                 <a href="admin_approval.php" class="btn-admin-approval">Go Back to Admin Approval</a>
             </div>

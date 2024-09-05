@@ -1,32 +1,39 @@
 <?php
+session_name('admin_session'); // Set a unique session name for admins
 session_start();
 
 // Check if admin is logged in
-if (!isset($_SESSION['admin_logged_in'])) {
-    header("Location: admin_login.php?error=not_logged_in");
-    exit;
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "homeowner";
+
+$conn = new mysqli($servername, $username, $password, $database);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Include database connection
-include 'config.php';
-
 // Check if 'id' parameter is present in URL
-if (!isset($_GET['id'])) {
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     // Redirect back to complaints list or handle error
     header("Location: admincomplaint.php?error=missing_id");
     exit;
 }
 
-// Get 'id' parameter from URL
-$complaint_id = $_GET['id'];
+// Get 'id' parameter from URL and sanitize it
+$complaint_id = intval($_GET['id']);
 
-// Query to fetch complaint details with homeowner information
+// Prepare and execute query to fetch complaint details with homeowner information
 $sql = "SELECT c.complaint_id, c.homeowner_id, c.subject, c.description, c.status, c.created_at, c.updated_at,
                h.name as homeowner_name
         FROM complaints c
         JOIN homeowners h ON c.homeowner_id = h.id
-        WHERE c.complaint_id = $complaint_id";
-$result = $conn->query($sql);
+        WHERE c.complaint_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $complaint_id);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if (!$result) {
     // Query failed, show error message or redirect
@@ -44,6 +51,7 @@ if ($result->num_rows == 1) {
 }
 
 // Close database connection
+$stmt->close();
 $conn->close();
 ?>
 <!DOCTYPE html>

@@ -1,4 +1,5 @@
 <?php
+session_name('admin_session'); // Set a unique session name for admins
 session_start();
 
 // Database connection
@@ -134,8 +135,9 @@ $total_pages = ceil($total_appointments / $records_per_page);
 <body>
 <?php include 'sidebar.php'; ?>
     <div class="main-content">
+    <h1>Pending Appointments</h1>
         <div class="container">
-            <h1>Pending Appointments</h1>
+      
             <div class="button-container">
     <div class="manage-timeslots">
         <a href="manage_timeslots.php" class="btn-manage-timeslots">Manage Timeslots</a>

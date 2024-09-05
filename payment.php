@@ -2,24 +2,9 @@
 <html lang="en">
 <head>
     <title>Dashboard</title>
-    <link rel="stylesheet" href="usersidebar.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="">
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .navbar {
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            background-color: #000080; /* Change this to your preferred color */
-        }
-        .card {
-            margin-top: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .card-header {
-            background-color: #007bff;
-            color: white;
-        }
+
     </style>
 </head>
 <body>

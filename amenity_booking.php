@@ -1,4 +1,5 @@
 <?php
+session_name('user_session'); 
 session_start();
 
 // Redirect to login if homeowner is not logged in
@@ -197,8 +198,9 @@ $booked_appointments = $result_booked_appointments->fetch_all(MYSQLI_ASSOC);
 </div>
 
 <div class="main-content">
+<h1>Appointment</h1>
     <div class="container">
-        <h1>Appointment</h1>
+       
     
         <!-- Booking Form -->
         <form method="GET" action="">

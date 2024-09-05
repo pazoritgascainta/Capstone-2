@@ -20,11 +20,10 @@ if ($conn->connect_error) {
 
 // Ensure admin_id is set in the session
 if (!isset($_SESSION['admin_id'])) {
-    // Optionally, you may want to redirect to a login page
-    echo "Admin ID not found in session.";
-    return;  // Avoid using exit to allow the rest of the page to render
+    // Redirect to the admin login page
+    header("Location: admin_login.php");
+    exit;  // Terminate script execution after the redirect
 }
-
 $admin_id = $_SESSION['admin_id'];
 
 // Fetch the admin's current information
@@ -103,7 +102,7 @@ $profile_image = isset($admin['profile_image']) && !empty($admin['profile_image'
                         <p>Help</p>
                         <span>></span>
                     </a>
-                    <a href="Homepage.php" class="sub-menu-link">
+                    <a href="adminlogout.php" class="sub-menu-link">
                         <img src="logawt.png" alt="">
                         <p>Logout</p>
                         <span>></span>

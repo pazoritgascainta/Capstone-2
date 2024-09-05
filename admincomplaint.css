@@ -1,3 +1,4 @@
+/* Global styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -5,12 +6,174 @@ body {
 }
 
 .container {
-    width: 90%;
-    margin: 0 auto;
-    padding: 20px;
-    margin-left: 70px;
+    background-color: #ffffff;  
+    border: 1px solid #ccc; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    padding: 10px; 
+    margin-top: 10px; 
 }
-.action-buttons {
+
+/* Main Content Styling */
+.main-content {
+    margin: 0 auto; /* Center the content horizontally */
+margin-left: 80px;
+    max-width: 90%; /* Optional: Set a maximum width to prevent it from becoming too wide */
+}
+
+h2 {
+    margin-top: 0;
+}
+/* Table styles */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 20px;
+    border-bottom: 3px solid #ddd;
+    text-align: center; /* Center-align text horizontally */
+    vertical-align: middle; /* Center-align text vertically */
+}
+
+.table th {
+    background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Button styles */
+.btn {
     display: inline-block;
-    margin-left: 10px;
+    padding: 8px 16px;
+    margin-bottom: 10px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* Add margin to the right of the "Edit" button */
+.btn-edit {
+    margin-right: 10px;
+}
+.button-margin {
+    margin-right: 5px; /* Adjust this value to add more or less space */
+}
+
+/* Pagination Styling */
+.page-link {
+    display: none;
+}
+.page-link.active {
+    background-color: #007BFF; /* Primary color for active link */
+    color: white; /* White text color */
+    border: 1px solid #007BFF; /* Match border color with active background */
+}
+#pagination {
+    margin-top: 20px;
+    text-align: center; /* Center align pagination controls */
+}
+#pagination a {
+    display: inline-block; /* Ensure pagination links are inline */
+    margin: 0 8px; /* Space between pagination links */
+    text-decoration: none; /* Remove underline from links */
+    color: #007BFF; /* Link color */
+    padding: 8px 12px; /* Padding inside pagination links */
+    border: 1px solid #007BFF; /* Blue border to match theme */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+}
+#pagination a.active {
+    background-color: #007BFF; /* Active background color */
+    color: white; /* White text color */
+}
+#pagination a:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+    color: #007BFF; /* Blue text color */
+}
+
+#pagination input {
+    text-align: center;
+    width: 50px;
+    padding: 8px;
+    color: #007BFF; /* Blue text color */
+    border: 1px solid #007BFF; /* Blue border */
+    border-radius: 4px; /* Rounded corners */
+    margin: 0 8px; /* Space around the input */
+}
+
+/* Button styling */
+#pagination button {
+    background-color: #007BFF; /* Blue background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    padding: 8px 12px; /* Add padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Display inline */
+    font-size: 16px; /* Font size */
+    margin: 4px 2px; /* Add margin */
+    cursor: pointer; /* Add pointer cursor on hover */
+    border-radius: 4px; /* Rounded corners */
+    transition-duration: 0.4s; /* Add transition effect */
+}
+
+#pagination button:hover {
+    background-color: white; /* White background on hover */
+    color: #007BFF; /* Blue text on hover */
+    border: 1px solid #007BFF; /* Blue border on hover */
+}
+
+#pagination button:disabled {
+    background-color: #ddd; /* Grey background for disabled buttons */
+    color: #999; /* Grey text for disabled buttons */
+    cursor: not-allowed; /* No pointer cursor for disabled buttons */
+}
+
+#pagination input[type="number"] {
+    border: 1px solid #007BFF; /* Blue border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 5px;
+    font-size: 14px;
+    width: 60px;
+}
+.search-form {
+    margin-bottom: 20px; /* Space below the search form */
+    display: flex;
+    align-items: center;
+}
+
+.search-form input[type="number"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 250px; /* Adjust width as needed */
+    margin-right: 10px; /* Space between input and button */
+}
+
+.search-form button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-form button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
 }

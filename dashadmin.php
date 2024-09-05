@@ -1,4 +1,5 @@
 <?php
+session_name('admin_session'); // Set a unique session name for admins
 session_start();
 
 // Check if admin is logged in

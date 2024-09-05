@@ -1,4 +1,5 @@
 <?php
+session_name('admin_session'); // Set a unique session name for admins
 session_start();
 
 // Initialize error message variable
@@ -25,9 +26,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $admin_password = $_POST['password'];
 
     // Query to check if admin exists
-    $sql = "SELECT * FROM admin WHERE username = ?";
+    $sql = "SELECT id, username, password FROM admin WHERE username = ?";
     $stmt = $conn->prepare($sql);
-    
+
     if ($stmt === false) {
         die("Failed to prepare SQL statement: " . $conn->error);
     }
@@ -73,7 +74,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Admin Login</title>
-    <!-- <link rel="stylesheet" href="styles.css">  -->
+    <link rel="stylesheet" href="login.css"> <!-- Link to your CSS file for styling -->
+ 
 </head>
 <body>
     <div class="login-container">

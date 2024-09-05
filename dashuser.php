@@ -1,16 +1,16 @@
 <?php
+session_name('user_session'); 
 session_start();
 
-/* Check if user is logged in
+// Check if user is logged in
 if (!isset($_SESSION['homeowner_id'])) {
     header("Location: login.php");
     exit;
 }
-*/
+
 // Retrieve user name from session
 $user_name = $_SESSION['homeowner_name'];
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
