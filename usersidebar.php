@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 <?php
 
+=======
+<?php 
+>>>>>>> 669e9bb6dd43ac9d1a9f58599b318159d8e799f5
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

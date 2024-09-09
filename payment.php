@@ -1,8 +1,15 @@
 <?php
+<<<<<<< HEAD
 session_name('user_session'); 
 session_start();
 
 
+=======
+session_name('user_session'); // Set a unique session name for admins
+session_start();
+
+// Check if admin is logged in
+>>>>>>> 669e9bb6dd43ac9d1a9f58599b318159d8e799f5
 if (!isset($_SESSION['homeowner_id'])) {
     header("Location: login.php");
     exit;
