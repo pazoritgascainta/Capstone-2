@@ -17,7 +17,7 @@
             <tr>
               <td class="w-full align-top">
                 <div>
-                  <img src="C:\Users\calis\Downloads\41df64fd-3ec0-4266-80e9-fd05a338d35f.png" width ="248" height="360" class="h-12" />
+                  <img src="monique logo.png" width ="248" height="360" class="h-12" />
                 </div>
               </td>
 
