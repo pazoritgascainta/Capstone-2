@@ -65,14 +65,19 @@ if (isset($_POST['delete']) && isset($_POST['delete_id'])) {
                     <th>Homeowner ID</th>
                     <th>Subject</th>
                     <th>Description</th>
-                    <th>Status</th>
+                    <th>
+                <a href="?id=<?php echo $complaint_id; ?>&sort=status&order=<?php echo $sort == 'status' && $order == 'ASC' ? 'desc' : 'asc'; ?>">Status</a>
+                    </th>
+                    <th>
+                <a href="?id=<?php echo $complaint_id; ?>&sort=updated_at&order=<?php echo $sort == 'updated_at' && $order == 'ASC' ? 'desc' : 'asc'; ?>">Updated At</a>
+            </th>
                     <th>Created At</th>
-                    <th>Updated At</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
+                
                 // Pagination settings
                 $results_per_page = 10; // Number of results per page
 
@@ -173,6 +178,54 @@ function confirmDelete(event, link) {
         form.submit();
     }
 }
+// Function to sort table by status
+function sortTableByStatus() {
+    console.log("Sorting by status..."); // Debugging output
+    const table = document.getElementById("complaintsTable");
+    const tbody = table.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    rows.sort((a, b) => {
+        const statusA = a.querySelectorAll("td")[4].innerText.toLowerCase();
+        const statusB = b.querySelectorAll("td")[4].innerText.toLowerCase();
+        
+        console.log(`Status A: ${statusA}, Status B: ${statusB}`); // Debugging output
+
+        if (statusA < statusB) return sortOrderStatus ? -1 : 1;
+        if (statusA > statusB) return sortOrderStatus ? 1 : -1;
+        return 0;
+    });
+
+    sortOrderStatus = !sortOrderStatus;
+
+    // Re-append sorted rows to the table body
+    rows.forEach(row => tbody.appendChild(row));
+    console.log("Status sorting completed!"); // Debugging output
+}
+
+// Function to sort table by updated time
+function sortTableByUpdatedTime() {
+    console.log("Sorting by updated time..."); // Debugging output
+    const table = document.getElementById("complaintsTable");
+    const tbody = table.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+
+    rows.sort((a, b) => {
+        const dateA = new Date(a.querySelectorAll("td")[6].innerText);
+        const dateB = new Date(b.querySelectorAll("td")[6].innerText);
+        
+        console.log(`Date A: ${dateA}, Date B: ${dateB}`); // Debugging output
+
+        return sortOrderTime ? dateA - dateB : dateB - dateA;
+    });
+
+    sortOrderTime = !sortOrderTime;
+
+    // Re-append sorted rows to the table body
+    rows.forEach(row => tbody.appendChild(row));
+    console.log("Time sorting completed!"); // Debugging output
+}
+
 </script>
 
 </html>

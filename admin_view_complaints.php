@@ -23,13 +23,24 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 
 // Get 'id' parameter from URL and sanitize it
 $complaint_id = intval($_GET['id']);
+// Get 'sort' and 'order' parameters from URL and set defaults
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'updated_at'; // Default sort by 'updated_at'
+$order = isset($_GET['order']) && strtolower($_GET['order']) == 'asc' ? 'ASC' : 'DESC'; // Default 'DESC'
 
-// Prepare and execute query to fetch complaint details with homeowner information
+// Validate the 'sort' column to prevent SQL injection
+$valid_columns = ['status', 'updated_at'];
+if (!in_array($sort, $valid_columns)) {
+    $sort = 'updated_at'; // Default to 'updated_at' if invalid column is given
+}
+
+// Prepare the SQL query to include sorting
 $sql = "SELECT c.complaint_id, c.homeowner_id, c.subject, c.description, c.status, c.created_at, c.updated_at,
                h.name as homeowner_name
         FROM complaints c
         JOIN homeowners h ON c.homeowner_id = h.id
-        WHERE c.complaint_id = ?";
+        WHERE c.complaint_id = ?
+        ORDER BY $sort $order";
+
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $complaint_id);
 $stmt->execute();
@@ -49,6 +60,31 @@ if ($result->num_rows == 1) {
     header("Location: admincomplaint.php?error=complaint_not_found");
     exit;
 }
+
+// Close database connection
+$stmt->close();
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $complaint_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if (!$result) {
+    // Query failed, show error message or redirect
+    header("Location: admincomplaint.php?error=query_error");
+    exit;
+}
+
+if ($result->num_rows == 1) {
+    // Fetch complaint details
+    $complaint = $result->fetch_assoc();
+} else {
+    // Complaint not found, redirect back to complaints list or handle error
+    header("Location: admincomplaint.php?error=complaint_not_found");
+    exit;
+}
+
+
 
 // Close database connection
 $stmt->close();
