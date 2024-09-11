@@ -14,3 +14,80 @@ body {
     display: inline-block;
     margin-left: 10px;
 }
+/* General styling for the container */
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Form title */
+.container h1 {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Input labels */
+label {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+/* Input fields */
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+/* Submit button */
+button[type="submit"] {
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Success message */
+.container p {
+    color: #28a745;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Link to view complaints */
+.container a {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.container a:hover {
+    text-decoration: underline;
+}

@@ -14,3 +14,108 @@ body {
     display: inline-block;
     margin-left: 10px;
 }
+/* General styling for the container */
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Page title */
+.container h2 {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Styling the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #4CAF50;
+    color: white;
+    font-size: 16px;
+}
+
+table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Pagination controls */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin: 0 10px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.pagination a:hover {
+    background-color: #0056b3;
+}
+
+.pagination span {
+    padding: 10px 15px;
+    font-size: 16px;
+}
+
+/* Action buttons in the table */
+.action-buttons {
+    background-color: #ffffff;
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+.action-buttons:hover {
+    background-color: #0056b3;
+}
+
+/* Message when no complaints are found */
+.container p {
+    text-align: center;
+    color: #333;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+/* Link to submit a new complaint */
+.container a {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.container a:hover {
+    text-decoration: underline;
+}

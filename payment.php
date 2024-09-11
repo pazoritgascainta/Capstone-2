@@ -24,7 +24,7 @@ if (!isset($_SESSION['homeowner_id'])) {
         <div class="container">
             <h1>St. Monique User Payment</h1>
 
-            <h1>Monthly Dues Payment</h1>
+            <h1>Monthly Dues Payment statement will be shown here</h1>
 
             <div id="gcash-payment" class="card">
                 <div class="card-header">Website Gcash Payment</div>

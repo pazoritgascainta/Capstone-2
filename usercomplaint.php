@@ -8,7 +8,6 @@ if (!isset($_SESSION['homeowner_id'])) {
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,6 +42,8 @@ if (!isset($_SESSION['homeowner_id'])) {
         ?>
         
         <a href="view_complaints.php">View Your Complaints</a>
-    </div>   </div>   </div>
+    </div>   
+</div>  
+</div>
 </body>
 </html>
