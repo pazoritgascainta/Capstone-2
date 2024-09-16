@@ -74,12 +74,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Admin Login</title>
-    <link rel="stylesheet" href="login.css"> <!-- Link to your CSS file for styling -->
- 
+    <link rel="stylesheet" href="admin_login.css">
+    
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const dateTimeString = now.toLocaleString();
+            document.getElementById('date-time').textContent = dateTimeString;
+        }
+
+        window.onload = function() {
+            updateDateTime();
+            setInterval(updateDateTime, 1000); // Update every second
+        }
+    </script>
+
 </head>
 <body>
+    <div class="date-time-container">
+        <p id="date-time"></p>
+    </div>
+
     <div class="login-container">
         <h2>Admin Login</h2>
+        <h3>Welcome to St.Monique Management System</h3>
         <?php if (!empty($error_message)) { ?>
             <p style="color: red;"><?php echo htmlspecialchars($error_message); ?></p>
         <?php } ?>
@@ -92,7 +110,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <br>
             <button type="submit">Login</button>
         </form>
-        <p>Don't have an account? <a href="register_admin.php">Register</a></p>
     </div>
 </body>
 </html>

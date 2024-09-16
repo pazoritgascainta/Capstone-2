@@ -1,3 +1,35 @@
+<?php
+session_start();
+$servername = "localhost";
+$username = "root";
+$dbpassword = "";
+$database = "homeowner";
+
+$conn = new mysqli($servername, $username, $dbpassword, $database);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    
+    // Check if email exists
+    $sql = "SELECT id FROM homeowners WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        // Create reset token (or use session for simplicity in local environment)
+        $_SESSION['reset_email'] = $email;
+        header("Location: reset_password.php"); // Redirect to reset password page
+        exit();
+    } else {
+        $error = "No account found with that email.";
+    }
+    $stmt->close();
+}
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,16 +44,14 @@
 <body>
     <div class="container" id="container">
         <div class="form-container forgetpw">
-            <form>             
-                <h1>Forgot Password</h1>
-                <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                </div>
-                <span>or use your email for reset</span>
-                <input type="email" placeholder="Email">
-                <button type="button">Reset Password</button>
-            </form>
+        <form method="POST" action="">
+        <h2>Forgot Password</h2>
+    <?php if (!empty($error)) { echo "<p style='color: red;'>$error</p>"; } ?>
+    <form method="POST" action="">
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <button type="submit">Reset Password</button>
+    </form>
+</form>
         </div>
         <div class="toggle-container">
             <div class="toggle">
