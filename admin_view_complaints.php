@@ -85,7 +85,6 @@ if ($result->num_rows == 1) {
 }
 
 
-
 // Close database connection
 $stmt->close();
 $conn->close();

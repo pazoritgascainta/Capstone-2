@@ -18,15 +18,16 @@ $search_query = "";
 if (isset($_GET['search'])) {
     $search_query = trim($_GET['search']);
 }
-if (isset($_POST['delete']) && isset($_POST['delete_id'])) {
+
+// Handle delete request
+if (isset($_POST['delete_id'])) {
     $delete_id = $_POST['delete_id'];
 
-    // Prepare the delete query
+    // Prepare and execute the delete query
     $delete_query = "DELETE FROM complaints WHERE complaint_id = ?";
     $stmt = $conn->prepare($delete_query);
     $stmt->bind_param("i", $delete_id);
 
-    // Execute the deletion
     if ($stmt->execute()) {
         echo "<script>alert('Complaint deleted successfully.'); window.location.href='admincomplaint.php';</script>";
     } else {
@@ -48,14 +49,13 @@ if (isset($_POST['delete']) && isset($_POST['delete_id'])) {
 
 <?php include 'sidebar.php'; ?>
 <div class="main-content">
-<h1>Admin Complaints</h1>
+    <h1>Admin Complaints</h1>
     <div class="container">
-        
 
         <!-- Search Form -->
         <form method="GET" action="admincomplaint.php" class="search-form">
             <input type="number" name="search" value="<?= htmlspecialchars($search_query) ?>" placeholder="Search by Homeowner ID...">
-            <button type="submit" >Search</button>
+            <button type="submit">Search</button>
         </form>
 
         <table class="table">
@@ -65,19 +65,14 @@ if (isset($_POST['delete']) && isset($_POST['delete_id'])) {
                     <th>Homeowner ID</th>
                     <th>Subject</th>
                     <th>Description</th>
-                    <th>
-                <a href="?id=<?php echo $complaint_id; ?>&sort=status&order=<?php echo $sort == 'status' && $order == 'ASC' ? 'desc' : 'asc'; ?>">Status</a>
-                    </th>
-                    <th>
-                <a href="?id=<?php echo $complaint_id; ?>&sort=updated_at&order=<?php echo $sort == 'updated_at' && $order == 'ASC' ? 'desc' : 'asc'; ?>">Updated At</a>
-            </th>
+                    <th>Status</th>
                     <th>Created At</th>
+                    <th>Updated At</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                
                 // Pagination settings
                 $results_per_page = 10; // Number of results per page
 
@@ -96,8 +91,23 @@ if (isset($_POST['delete']) && isset($_POST['delete_id'])) {
                 // Calculate the offset for the query
                 $offset = ($current_page - 1) * $results_per_page;
 
-                // Query to fetch complaints filtered by homeowner_id with pagination
-                $query = "SELECT * FROM complaints WHERE homeowner_id LIKE '%$search_query%' LIMIT $offset, $results_per_page";
+                // Query to fetch complaints filtered by homeowner_id with pagination and sorting by status
+                $query = "
+                SELECT * 
+                FROM complaints 
+                WHERE homeowner_id LIKE '%$search_query%' 
+                ORDER BY 
+                    CASE 
+                        WHEN status = 'Pending' THEN 1
+                        WHEN status = 'In Progress' THEN 2
+                        WHEN status = 'Resolved' THEN 3
+                        ELSE 4
+                    END,
+                    updated_at DESC,
+                    created_at DESC
+                LIMIT $offset, $results_per_page
+                ";
+
                 $result = mysqli_query($conn, $query);
                 
                 if ($result && mysqli_num_rows($result) > 0) {
@@ -107,7 +117,18 @@ if (isset($_POST['delete']) && isset($_POST['delete_id'])) {
                         echo "<td>" . htmlspecialchars($row['homeowner_id']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['subject']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['description']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['status']) . "</td>";
+
+                        // Set status color
+                        $status_color = "";
+                        if ($row['status'] === 'In Progress') {
+                            $status_color = "style='color: red;'";
+                        } elseif ($row['status'] === 'Resolved') {
+                            $status_color = "style='color: green;'";
+                        } elseif ($row['status'] === 'Pending') {
+                            $status_color = "style='color: orange;'";
+                        }
+
+                        echo "<td $status_color>" . htmlspecialchars($row['status']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['updated_at']) . "</td>";
                         echo "<td>";
@@ -164,68 +185,17 @@ if (isset($_POST['delete']) && isset($_POST['delete_id'])) {
     </div>
 </div>
 
-
 </body>
 <script>
 function confirmDelete(event, link) {
     event.preventDefault(); // Prevent the default link behavior
 
-    // Show a confirmation dialog
     var confirmation = confirm('Are you sure you want to delete this complaint?');
     if (confirmation) {
-        // Find the form containing the delete input and submit it
         var form = link.closest('form');
-        form.submit();
+        form.submit(); // Submit the form if confirmed
     }
 }
-// Function to sort table by status
-function sortTableByStatus() {
-    console.log("Sorting by status..."); // Debugging output
-    const table = document.getElementById("complaintsTable");
-    const tbody = table.querySelector("tbody");
-    const rows = Array.from(tbody.querySelectorAll("tr"));
-
-    rows.sort((a, b) => {
-        const statusA = a.querySelectorAll("td")[4].innerText.toLowerCase();
-        const statusB = b.querySelectorAll("td")[4].innerText.toLowerCase();
-        
-        console.log(`Status A: ${statusA}, Status B: ${statusB}`); // Debugging output
-
-        if (statusA < statusB) return sortOrderStatus ? -1 : 1;
-        if (statusA > statusB) return sortOrderStatus ? 1 : -1;
-        return 0;
-    });
-
-    sortOrderStatus = !sortOrderStatus;
-
-    // Re-append sorted rows to the table body
-    rows.forEach(row => tbody.appendChild(row));
-    console.log("Status sorting completed!"); // Debugging output
-}
-
-// Function to sort table by updated time
-function sortTableByUpdatedTime() {
-    console.log("Sorting by updated time..."); // Debugging output
-    const table = document.getElementById("complaintsTable");
-    const tbody = table.querySelector("tbody");
-    const rows = Array.from(tbody.querySelectorAll("tr"));
-
-    rows.sort((a, b) => {
-        const dateA = new Date(a.querySelectorAll("td")[6].innerText);
-        const dateB = new Date(b.querySelectorAll("td")[6].innerText);
-        
-        console.log(`Date A: ${dateA}, Date B: ${dateB}`); // Debugging output
-
-        return sortOrderTime ? dateA - dateB : dateB - dateA;
-    });
-
-    sortOrderTime = !sortOrderTime;
-
-    // Re-append sorted rows to the table body
-    rows.forEach(row => tbody.appendChild(row));
-    console.log("Time sorting completed!"); // Debugging output
-}
-
 </script>
 
 </html>
