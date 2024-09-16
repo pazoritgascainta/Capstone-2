@@ -1,0 +1,131 @@
+/* Global styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    min-height: 100vh;
+}
+.Container{
+    margin-left: 75px;
+
+}
+
+/* Sidebar styles */
+.servicesidebar {
+    width: 100%;
+    background-color: #b67e52;
+    display: flex;
+    flex-direction: row; /* Changed to row for horizontal layout */
+    justify-content: center; /* Center the items horizontally */
+    padding: 10px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    margin-left: 75px;
+
+}
+
+.menu-item {
+    background-color: #d08f61;
+    padding: 15px 100px;
+    margin: 0 10px; /* Horizontal margin between buttons */
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.menu-item:hover {
+    background-color: #e6a378;
+}
+
+/* Content area styles */
+.content-area {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: #f9f9f9;
+    overflow-y: auto;
+    margin-left: 75px;
+
+}
+
+/* Request card styles */
+.request-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.request-card:hover {
+    transform: translateY(-5px);
+}
+
+.request-info h3 {
+    margin: 0;
+    color: #333;
+}
+
+.request-info p {
+    margin: 5px 0;
+    color: #777;
+}
+
+/* Button styles */
+.request-actions button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.approve-btn {
+    background-color: #4caf50;
+    color: white;
+}
+
+.edit-btn {
+    background-color: #2196f3;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.request-actions button:hover {
+    opacity: 0.85;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .servicesidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .content-area {
+        padding: 15px;
+    }
+
+    .request-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .request-actions {
+        margin-top: 10px;
+    }
+}

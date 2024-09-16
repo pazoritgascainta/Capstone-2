@@ -17,7 +17,7 @@
             <tr>
               <td class="w-full align-top">
                 <div>
-                  <img src="monique logo.png" width ="248" height="360" class="h-12" />
+                  <img src="monique logo.jpg" width="248" height="360" class="h-12" />
                 </div>
               </td>
 
@@ -29,13 +29,13 @@
                         <td class="border-r pr-4">
                           <div>
                             <p class="whitespace-nowrap text-slate-400 text-right">Date</p>
-                            <p class="whitespace-nowrap font-bold text-main text-right">April 26, 2023</p>
+                            <p class="whitespace-nowrap font-bold text-main text-right" id="currentDate"></p>
                           </div>
                         </td>
                         <td class="pl-4">
                           <div>
                             <p class="whitespace-nowrap text-slate-400 text-right">Invoice #</p>
-                            <p class="whitespace-nowrap font-bold text-main text-right">GCH-00335</p>
+                            <p class="whitespace-nowrap font-bold text-main text-right" id="invoiceNumber"></p>
                           </div>
                         </td>
                       </tr>
@@ -57,16 +57,14 @@
                   <p class="font-bold">St Monique Valais</p>
                   <p>Number: 23456789</p>
                   <p>6622 Abshire Mills</p>
-                  <p>Binangonan,Rizal</p>
+                  <p>Binangonan, Rizal</p>
                   <p>Philippines</p>
                 </div>
               </td>
               <td class="w-1/2 align-top text-right">
-                <div class="text-sm text-neutral-600">
-                  <p class="font-bold">Mr/Ms,Calisin</p>
-                  <p>Number: 123456789</p>
-                  <p>Binangonan,Rizal</p>
-                  <p>Philippines</p>
+                <div class="text-sm text-neutral-600" id="homeownerDetails">
+                  <p class="font-bold">Loading...</p>
+                  <!-- Homeowner details will be fetched here -->
                 </div>
               </td>
             </tr>
@@ -133,22 +131,60 @@
       <div class="px-14 text-sm text-neutral-700">
         <p class="text-main font-bold">PAYMENT DETAILS</p>
         <p>Gcash</p>
-        <p>Payment Reference: GCH-00335</p>
+        <p>Payment Reference: <span id="paymentReference"></span></p>
       </div>
 
       <div class="px-14 py-10 text-sm text-neutral-700">
         <p class="text-main font-bold">Notes</p>
         <p class="italic">DISREGARD THIS BILLING IF PAYMENT HAS BEEN MADE</p>
-        </dvi>
-
-        <footer class="fixed bottom-0 left-0 bg-slate-100 w-full text-neutral-600 text-center text-xs py-3">
-          St Monique Valais Homeowners Association Inc
-          <span class="text-slate-300 px-2">|</span>
-          StMonique@gmail.com
-          <span class="text-slate-300 px-2">|</span>
-          Tel No 806-7587        </footer>
       </div>
+
+      <footer class="fixed bottom-0 left-0 bg-slate-100 w-full text-neutral-600 text-center text-xs py-3">
+        St Monique Valais Homeowners Association Inc
+        <span class="text-slate-300 px-2">|</span>
+        StMonique@gmail.com
+        <span class="text-slate-300 px-2">|</span>
+        Tel No 806-7587
+      </footer>
     </div>
+  </div>
+
+  <!-- JavaScript for Real-time Date, Random Invoice Number, and Fetch API -->
+  <script>
+    // Set Current Date
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+
+    // Generate Random Invoice and Payment Reference Numbers
+    function generateRandomNumber(prefix, length) {
+      let randomNum = Math.floor(Math.random() * Math.pow(10, length));
+      return prefix + randomNum.toString().padStart(length, '0');
+    }
+
+    document.getElementById('invoiceNumber').textContent = generateRandomNumber('GCH-', 5);
+    document.getElementById('paymentReference').textContent = generateRandomNumber('GCH-', 5);
+
+    // Fetch Homeowner Data (assuming API returns JSON with name, number, address)
+    async function fetchHomeownerDetails() {
+      try {
+        const response = await fetch('/getHomeownerDetails');
+        const data = await response.json();
+
+        // Dynamically update the homeowner details
+        const homeownerDetails = `
+          <p class="font-bold">${data.name}</p>
+          <p>Number: ${data.phone}</p>
+          <p>${data.address.street}, ${data.address.city}</p>
+          <p>${data.address.country}</p>
+        `;
+        document.getElementById('homeownerDetails').innerHTML = homeownerDetails;
+      } catch (error) {
+        console.error('Error fetching homeowner details:', error);
+      }
+    }
+
+    fetchHomeownerDetails();
+  </script>
+
 </body>
 
 </html>

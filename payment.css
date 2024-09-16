@@ -1,0 +1,107 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    background-color: #f7f9ff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.date-section h1 {
+    color: #333;
+}
+
+.balance-section {
+    display: flex;
+    gap: 20px;
+}
+
+.balance, .example {
+    background-color: #e9f8e9;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.balance h2, .example h2 {
+    color: green;
+}
+
+.payment-schedule {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.payment-schedule input {
+    width: 40%;
+    padding: 8px;
+    margin-bottom: 20px;
+}
+
+#refresh-button {
+    background-color: #ff5f5f;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.paid {
+    color: green;
+    font-weight: bold;
+}
+
+.unpaid {
+    color: red;
+    font-weight: bold;
+}
+
+.proof-of-payment {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#upload-file {
+    padding: 10px;
+}
+
+#upload-button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+}

@@ -42,7 +42,6 @@ if (!isset($_SESSION['admin_id'])) {
                             <th>Due Date</th>
                             <th>Total Amount</th>
                             <th>Status</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
             </table>
@@ -60,7 +59,6 @@ if (!isset($_SESSION['admin_id'])) {
                             <th>Due Date</th>
                             <th>Total Amount</th>
                             <th>Status</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
             </table>
@@ -78,7 +76,6 @@ if (!isset($_SESSION['admin_id'])) {
                             <th>Due Date</th>
                             <th>Total Amount</th>
                             <th>Status</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
             </table>
@@ -113,7 +110,6 @@ if (!isset($_SESSION['admin_id'])) {
                             <th>Due Date</th>
                             <th>Total Amount</th>
                             <th>Status</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
             </table>

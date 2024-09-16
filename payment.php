@@ -12,7 +12,7 @@ if (!isset($_SESSION['homeowner_id'])) {
 <html lang="en">
 <head>
     <title>Dashboard</title>
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="payment.css">
     <style>
 
     </style>
@@ -21,67 +21,93 @@ if (!isset($_SESSION['homeowner_id'])) {
     <?php include 'usersidebar.php'; ?>
 
     <div class="main-content">
-        <div class="container">
-            <h1>St. Monique User Payment</h1>
-
-            <h1>Monthly Dues Payment statement will be shown here</h1>
-
-            <div id="gcash-payment" class="card">
-                <div class="card-header">Website Gcash Payment</div>
-                <div class="card-body">
-                    <p>Please follow the instructions below to make a payment using Gcash on the Website</p>
-                    <ol>
-                        <li>Click the Link down below that will redirect you to Gcash Gateway</li>
-                        <a href="BillingStatement.php">CLICK HERE</a>
-                        <li>Enter Your Number.</li>
-                        <li>Enter Pin Code </li>
-                        <li>Enter the amount to pay.</li>
-                        <li>Confirm the payment.</li>
-                        <li>Save a Screenshot or Download Reciept Copy of your Payment</li>
-                        <li>Upload your Reciept Down Below on the Dropbox</li>
-                        <li>Wait for the Admin to Confirm Your Payment</li>
-                    </ol>
-                    <p>Notes</p>
-                    <p>If you encounter any issues during the payment due to connectivity issues or device compatibility (e.g., lags, slow connection, hangups, non-responsive page), please contact the St. Monique admin immediately to resolve your issues.</p>
+    <div class="container">
+        <header>
+        <div class="date-section">
+                <h1>Current Date: <span id="current-date"></span></h1>
+            </div>
+            <div class="balance-section">
+                <div class="balance">
+                    <span>Total Balance</span>
+                    <h2>₱500.00</h2>
+                </div>
+                <div class="example">
+                    <span>Example</span>
+                    <h2>₱00.00</h2>
+                </div>
+                <div class="example">
+                    <span>Example</span>
+                    <h2>₱00.00</h2>
                 </div>
             </div>
+        </header>
 
-            <div id="mobile-gcash-payment" class="card">
-                <div class="card-header">Mobile Gcash Payment</div>
-                <div class="card-body">
-                    <p>Please follow the instructions below to make a payment using Gcash on Mobile</p>
-                    <ol>
-                        <li>Open your Gcash app.</li>
-                        <li>Select 'Express Send'.</li>
-                        <li>Enter #09123456789 </li>
-                        <li>Enter the amount to pay.</li>
-                        <li>Confirm the payment.</li>
-                        <li>Save a Screenshot or Download Reciept Copy of your Payment</li>
-                        <li>Upload your Reciept Down Below on the Dropbox</li>
-                        <li>Wait for the Admin to Confirm Your Payment</li>
-                    </ol>
-                </div>
-            </div>
+        <section class="payment-schedule">
+            <h2>Payment Schedule</h2>
+            <input type="text" placeholder="Type a name to search" id="search-bar">
+            <button id="refresh-button">Refresh Rates</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Due</th>
+                        <th>Payment</th>
+                        <th>type</th>
+                        <th>Payment Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>January</td>
+                        <td>20,000,000</td>
+                        <td>10,000,000</td>
+                        <td>Internship</td>
+                        <td><span class="paid">Paid</span></td>
+                    </tr>
+                    <tr>
+                        <td>February</td>
+                        <td>40,000,000</td>
+                        <td>30,000,000</td>
+                        <td>Contractor</td>
+                        <td><span class="paid">Paid</span></td>
+                    </tr>
+                    <tr>
+                        <td>March</td>
+                        <td>20,000,000</td>
+                        <td>10,000,000</td>
+                        <td>Internship</td>
+                        <td><span class="paid">Paid</span></td>
+                    </tr>
+                    <tr>
+                        <td>April</td>
+                        <td>40,000,000</td>
+                        <td>30,000,000</td>
+                        <td>Contractor</td>
+                        <td><span class="unpaid">Unpaid</span></td>
+                    </tr>
+                    <tr>
+                        <td>May</td>
+                        <td>20,000,000</td>
+                        <td>10,000,000</td>
+                        <td>Internship</td>
+                        <td><span class="unpaid">Unpaid</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-            <!-- Upload Proof of Payment Section -->
-            <div id="upload-proof" class="card">
-                <div class="card-header">Upload Proof of Payment</div>
-                <div class="card-body">
-                    <form action="/upload-proof" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="proof">Upload your proof of payment:</label>
-                            <input type="file" class="form-control-file" id="proof" name="proof">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+        <section class="proof-of-payment">
+            <h3>View Billing Statement</h3>
+            <a href="BillingStatement.php" id="billing-link">Billing Statement for the Month of: </a>
+            </section>
+        
+        <section class="proof-of-payment">
+            <h3>Proof of Payment</h3>
+            <input type="file" id="upload-file">
+            <button id="upload-button">Upload</button>
+        </section>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="payment.js"></script>
  
 </body>
 </html>
