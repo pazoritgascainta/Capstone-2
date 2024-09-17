@@ -1,4 +1,5 @@
 <?php
+session_name('user_session'); 
 session_start();
 
 // Redirect to login if homeowner is not logged in

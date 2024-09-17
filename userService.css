@@ -1,10 +1,4 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    display: flex;
-}
+
 .container {
     width: 90%;
     max-width: 1000px;
@@ -15,7 +9,7 @@ body {
 
 .service-request-form {
     width: 100%;
-    max-width: 600px; /* Increased max-width */
+    max-width: 800px; /* Increased max-width */
     background-color: #fff;
     padding: 30px; /* Increased padding */
     border-radius: 8px;

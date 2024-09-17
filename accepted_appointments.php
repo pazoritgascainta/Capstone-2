@@ -87,9 +87,9 @@ $sql_accepted_appointments = "
     FROM accepted_appointments a
     JOIN timeslots t ON a.timeslot_id = t.id
     JOIN amenities am ON t.amenity_id = am.id
-    WHERE a.date >= CURDATE()
     LIMIT $records_per_page OFFSET $offset
 ";
+
 $result_accepted_appointments = $conn->query($sql_accepted_appointments);
 
 // Check for SQL errors
@@ -100,9 +100,9 @@ if (!$result_accepted_appointments) {
 // Fetch total number of accepted appointments
 $sql_total_accepted_appointments = "
     SELECT COUNT(*) AS total 
-    FROM accepted_appointments 
-    WHERE date >= CURDATE()
+    FROM accepted_appointments
 ";
+
 $result_total_accepted_appointments = $conn->query($sql_total_accepted_appointments);
 
 // Check for SQL errors
@@ -123,7 +123,6 @@ $total_pages_accepted = ceil($total_accepted_appointments / $records_per_page);
     <title>Appointments Management</title>
     <link rel="stylesheet" href="admin_approval.css">
     <link rel="stylesheet" href="accepted_appointments.css">
-    
 </head>
 <body>
 <?php include 'sidebar.php'; ?>
@@ -132,8 +131,7 @@ $total_pages_accepted = ceil($total_accepted_appointments / $records_per_page);
     <h1>Accepted Appointments</h1>
         <div class="container">
 
-      
-             <div class="admin_approval">
+            <div class="admin_approval">
                 <a href="admin_approval.php" class="btn-admin-approval">Go Back to Admin Approval</a>
             </div>
             <?php if ($result_accepted_appointments->num_rows > 0): ?>
@@ -167,26 +165,26 @@ $total_pages_accepted = ceil($total_accepted_appointments / $records_per_page);
 
                     // Previous button
                     if ($current_page > 1): ?>
-                        <form method="GET" action="admin_approval.php" style="display: inline;">
+                        <form method="GET" action="accepted_appointments.php" style="display: inline;">
                             <input type="hidden" name="page" value="<?= $current_page - 1 ?>">
                             <button type="submit"><</button>
                         </form>
                     <?php endif; ?>
-
+                
                     <!-- Page input for user to change the page -->
-                    <form method="GET" action="admin_approval.php" style="display: inline;">
+                    <form method="GET" action="accepted_appointments.php" style="display: inline;">
                         <input type="number" name="page" value="<?= $input_page ?>" min="1" max="<?= $total_pages ?>" style="width: 50px;">
                     </form>
-
+                
                     <!-- "of" text and last page link -->
                     <?php if ($total_pages > 1): ?>
                         <span>of</span>
-                        <a href="?page=<?= $total_pages ?>" class="<?= ($current_page == $total_pages) ? 'active' : '' ?>"><?= $total_pages ?></a>
+                        <a href="accepted_appointments.php?page=<?= $total_pages ?>" class="<?= ($current_page == $total_pages) ? 'active' : '' ?>"><?= $total_pages ?></a>
                     <?php endif; ?>
-
+                
                     <!-- Next button -->
                     <?php if ($current_page < $total_pages): ?>
-                        <form method="GET" action="admin_approval.php" style="display: inline;">
+                        <form method="GET" action="accepted_appointments.php" style="display: inline;">
                             <input type="hidden" name="page" value="<?= $current_page + 1 ?>">
                             <button type="submit">></button>
                         </form>

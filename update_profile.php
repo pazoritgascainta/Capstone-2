@@ -1,4 +1,5 @@
 <?php
+session_name('user_session'); 
 header('Content-Type: application/json');
 
 // Start the session if not already started

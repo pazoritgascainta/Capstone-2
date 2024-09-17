@@ -1,4 +1,3 @@
-
 /* Calendar container styles */
 #calendar-box {
     display: flex;
@@ -80,6 +79,7 @@
     height: 100px;
     line-height: 60px;
     cursor: pointer;
+    position: relative; /* Make positioning relative for grid */
 }
 
 /* Hover effect for calendar cells */
@@ -88,6 +88,69 @@
 }
 
 /* Empty date cell styling */
-.date.empty {
+.calendar-cell.empty {
     background-color: #f0f0f0; /* Light gray background for empty cells */
+}
+
+/* Color grid inside calendar cell */
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 15px));
+    gap: 10px;
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    top: 5px;
+    overflow: hidden;
+}
+
+/* Individual color cells */
+.color-cell {
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    color: #fff;
+    font-size: 12px;
+    border-radius: 4px;
+}
+/* Style for the appointment info container */
+.appointment-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); /* Responsive grid for appointment info */
+    gap: 5px;
+    align-items: center;
+    justify-items: center;
+    position: absolute; /* Ensure it overlays properly */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto; /* Handle overflow of grid items */
+    padding: 5px; /* Add padding inside the cell */
+    box-sizing: border-box;
+}
+
+/* Style for individual appointment amenity boxes */
+.appointment-amenity {
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    width: 100%; /* Make sure it occupies full width of grid cell */
+    box-sizing: border-box;
+}
+#refresh-button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+#refresh-button:hover {
+    background-color: #0056b3;
 }

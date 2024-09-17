@@ -13,73 +13,101 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Initialize status message
-$status_message = "";
+// Function to update appointments to 'Seen' if the date is one day past and status is still 'Pending'
+function updateSeenAppointments($conn) {
+    // Move pending appointments older than 1 day to passed_appointments
+    $sql_update_seen = "
+        INSERT INTO passed_appointments (date, name, email, purpose, homeowner_id, amenity_id, timeslot_id)
+        SELECT a.date, a.name, a.email, a.purpose, a.homeowner_id, t.amenity_id, t.id
+        FROM appointments a
+        JOIN timeslots t ON a.timeslot_id = t.id
+        WHERE a.status = 'Pending' AND DATE(a.date) < CURDATE() - INTERVAL 1 DAY
+    ";
 
-// Handle approval or rejection of appointments
+    // Update the status of these appointments in the original table to 'Seen'
+    $sql_update_status = "
+        UPDATE appointments 
+        SET status = 'Seen' 
+        WHERE status = 'Pending' AND DATE(date) < CURDATE() - INTERVAL 1 DAY
+    ";
+
+    // Execute the insert query to move appointments to passed_appointments
+    if ($conn->query($sql_update_seen) === TRUE) {
+        // Execute the update query to mark these appointments as 'Seen'
+        if ($conn->query($sql_update_status) === TRUE) {
+            return "Appointments updated to 'Seen' successfully.";
+        } else {
+            return "Error updating status to 'Seen': " . $conn->error;
+        }
+    } else {
+        return "Error moving appointments to passed_appointments: " . $conn->error;
+    }
+}
+
+// Call the function to update 'Seen' appointments automatically
+echo updateSeenAppointments($conn);
+
+// Handle appointment status update manually (e.g., via POST request)
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['appointment_id']) && isset($_POST['new_status'])) {
     $appointment_id = intval($_POST['appointment_id']);
     $new_status = $_POST['new_status'];
 
     // Validate new status
-    if (!in_array($new_status, ['Accepted', 'Rejected'])) {
-        $status_message = "Invalid status value.";
-    } else {
-        if ($new_status == 'Accepted') {
-            // Move the appointment to the accepted_appointments table
-            $sql_move = "INSERT INTO accepted_appointments (date, name, email, purpose, homeowner_id, amenity_id, timeslot_id)
-                         SELECT a.date, a.name, a.email, a.purpose, a.homeowner_id, t.amenity_id, t.id
-                         FROM appointments a
-                         JOIN timeslots t ON a.timeslot_id = t.id
-                         WHERE a.id = ?";
-            $stmt_move = $conn->prepare($sql_move);
-            if (!$stmt_move) {
-                $status_message = "Prepare statement failed: " . $conn->error;
-            } else {
-                $stmt_move->bind_param("i", $appointment_id);
-                if ($stmt_move->execute()) {
-                    // Delete the appointment from the appointments table
-                    $sql_delete = "DELETE FROM appointments WHERE id = ?";
-                    $stmt_delete = $conn->prepare($sql_delete);
-                    if ($stmt_delete) {
-                        $stmt_delete->bind_param("i", $appointment_id);
-                        $stmt_delete->execute();
-                    }
-                    $status_message = "Appointment accepted and moved successfully!";
-                    $_SESSION['message'] = ['status' => 'success', 'message' => $status_message];
-                    header('Location: admin_approval.php'); // Change this to your desired redirect page
+    if (!in_array($new_status, ['Accepted', 'Rejected', 'Seen'])) {
+        $_SESSION['message'] = ['status' => 'error', 'message' => 'Invalid status value.'];
+        header('Location: admin_approval.php');
+        exit();
+    }
+
+    // Handle status change based on $new_status value
+    if ($new_status == 'Accepted') {
+        // Move to accepted_appointments table
+        $sql_move = "INSERT INTO accepted_appointments (date, name, email, purpose, homeowner_id, amenity_id, timeslot_id)
+                     SELECT a.date, a.name, a.email, a.purpose, a.homeowner_id, t.amenity_id, t.id
+                     FROM appointments a
+                     JOIN timeslots t ON a.timeslot_id = t.id
+                     WHERE a.id = ?";
+    } elseif ($new_status == 'Rejected') {
+        // Move to rejected_appointments table
+        $sql_move = "INSERT INTO rejected_appointments (date, name, email, purpose, homeowner_id, amenity_id, timeslot_id)
+                     SELECT a.date, a.name, a.email, a.purpose, a.homeowner_id, t.amenity_id, t.id
+                     FROM appointments a
+                     JOIN timeslots t ON a.timeslot_id = t.id
+                     WHERE a.id = ?";
+    } elseif ($new_status == 'Seen') {
+        // Move to passed_appointments table
+        $sql_move = "INSERT INTO passed_appointments (date, name, email, purpose, homeowner_id, amenity_id, timeslot_id)
+                     SELECT a.date, a.name, a.email, a.purpose, a.homeowner_id, t.amenity_id, t.id
+                     FROM appointments a
+                     JOIN timeslots t ON a.timeslot_id = t.id
+                     WHERE a.id = ?";
+    }
+
+    // Execute the status change and move the appointment to the respective table
+    $stmt_move = $conn->prepare($sql_move);
+    if ($stmt_move) {
+        $stmt_move->bind_param("i", $appointment_id);
+        if ($stmt_move->execute()) {
+            // Update the appointment status in the original table
+            $sql_update = "UPDATE appointments SET status = ? WHERE id = ?";
+            $stmt_update = $conn->prepare($sql_update);
+            if ($stmt_update) {
+                $stmt_update->bind_param("si", $new_status, $appointment_id);
+                if ($stmt_update->execute()) {
+                    $_SESSION['message'] = ['status' => 'success', 'message' => "Appointment $new_status successfully!"];
+                    header('Location: admin_approval.php');
                     exit();
                 } else {
-                    $status_message = "Error: " . $stmt_move->error;
+                    $_SESSION['message'] = ['status' => 'error', 'message' => 'Error updating appointment: ' . $stmt_update->error];
                 }
             }
-        } elseif ($new_status == 'Rejected') {
-            // Delete the appointment from the appointments table
-            $sql_delete = "DELETE FROM appointments WHERE id = ?";
-            $stmt_delete = $conn->prepare($sql_delete);
-            if (!$stmt_delete) {
-                $status_message = "Prepare statement failed: " . $conn->error;
-            } else {
-                $stmt_delete->bind_param("i", $appointment_id);
-                if ($stmt_delete->execute()) {
-                    $status_message = "Appointment rejected and removed successfully!";
-                    $_SESSION['message'] = ['status' => 'success', 'message' => $status_message];
-                    header('Location: admin_approval.php'); // Change this to your desired redirect page
-                    exit();
-                } else {
-                    $status_message = "Error: " . $stmt_delete->error;
-                }
-            }
+        } else {
+            $_SESSION['message'] = ['status' => 'error', 'message' => 'Error moving appointment: ' . $stmt_move->error];
         }
     }
 }
 
-// Set session message for invalid status value or any errors
-if (!empty($status_message)) {
-    $_SESSION['message'] = ['status' => 'error', 'message' => $status_message];
-    header('Location: admin_approval.php'); // Change this to your desired redirect page
-    exit();
-}
+
 // Number of records to display per page
 $records_per_page = 10;
 
@@ -124,6 +152,10 @@ $total_appointments = $result_total_appointments->fetch_assoc()['total'];
 // Calculate the total number of pages
 $total_pages = ceil($total_appointments / $records_per_page);
 ?>
+
+<!-- HTML and pagination code goes here -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -145,11 +177,21 @@ $total_pages = ceil($total_appointments / $records_per_page);
     <div class="view-accepted-appointments">
         <a href="accepted_appointments.php" class="btn-view-accepted">View Accepted Appointments</a>
     </div>
+
+<div class="rejected-appointments">
+        <a href="rejected_appointments.php" class="btn-manage-timeslots">Rejected Appointments</a>
+    </div>
+    <div class="passed-appointments">
+        <a href="passed_appointments.php" class="btn-view-accepted">Passed Appointments</a>
+    </div>
 </div>
+
 
            <!-- Calendar section -->
 <div id="calendar-box">
+    
     <div id="calendar-nav">
+        
         <button id="prev-month">&lt;</button>
         <span id="month-year"></span>
         <button id="next-month">&gt;</button>
@@ -247,11 +289,6 @@ $total_pages = ceil($total_appointments / $records_per_page);
 
     <?php endif; ?>
 </div>
-
-
-
-
-
             <?php else: ?>
                 <p>No pending appointments.</p>
             <?php endif; ?>
@@ -260,6 +297,7 @@ $total_pages = ceil($total_appointments / $records_per_page);
 
     </div>
     <script src="calendar.js"></script>
+
 
 </body>
 </html>

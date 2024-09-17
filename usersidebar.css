@@ -363,7 +363,6 @@ hr.active {
 .sidebar.active ~ .main-content {
     opacity: 1;
     width: calc(95% - 220px); /* Adjust width when sidebar is expanded */
-    
     height: 100vh; /* Extend height to match the height of the viewport */
 }
 
