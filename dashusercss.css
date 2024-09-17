@@ -92,7 +92,7 @@ margin-left: 80px;
 }
 
 .payment-summary {
-  grid-column: 2 / 3;
+  grid-column: 1 / 2;
   background-color: #e7d8fd;
   padding: 20px;
   text-align: center;
@@ -125,38 +125,33 @@ margin-left: 80px;
   color: white;
 }
 
-.appointments,
+.appointments{
+  grid-column: 2 / 3;
+  display: flex;
+}
 .services {
   grid-column: 2 / 3;
-  margin-top: 20px;
+  display: flex;
 }
 
-.appointments button,
-.services button {
-  width: 100%;
+.appointments button{
+  width: 167%;
+  height: 100%;
   padding: 15px;
-  background-color: #ccc;
+  background-color: #ffbb00e7;
   border: none;
   border-radius: 8px;
   cursor: pointer;
 }
-
-.calendar {
-  grid-column: 1 / 2;
-  background-color: white;
-  padding: 20px;
-  margin-top: 20px;
+.services button{
+  width: 176%;
+  height: 462%;
+  padding: 15px;
+  background-color: #d88d01cb;
+  border: none;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.calendar table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.calendar td {
-  text-align: center;
-  padding: 10px;
-  border: 1px solid #ddd;
+  cursor: pointer;
+  top: -25.2vh;
+  position: relative;
+  left: 30vh;
 }

@@ -7,7 +7,54 @@ if (!isset($_SESSION['admin_id'])) {
     header("Location: admin_login.php");
     exit;
 }
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "homeowner";
 
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Query to get the total number of homeowners
+$sql = "SELECT COUNT(id) AS total_homeowners FROM homeowners";
+$result = $conn->query($sql);
+$total_homeowners = 0;
+
+if ($result->num_rows > 0) {
+    // Fetch the result
+    $row = $result->fetch_assoc();
+    $total_homeowners = $row['total_homeowners'];
+}
+$sql = "SELECT COUNT(*) AS total_complaints FROM complaints";
+$result = $conn->query($sql);
+
+$total_complaints = 0;
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $total_complaints = $row['total_complaints'];
+}
+$sql = "SELECT COUNT(*) AS total_billing FROM billing";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // Fetch the row
+    $row = $result->fetch_assoc();
+    $total_billing = $row['total_billing'];
+} else {
+    $total_billing = 0;
+}
+$sql = "SELECT COUNT(*) AS total FROM accepted_appointments";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $totalAppointments = $row['total'];
+} else {
+    $totalAppointments = 0;
+}
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +66,7 @@ if (!isset($_SESSION['admin_id'])) {
 
     <link rel="stylesheet" href="dashadmincss.css">
     <link rel="stylesheet" href="dashboardadmincss.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 </head>
 <body>
@@ -30,89 +77,113 @@ if (!isset($_SESSION['admin_id'])) {
             <h1>St. Monique Admin Dashboard</h1>
             <h2>Welcome,  <?php echo htmlspecialchars($admin['username'] ?? 'Admin Name'); ?></h2>
             <div class="dashboard">
-        <div class="header">
-            <h1>Today's Sales</h1>
-            <button class="export-btn">Export</button>
+            <div class="tiles">
+					<article class="tile">
+						<div class="tile-header">
+							<i class="ph-lightning-light"></i>
+							<h3>
+								<span>Homeowners</span>
+								<span>UrkEnergo LTD.</span>
+							</h3>
+						</div>
+                        <div class="tile-content">
+            <span><?php echo $total_homeowners; ?></span>
         </div>
+						<a href="homeowneradmin.php">
+							<span>Go to Homeowners</span>
+							<span class="icon-button">
+								<i class="ph-caret-right-bold"></i>
+							</span>
+						</a>
+					</article>
+					<article class="tile">
+						<div class="tile-header">
+							<i class="ph-fire-simple-light"></i>
+							<h3>
+								<span>Complaints</span>
+								<span>Gazprom UA</span>
+							</h3>
+						</div>
+                        <div class="tile-content">
+                        <span><?php echo $total_complaints; ?></span>
+                        </div>
+						<a href="admincomplaint.php">
+							<span>Go to Complaints</span>
+							<span class="icon-button">
+								<i class="ph-caret-right-bold"></i>
+							</span>
+						</a>
+					</article>
 
-        <div class="summary-cards">
-            <div class="card">
-                <h3>$1k</h3>
-                <p>Total Sales</p>
-                <span>+8% from yesterday</span>
-            </div>
-            <div class="card">
-                <h3>300</h3>
-                <p>Total Orders</p>
-                <span>+5% from yesterday</span>
-            </div>
-            <div class="card">
-                <h3>5</h3>
-                <p>Product Sold</p>
-                <span>+1.2% from yesterday</span>
-            </div>
-            <div class="card">
-                <h3>8</h3>
-                <p>New Customers</p>
-                <span>0.5% from yesterday</span>
-            </div>
-        </div>
+					<article class="tile">
+						<div class="tile-header">
+							<i class="ph-file-light"></i>
+							<h3>
+								<span>Billing</span>
+								<span>Kharkov 62 str.</span>
+							</h3>
+						</div>
+                        <div class="tile-content">
+                        <span><?php echo $total_billing; ?></span> 
+                        </div>
+						<a href="billingadmin.php">
+							<span>Go to Billing</span>
+							<span class="icon-button">
+								<i class="ph-caret-right-bold"></i>
+							</span>
+						</a>
+					</article>
+                    <article class="tile">
+						<div class="tile-header">
+							<i class="ph-lightning-light"></i>
+							<h3>
+								<span>Recording</span>
+								<span>UrkEnergo LTD.</span>
+							</h3>
+						</div>
+						<a href="recordingadmin.php">
+							<span>Go to Recording</span>
+							<span class="icon-button">
+								<i class="ph-caret-right-bold"></i>
+							</span>
+						</a>
+					</article>
+					<article class="tile">
+						<div class="tile-header">
+							<i class="ph-fire-simple-light"></i>
+							<h3>
+								<span>Appointment</span>
+								<span>Gazprom UA</span>
+							</h3>
+						</div>
+                        <div class="tile-content">
+                        <span><?php echo $totalAppointments; ?></span> 
+                        </div>
 
-        <div class="charts">
-            <div class="chart" id="visitor-insights">
-                <h3>Visitor Insights</h3>
-                <canvas id="visitorChart"></canvas>
-            </div>
-
-            <div class="chart" id="total-revenue">
-                <h3>Total Revenue</h3>
-                <canvas id="revenueChart"></canvas>
-            </div>
-
-            <div class="chart" id="customer-satisfaction">
-                <h3>Customer Satisfaction</h3>
-                <canvas id="satisfactionChart"></canvas>
-            </div>
-
-            <div class="chart" id="target-vs-reality">
-                <h3>Target vs Reality</h3>
-                <canvas id="targetChart"></canvas>
-            </div>
-
-            <div class="chart" id="top-products">
-                <h3>Top Products</h3>
-                <ul>
-                    <li>Home Decor Range - 45%</li>
-                    <li>Disney Princess Pink Bag - 29%</li>
-                    <li>Bathroom Essentials - 18%</li>
-                    <li>Apple Smartwatches - 25%</li>
-                </ul>
-            </div>
-
-            <div class="chart" id="sales-mapping">
-                <h3>Sales Mapping by Country</h3>
-                <canvas id="mapChart"></canvas>
-            </div>
-
-            <div class="chart" id="volume-vs-service">
-                <h3>Volume vs Service Level</h3>
-                <canvas id="volumeServiceChart"></canvas>
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        let btn = document.querySelector('#btn');
-        let sidebar = document.querySelector('.sidebar');
-
-        btn.onclick = function () {
-            sidebar.classList.toggle('active');
-        };
-    </script>
+						<a href="admin_approval.php">
+							<span>Go to Appointment</span>
+							<span class="icon-button">
+								<i class="ph-caret-right-bold"></i>
+							</span>
+						</a>
+					</article>
+					<article class="tile">
+						<div class="tile-header">
+							<i class="ph-file-light"></i>
+							<h3>
+								<span>Service Requests</span>
+								<span>Kharkov 62 str.</span>
+							</h3>
+						</div>
+						<a href="serviceadmin.php">
+							<span>Go to Service Requests</span>
+							<span class="icon-button">
+								<i class="ph-caret-right-bold"></i>
+							</span>
+						</a>
+					</article>
+				</div>
+                </div>
 
 </body>
 </html>

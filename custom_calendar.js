@@ -217,6 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     renderCalendar(); // Initial render of the calendar
 });
+
 document.addEventListener("DOMContentLoaded", function() {
     const today = new Date();
 

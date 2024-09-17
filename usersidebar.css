@@ -535,5 +535,6 @@ hr.active {
     min-height: 100vh;
     width: calc(100% - 80px);
     z-index: 1; 
+    margin-left: 10vh;
 }
 

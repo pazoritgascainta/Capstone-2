@@ -6,10 +6,6 @@ body {
     display: flex;
     min-height: 100vh;
 }
-.Container{
-    margin-left: 75px;
-
-}
 
 /* Sidebar styles */
 .servicesidebar {
@@ -20,8 +16,6 @@ body {
     justify-content: center; /* Center the items horizontally */
     padding: 10px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-    margin-left: 75px;
-
 }
 
 .menu-item {
@@ -47,8 +41,6 @@ body {
     padding: 30px;
     background-color: #f9f9f9;
     overflow-y: auto;
-    margin-left: 75px;
-
 }
 
 /* Request card styles */
