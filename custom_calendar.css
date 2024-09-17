@@ -73,7 +73,7 @@
 #calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
+    gap: 10px;
     width: 100%; /* Ensure it occupies full width */
     margin: 0 auto;
     padding: 10px; /* Optional padding for spacing */
@@ -110,4 +110,40 @@
 /* Empty date cell styling */
 .date.empty {
     background-color: #f0f0f0; /* Light gray background for empty cells */
+}
+/* Style for past days */
+.past-day {
+    background-color: lightgrey;
+    color: #777;
+}
+
+/* Style for today's date */
+.today {
+    background-color: peachpuff; /* Peach color */
+    color: black;
+}
+
+/* General calendar cell styles */
+.calendar-cell {
+    width: 13.78%; /* 7 days in a week */
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.calendar-cell.empty {
+    background-color: #f9f9f9; /* Empty cells for previous month's days */
+}
+
+#calendar {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#calendar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
 }

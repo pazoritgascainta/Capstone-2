@@ -217,3 +217,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
     renderCalendar(); // Initial render of the calendar
 });
+document.addEventListener("DOMContentLoaded", function() {
+    // Get current date
+    const today = new Date();
+
+    // Render calendar logic here
+    function renderCalendar(year, month) {
+        const calendar = document.getElementById('calendar');
+        calendar.innerHTML = ''; // Clear previous calendar
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        // Adding empty cells for days of the previous month
+        for (let i = 0; i < firstDay; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.classList.add('calendar-cell', 'empty');
+            calendar.appendChild(emptyCell);
+        }
+
+        // Fill in days of the current month
+        for (let day = 1; day <= daysInMonth; day++) {
+            const date = new Date(year, month, day);
+            const dayCell = document.createElement('div');
+            dayCell.classList.add('calendar-cell');
+
+            // Compare the current day with today's date
+            if (date < today.setHours(0, 0, 0, 0)) {
+                // Past dates (before today)
+                dayCell.classList.add('past-day');
+            } else if (date.getTime() === today.setHours(0, 0, 0, 0)) {
+                // Today's date
+                dayCell.classList.add('today');
+            }
+
+            dayCell.innerText = day;
+            calendar.appendChild(dayCell);
+        }
+    }
+
+    // Initial render
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth();
+    renderCalendar(currentYear, currentMonth);
+});
+
