@@ -73,7 +73,7 @@
 #calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
+    gap: 5px;
     width: 100%; /* Ensure it occupies full width */
     margin: 0 auto;
     padding: 10px; /* Optional padding for spacing */
@@ -111,21 +111,9 @@
 .date.empty {
     background-color: #f0f0f0; /* Light gray background for empty cells */
 }
-/* Style for past days */
-.past-day {
-    background-color: lightgrey;
-    color: #777;
-}
-
-/* Style for today's date */
-.today {
-    background-color: peachpuff; /* Peach color */
-    color: black;
-}
-
 /* General calendar cell styles */
 .calendar-cell {
-    width: 13.78%; /* 7 days in a week */
+    width: 13.7%; /* Ensure exactly 7 cells per row (100% / 7) */
     padding: 10px;
     box-sizing: border-box;
     text-align: center;
@@ -133,7 +121,17 @@
 }
 
 .calendar-cell.empty {
-    background-color: #f9f9f9; /* Empty cells for previous month's days */
+    background-color: #f9f9f9; /* Optional: Different background for empty cells */
+}
+
+.past-day {
+    background-color: lightgrey;
+    color: #777;
+}
+
+.today {
+    background-color: peachpuff; /* Peach color for today */
+    color: black;
 }
 
 #calendar {
@@ -147,3 +145,4 @@
     align-items: center;
     margin-bottom: 10px;
 }
+

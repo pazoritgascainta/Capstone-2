@@ -297,5 +297,3 @@ document.addEventListener("DOMContentLoaded", function() {
         renderCalendar(displayedYear, displayedMonth);
     });
 });
-
-
