@@ -27,5 +27,5 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 // Redirect to the login page with a logout message
-header("Location: login.php?message=loggedout");
+header("Location: homepage.php?message=loggedout");
 exit;

@@ -63,6 +63,7 @@ $sql_homeowners = "
     FROM homeowners 
     WHERE status != 'archived'
     $search_condition
+    ORDER BY created_at DESC
     LIMIT $records_per_page OFFSET $offset
 ";
 $stmt_homeowners = $conn->prepare($sql_homeowners);

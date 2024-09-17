@@ -40,6 +40,8 @@ $user_name = $_SESSION['homeowner_name'];
     <title>Welcome, <?php echo htmlspecialchars($user_name); ?></title>
     <link rel="stylesheet" href="usersidebar.css">
     <link rel="stylesheet" href="dashusercss.css">
+    <link rel="stylesheet" href="dashusercalendarcss.css">
+
 </head>
 <body>
     <?php include 'usersidebar.php'; ?>
@@ -105,29 +107,17 @@ $user_name = $_SESSION['homeowner_name'];
         </div>
 
         <div class="appointments">
+        <a href="amenity_booking.php">
             <button>Setup an appointment</button>
+            </a>
         </div>
 
         <div class="services">
+        <a href="serviceuser.php">
             <button>Request for a service</button>
+            </a>
         </div>
-
-        <div class="calendar">
-            <h2>May 2023</h2>
-            <table>
-                <tr>
-                    <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td>
-                </tr>
-                <tr>
-                    <td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td>
-                </tr>
-                <!-- Continue for the rest of the days -->
-            </table>
-        </div>
-    </div>
-        </div>
-    </div>
-
+</div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         let btn = document.querySelector('#btn');
@@ -137,6 +127,18 @@ $user_name = $_SESSION['homeowner_name'];
             sidebar.classList.toggle('active');
         };
     </script>
-
+    <script>
+        
+    </script>
+<div id="calendar-box">
+                <div id="calendar-container">
+                    <div id="calendar-nav">
+                        <button id="prev-month" type="button">&lt;</button>
+                        <span id="month-year">2024 September</span>
+                        <button id="next-month" type="button">&gt;</button>
+                    </div>
+                    <div id="calendar"><div class="calendar-cell past-day">1</div><div class="calendar-cell past-day">2</div><div class="calendar-cell past-day">3</div><div class="calendar-cell past-day">4</div><div class="calendar-cell past-day">5</div><div class="calendar-cell past-day">6</div><div class="calendar-cell past-day">7</div><div class="calendar-cell past-day">8</div><div class="calendar-cell past-day">9</div><div class="calendar-cell past-day">10</div><div class="calendar-cell past-day">11</div><div class="calendar-cell past-day">12</div><div class="calendar-cell past-day">13</div><div class="calendar-cell past-day">14</div><div class="calendar-cell past-day">15</div><div class="calendar-cell past-day">16</div><div class="calendar-cell today">17</div><div class="calendar-cell">18</div><div class="calendar-cell">19</div><div class="calendar-cell">20</div><div class="calendar-cell">21</div><div class="calendar-cell">22</div><div class="calendar-cell">23</div><div class="calendar-cell">24</div><div class="calendar-cell">25</div><div class="calendar-cell">26</div><div class="calendar-cell">27</div><div class="calendar-cell">28</div><div class="calendar-cell">29</div><div class="calendar-cell">30</div><div class="calendar-cell empty">1</div><div class="calendar-cell empty">2</div><div class="calendar-cell empty">3</div><div class="calendar-cell empty">4</div><div class="calendar-cell empty">5</div></div>
+                </div>
+            </div>
 </body>
 </html>

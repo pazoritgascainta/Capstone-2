@@ -1,0 +1,115 @@
+
+#calendar-box {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 555px; /* Set width */
+    height: 565px; /* Set height */
+    position: relative; /* Positioning to allow for flexible layout */
+    margin-left: auto; /* Adjust positioning */
+    top:-95vh;
+    right: 0vh;
+}
+/* Calendar box styling */
+#calendar-nav {
+    flex-shrink: 0; 
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Calendar navigation buttons styling */
+#calendar-nav button {
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: color 0.3s, transform 0.3s;
+}
+
+#calendar-nav button:hover {
+    color: #fff;
+    transform: scale(1.2);
+}
+
+#calendar-nav #month-year {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #000;
+    margin: 0 10px;
+    padding: 5px 0;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Calendar grid styling */
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Ensure it still has 7 columns */
+    gap: 5px;
+    padding: 5px;
+    height: calc(100% - 60px); /* Deduct space for navigation */
+    box-sizing: border-box;
+}
+
+/* Calendar header cell styling */
+.calendar-header-cell {
+    text-align: center;
+    padding: 5px;
+    background-color: #f4f4f4;
+    font-weight: bold;
+    font-size: 1em; 
+}
+
+/* Calendar cell styling */
+.calendar-cell {
+    text-align: right;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 0.9em; 
+    height: 60px; /* Adjust cell height to fit within container */
+    line-height: 40px;
+    cursor: pointer;
+}
+
+/* Hover effect for calendar cells */
+.calendar-cell:hover {
+    background-color: #007BFF;
+}
+
+/* Empty date cell styling */
+.date.empty {
+    background-color: #f0f0f0;
+}
+
+/* General calendar cell styles */
+.calendar-cell {
+    width: 100%; 
+    padding: 5px;
+    box-sizing: border-box;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+/* Adjusting color for past and today */
+.past-day {
+    background-color: lightgrey;
+    color: #777;
+}
+
+.today {
+    background-color: peachpuff;
+    color: black;
+}

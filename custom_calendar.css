@@ -111,3 +111,38 @@
 .date.empty {
     background-color: #f0f0f0; /* Light gray background for empty cells */
 }
+/* General calendar cell styles */
+.calendar-cell {
+    width: 13.7%; /* Ensure exactly 7 cells per row (100% / 7) */
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.calendar-cell.empty {
+    background-color: #f9f9f9; /* Optional: Different background for empty cells */
+}
+
+.past-day {
+    background-color: lightgrey;
+    color: #777;
+}
+
+.today {
+    background-color: peachpuff; /* Peach color for today */
+    color: black;
+}
+
+#calendar {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#calendar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
