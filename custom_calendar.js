@@ -218,7 +218,6 @@ document.addEventListener('DOMContentLoaded', function() {
     renderCalendar(); // Initial render of the calendar
 });
 document.addEventListener("DOMContentLoaded", function() {
-    // Get current date
     const today = new Date();
 
     // Render calendar logic here
@@ -229,10 +228,14 @@ document.addEventListener("DOMContentLoaded", function() {
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        // Adding empty cells for days of the previous month
-        for (let i = 0; i < firstDay; i++) {
+        // Get the number of days in the previous month
+        const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+        // Add empty cells for the days of the previous month
+        for (let i = firstDay; i > 0; i--) {
             const emptyCell = document.createElement('div');
             emptyCell.classList.add('calendar-cell', 'empty');
+            emptyCell.innerText = daysInPrevMonth - i + 1; // Optionally show previous month's days
             calendar.appendChild(emptyCell);
         }
 
@@ -254,11 +257,45 @@ document.addEventListener("DOMContentLoaded", function() {
             dayCell.innerText = day;
             calendar.appendChild(dayCell);
         }
+
+        // Fill remaining empty cells for next month's days to keep grid aligned
+        const remainingCells = (7 - (firstDay + daysInMonth) % 7) % 7;
+        for (let i = 1; i <= remainingCells; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.classList.add('calendar-cell', 'empty');
+            emptyCell.innerText = i; // Optionally show next month's days
+            calendar.appendChild(emptyCell);
+        }
     }
 
     // Initial render
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth();
     renderCalendar(currentYear, currentMonth);
+
+    // Navigation buttons
+    const prevButton = document.getElementById('prev-month');
+    const nextButton = document.getElementById('next-month');
+    let displayedYear = currentYear;
+    let displayedMonth = currentMonth;
+
+    prevButton.addEventListener('click', function() {
+        displayedMonth--;
+        if (displayedMonth < 0) {
+            displayedMonth = 11;
+            displayedYear--;
+        }
+        renderCalendar(displayedYear, displayedMonth);
+    });
+
+    nextButton.addEventListener('click', function() {
+        displayedMonth++;
+        if (displayedMonth > 11) {
+            displayedMonth = 0;
+            displayedYear++;
+        }
+        renderCalendar(displayedYear, displayedMonth);
+    });
 });
+
 
