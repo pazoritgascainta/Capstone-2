@@ -11,6 +11,43 @@ if (!isset($_SESSION['admin_id'])) {
 // Include database connection
 require 'db_connection.php'; // Ensure you have this file to connect to the database
 
+// Function to check if a billing record exists
+function recordExists($conn, $homeowner_id, $billing_date) {
+    $sql_check = "SELECT COUNT(*) FROM billing WHERE homeowner_id = ? AND billing_date = ?";
+    $stmt_check = $conn->prepare($sql_check);
+    if ($stmt_check) {
+        $stmt_check->bind_param("is", $homeowner_id, $billing_date); // Ensure correct format
+        $stmt_check->execute();
+        $stmt_check->bind_result($count);
+        $stmt_check->fetch();
+        $stmt_check->close();
+        return $count > 0;
+    } else {
+        $_SESSION['message'] = "Prepare statement failed: " . $conn->error;
+        return false;
+    }
+}
+
+// Function to calculate total amount for overdue status
+function calculateTotalAmount($conn, $homeowner_id, $billing_date, $monthly_due) {
+    $current_date = new DateTime();
+    $billing_date_obj = new DateTime($billing_date);
+
+    // Calculate the number of months overdue including the current month
+    if ($current_date <= $billing_date_obj) {
+        return 0.00; // Not overdue
+    }
+
+    $interval = $billing_date_obj->diff($current_date);
+    $months_overdue = $interval->y * 12 + $interval->m;
+
+    // Add one more month for the current month
+    $months_overdue += 1;
+
+    // Accumulate total amount
+    return $monthly_due * $months_overdue;
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['homeowner_id'])) {
     $homeowner_id = intval($_POST['homeowner_id']);
     $billing_date = $_POST['billing_date'];
@@ -20,46 +57,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['homeowner_id'])) {
     // Calculate due_date as one month from billing_date
     $billing_date_obj = new DateTime($billing_date);
     $billing_date_obj->modify('+1 month');
-    $due_date = $billing_date_obj->format('Y-m-d H:i:s');
+    $due_date = $billing_date_obj->format('Y-m-d');
+
+    // Default total_amount
+    $total_amount = 0.00;
+
+    if ($status === 'Pending') {
+        $total_amount = $monthly_due;
+    } elseif ($status === 'Overdue') {
+        $total_amount = calculateTotalAmount($conn, $homeowner_id, $billing_date, $monthly_due);
+    }
 
     // Check if billing record already exists
-    $sql_check = "SELECT COUNT(*) FROM billing WHERE homeowner_id = ? AND billing_date = ?";
-    $stmt_check = $conn->prepare($sql_check);
-    if ($stmt_check) {
-        $stmt_check->bind_param("ss", $homeowner_id, $billing_date);
-        $stmt_check->execute();
-        $stmt_check->bind_result($count);
-        $stmt_check->fetch();
-        $stmt_check->close();
-
-        if ($count > 0) {
-            $_SESSION['message'] = "Billing record already exists for this homeowner and billing date.";
-        } else {
-            // Insert new billing record
-            $sql_insert = "INSERT INTO billing (homeowner_id, billing_date, due_date, status, monthly_due) 
-                           VALUES (?, ?, ?, ?, ?)";
-            $stmt_insert = $conn->prepare($sql_insert);
-            if ($stmt_insert) {
-                $stmt_insert->bind_param("ssssd", $homeowner_id, $billing_date, $due_date, $status, $monthly_due);
+    if (recordExists($conn, $homeowner_id, $billing_date)) {
+        $_SESSION['message'] = "Billing record already exists for this homeowner and billing date.";
+    } else {
+        // Insert new billing record
+        $sql_insert = "INSERT INTO billing (homeowner_id, billing_date, due_date, status, monthly_due, total_amount) 
+                       VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt_insert = $conn->prepare($sql_insert);
+        if ($stmt_insert) {
+            $stmt_insert->bind_param("issssd", $homeowner_id, $billing_date, $due_date, $status, $monthly_due, $total_amount);
+            try {
                 if ($stmt_insert->execute()) {
                     $_SESSION['message'] = "Billing record created successfully!";
-                } else {
-                    $_SESSION['message'] = "Failed to create billing record: " . $stmt_insert->error;
                 }
-                $stmt_insert->close();
-            } else {
-                $_SESSION['message'] = "Prepare statement failed: " . $conn->error;
+            } catch (mysqli_sql_exception $e) {
+                if ($e->getCode() === '23000') { // SQLSTATE[23000] is the error code for integrity constraint violations
+                    $_SESSION['message'] = "Billing record already exists for this homeowner and billing date.";
+                } else {
+                    $_SESSION['message'] = "Failed to create billing record: " . $e->getMessage();
+                }
             }
+            $stmt_insert->close();
+        } else {
+            $_SESSION['message'] = "Prepare statement failed: " . $conn->error;
         }
-    } else {
-        $_SESSION['message'] = "Prepare statement failed: " . $conn->error;
     }
+
     header("Location: billingadmin.php");
     exit();
 }
 ?>
-
-
+ 
 <!DOCTYPE html>
 <html lang="en">
 <head>

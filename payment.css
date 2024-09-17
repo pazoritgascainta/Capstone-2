@@ -1,18 +1,23 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+.container {
+    background-color: #ffffff;  
+    border: 1px solid #ccc; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    padding: 10px; 
+    margin-top: 10px; 
+  }
+  
+  /* Main Content Styling */
+  .main-content {
+    margin: 0 auto; /* Center the content horizontally */
+  margin-left: 80px;
+    max-width: 90%; /* Optional: Set a maximum width to prevent it from becoming too wide */
+  }
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+
 }
 
-.container {
-    width: 80%;
-    margin: 0 auto;
-}
+
 
 header {
     display: flex;

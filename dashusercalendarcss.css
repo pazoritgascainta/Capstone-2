@@ -12,7 +12,7 @@
     height: 565px; /* Set height */
     position: relative; /* Positioning to allow for flexible layout */
     margin-left: auto; /* Adjust positioning */
-    top:-95vh;
+  
     right: 0vh;
 }
 /* Calendar box styling */

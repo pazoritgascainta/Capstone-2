@@ -2,7 +2,6 @@
 session_name('admin_session');
 session_start();
 
-// Database connection
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -13,87 +12,156 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Initialize message
-$status_message = "";
+function handlePostRequest($conn) {
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['billing_id'])) {
+        $billing_id = intval($_POST['billing_id']);
+        $monthly_due = floatval($_POST['monthly_due']);
+        $status = $_POST['status'];
+        $billing_date = $_POST['billing_date'];
 
-// Handle update of monthly due and billing date
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['billing_id'])) {
-    $billing_id = intval($_POST['billing_id']);
-    $monthly_due = floatval($_POST['monthly_due']);
-    $status = $_POST['status'];
-    $billing_date = $_POST['billing_date'];
+        // Calculate the new due date (one month from the billing date)
+        $billing_date_obj = new DateTime($billing_date);
+        $billing_date_obj->modify('+1 month');
+        $due_date = $billing_date_obj->format('Y-m-d');
 
-    // Update the billing record
-    $sql_update = "UPDATE billing SET monthly_due = ?, billing_date = ?, status = ? WHERE billing_id = ?";
-    $stmt_update = $conn->prepare($sql_update);
-    if ($stmt_update) {
-        $stmt_update->bind_param("dssi", $monthly_due, $billing_date, $status, $billing_id);
-        if ($stmt_update->execute()) {
-            $status_message = "Billing record updated successfully!";
-        } else {
-            $status_message = "Failed to update billing record: " . $stmt_update->error;
+        $conn->begin_transaction();
+        try {
+            // Update the billing record
+            $sql_update = "UPDATE billing SET monthly_due = ?, billing_date = ?, due_date = ?, status = ? WHERE billing_id = ?";
+            if ($stmt_update = $conn->prepare($sql_update)) {
+                $stmt_update->bind_param("dsssi", $monthly_due, $billing_date, $due_date, $status, $billing_id);
+                if (!$stmt_update->execute()) {
+                    throw new Exception("Failed to update billing record: " . $stmt_update->error);
+                }
+                $stmt_update->close();
+            } else {
+                throw new Exception("Prepare statement failed: " . $conn->error);
+            }
+
+            // Handle status-specific updates
+            if ($status === 'Paid') {
+                handlePaidStatus($conn, $billing_id);
+            } else if ($status === 'Pending') {
+                handlePendingStatus($conn, $billing_id, $monthly_due);
+            }
+
+            $conn->commit();
+            $_SESSION['message'] = "Billing record updated successfully!";
+        } catch (Exception $e) {
+            $conn->rollback();
+            $_SESSION['message'] = $e->getMessage();
         }
-        $stmt_update->close();
-    } else {
-        $status_message = "Prepare statement failed: " . $conn->error;
+
+        header("Location: billingadmin.php");
+        exit();
     }
+}
 
-    // Accumulate total amount based on monthly dues
-    if ($status !== 'Paid') {
-        $sql_get_current_due = "SELECT SUM(monthly_due) AS total_due FROM billing WHERE homeowner_id = (SELECT homeowner_id FROM billing WHERE billing_id = ?)";
-        $stmt_get_current_due = $conn->prepare($sql_get_current_due);
-        if ($stmt_get_current_due) {
-            $stmt_get_current_due->bind_param("i", $billing_id);
-            $stmt_get_current_due->execute();
-            $stmt_get_current_due->bind_result($total_due);
-            $stmt_get_current_due->fetch();
-            $stmt_get_current_due->close();
+function handlePaidStatus($conn, $billing_id) {
+    // Reset the total amount for the current record and record the paid date
+    $sql_update_total = "UPDATE billing SET total_amount = 0.00, paid_date = ? WHERE billing_id = ?";
+    if ($stmt_update_total = $conn->prepare($sql_update_total)) {
+        $paid_date = date('Y-m-d');
+        $stmt_update_total->bind_param("si", $paid_date, $billing_id);
+        if (!$stmt_update_total->execute()) {
+            throw new Exception("Failed to reset total amount: " . $stmt_update_total->error);
+        }
+        $stmt_update_total->close();
+    } else {
+        throw new Exception("Prepare statement failed: " . $conn->error);
+    }
+}
 
-            // Update total amount
+function handlePendingStatus($conn, $billing_id, $monthly_due) {
+    // Check if the record is overdue
+    $sql_check_overdue = "SELECT due_date FROM billing WHERE billing_id = ?";
+    if ($stmt_check_overdue = $conn->prepare($sql_check_overdue)) {
+        $stmt_check_overdue->bind_param("i", $billing_id);
+        $stmt_check_overdue->execute();
+        $result_check_overdue = $stmt_check_overdue->get_result();
+        $row = $result_check_overdue->fetch_assoc();
+        $due_date = $row['due_date'];
+        
+        $today = date('Y-m-d');
+        if ($due_date < $today) {
+            // Update total amount for overdue records
+            updateOverdueAmounts($conn);
+        }
+        $stmt_check_overdue->close();
+    } else {
+        throw new Exception("Prepare statement failed: " . $conn->error);
+    }
+}
+
+function updateOverdueAmounts($conn) {
+    $today = date('Y-m-d');
+
+    // Query to select overdue records
+    $sql_overdue = "
+        SELECT billing_id, due_date, monthly_due, total_amount
+        FROM billing
+        WHERE due_date < ? AND status <> 'Paid'
+    ";
+
+    $stmt_overdue = $conn->prepare($sql_overdue);
+    if ($stmt_overdue) {
+        $stmt_overdue->bind_param("s", $today);
+        $stmt_overdue->execute();
+        $result_overdue = $stmt_overdue->get_result();
+
+        // Process overdue records
+        while ($row = $result_overdue->fetch_assoc()) {
+            $billing_id = $row['billing_id'];
+            $due_date = $row['due_date'];
+            $monthly_due = $row['monthly_due'];
+            $total_amount = $row['total_amount'];
+
+            // Calculate the number of overdue months
+            $due_date_obj = new DateTime($due_date);
+            $today_obj = new DateTime($today);
+            $interval = $due_date_obj->diff($today_obj);
+            $overdue_months = $interval->m + ($interval->y * 12) + 1; // Adjust to account for the current month
+
+            // Calculate the new total amount considering overdue months
+            $new_total_amount = $monthly_due * $overdue_months;
+
+            // Update the billing record with the new total amount
             $sql_update_total = "UPDATE billing SET total_amount = ? WHERE billing_id = ?";
             $stmt_update_total = $conn->prepare($sql_update_total);
             if ($stmt_update_total) {
-                $stmt_update_total->bind_param("di", $total_due, $billing_id);
-                if ($stmt_update_total->execute()) {
-                    // Total amount updated
-                } else {
-                    $status_message = "Failed to update total amount: " . $stmt_update_total->error;
-                }
+                $stmt_update_total->bind_param("di", $new_total_amount, $billing_id);
+                $stmt_update_total->execute();
                 $stmt_update_total->close();
+            } else {
+                throw new Exception("Prepare statement failed: " . $conn->error);
             }
         }
+        $stmt_overdue->close();
     } else {
-        // Reset the total amount if status is paid
-        $sql_reset_amount = "UPDATE billing SET total_amount = 0.00 WHERE billing_id = ?";
-        $stmt_reset_amount = $conn->prepare($sql_reset_amount);
-        if ($stmt_reset_amount) {
-            $stmt_reset_amount->bind_param("i", $billing_id);
-            if ($stmt_reset_amount->execute()) {
-                // Total amount reset
-            }
-            $stmt_reset_amount->close();
-        }
+        throw new Exception("Prepare statement failed: " . $conn->error);
     }
-
-    $_SESSION['message'] = $status_message;
-    header("Location: billingadmin.php");
-    exit();
 }
 
-// Fetch billing records
-$sql_billing_records = "
-    SELECT b.billing_id, b.homeowner_id, h.name AS homeowner_name, h.address, b.total_amount, b.billing_date, b.due_date, b.status, b.monthly_due
-    FROM billing b
-    JOIN homeowners h ON b.homeowner_id = h.id
-";
-
-$result_billing = $conn->query($sql_billing_records);
-
-// Check if query was successful
-if (!$result_billing) {
-    die("Query failed: " . $conn->error);
+function fetchBillingRecords($conn) {
+    $sql_billing_records = "
+        SELECT b.billing_id, b.homeowner_id, h.name AS homeowner_name, h.address, b.total_amount, b.billing_date, b.due_date, b.status, b.monthly_due
+        FROM billing b
+        JOIN homeowners h ON b.homeowner_id = h.id
+    ";
+    $result_billing = $conn->query($sql_billing_records);
+    if (!$result_billing) {
+        die("Query failed: " . $conn->error);
+    }
+    return $result_billing;
 }
+
+// Main execution
+handlePostRequest($conn);
+updateOverdueAmounts($conn);
+$result_billing = fetchBillingRecords($conn);
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -137,7 +205,7 @@ if (!$result_billing) {
                             <th>Monthly Due</th>
                             <th>Billing Date</th>
                             <th>Due Date</th>
-                            <th>Total Amount</th>
+                            <th>Total Balance</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>

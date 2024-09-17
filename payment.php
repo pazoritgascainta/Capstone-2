@@ -106,7 +106,7 @@ if (!isset($_SESSION['homeowner_id'])) {
             <input type="file" id="upload-file">
             <button id="upload-button">Upload</button>
         </section>
-    </div>
+    </div> </div>
     <script src="payment.js"></script>
  
 </body>

@@ -97,7 +97,16 @@ $user_name = $_SESSION['homeowner_name'];
                 </li>
             </ul>
         </div>
-
+        <div id="calendar-box">
+                <div id="calendar-container">
+                    <div id="calendar-nav">
+                        <button id="prev-month" type="button">&lt;</button>
+                        <span id="month-year">2024 September</span>
+                        <button id="next-month" type="button">&gt;</button>
+                    </div>
+                    <div id="calendar"><div class="calendar-cell past-day">1</div><div class="calendar-cell past-day">2</div><div class="calendar-cell past-day">3</div><div class="calendar-cell past-day">4</div><div class="calendar-cell past-day">5</div><div class="calendar-cell past-day">6</div><div class="calendar-cell past-day">7</div><div class="calendar-cell past-day">8</div><div class="calendar-cell past-day">9</div><div class="calendar-cell past-day">10</div><div class="calendar-cell past-day">11</div><div class="calendar-cell past-day">12</div><div class="calendar-cell past-day">13</div><div class="calendar-cell past-day">14</div><div class="calendar-cell past-day">15</div><div class="calendar-cell past-day">16</div><div class="calendar-cell today">17</div><div class="calendar-cell">18</div><div class="calendar-cell">19</div><div class="calendar-cell">20</div><div class="calendar-cell">21</div><div class="calendar-cell">22</div><div class="calendar-cell">23</div><div class="calendar-cell">24</div><div class="calendar-cell">25</div><div class="calendar-cell">26</div><div class="calendar-cell">27</div><div class="calendar-cell">28</div><div class="calendar-cell">29</div><div class="calendar-cell">30</div><div class="calendar-cell empty">1</div><div class="calendar-cell empty">2</div><div class="calendar-cell empty">3</div><div class="calendar-cell empty">4</div><div class="calendar-cell empty">5</div></div>
+                </div>
+            </div>
         <div class="payment-summary">
             <p>To be paid:</p>
             <h2>₱356.00</h2>
@@ -117,6 +126,7 @@ $user_name = $_SESSION['homeowner_name'];
             <button>Request for a service</button>
             </a>
         </div>
+        
 </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -130,15 +140,6 @@ $user_name = $_SESSION['homeowner_name'];
     <script>
         
     </script>
-<div id="calendar-box">
-                <div id="calendar-container">
-                    <div id="calendar-nav">
-                        <button id="prev-month" type="button">&lt;</button>
-                        <span id="month-year">2024 September</span>
-                        <button id="next-month" type="button">&gt;</button>
-                    </div>
-                    <div id="calendar"><div class="calendar-cell past-day">1</div><div class="calendar-cell past-day">2</div><div class="calendar-cell past-day">3</div><div class="calendar-cell past-day">4</div><div class="calendar-cell past-day">5</div><div class="calendar-cell past-day">6</div><div class="calendar-cell past-day">7</div><div class="calendar-cell past-day">8</div><div class="calendar-cell past-day">9</div><div class="calendar-cell past-day">10</div><div class="calendar-cell past-day">11</div><div class="calendar-cell past-day">12</div><div class="calendar-cell past-day">13</div><div class="calendar-cell past-day">14</div><div class="calendar-cell past-day">15</div><div class="calendar-cell past-day">16</div><div class="calendar-cell today">17</div><div class="calendar-cell">18</div><div class="calendar-cell">19</div><div class="calendar-cell">20</div><div class="calendar-cell">21</div><div class="calendar-cell">22</div><div class="calendar-cell">23</div><div class="calendar-cell">24</div><div class="calendar-cell">25</div><div class="calendar-cell">26</div><div class="calendar-cell">27</div><div class="calendar-cell">28</div><div class="calendar-cell">29</div><div class="calendar-cell">30</div><div class="calendar-cell empty">1</div><div class="calendar-cell empty">2</div><div class="calendar-cell empty">3</div><div class="calendar-cell empty">4</div><div class="calendar-cell empty">5</div></div>
-                </div>
-            </div>
+
 </body>
 </html>
