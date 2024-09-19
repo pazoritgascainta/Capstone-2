@@ -1,9 +1,63 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const calendar = document.getElementById('calendar');
-    const monthYearSpan = document.getElementById('month-year');
-    const prevMonthButton = document.getElementById('prev-month');
-    const nextMonthButton = document.getElementById('next-month');
+const calendar = document.getElementById('calendar');
+const monthYearSpan = document.getElementById('month-year');
+const prevMonthBtn = document.getElementById('prev-month');
+const nextMonthBtn = document.getElementById('next-month');
 
+let currentDate = new Date();
+
+// Function to render the calendar
+function renderCalendar() {
+    calendar.innerHTML = ''; // Clear previous calendar content
+
+    // Get the current month and year
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth();
+
+    // Add days of the week headers
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    daysOfWeek.forEach(day => {
+        const headerCell = document.createElement('div');
+        headerCell.className = 'calendar-header-cell';
+        headerCell.textContent = day;
+        calendar.appendChild(headerCell);
+    });
+
+    // Display current month and year
+    monthYearSpan.textContent = `${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' })} ${currentYear}`;
+
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+    // Render empty cells before the first day of the month
+    for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'calendar-cell empty';
+        calendar.appendChild(emptyCell);
+    }
+
+    // Render days of the month
+    for (let day = 1; day <= lastDate; day++) {
+        const cell = document.createElement('div');
+        cell.className = 'calendar-cell';
+        cell.textContent = day;
+        cell.dataset.date = `${currentYear}-${currentMonth + 1}-${day}`;
+        calendar.appendChild(cell);
+    }
+}
+
+// Handle previous and next month navigation
+prevMonthBtn.addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+});
+
+nextMonthBtn.addEventListener('click', () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+});
+
+// Render the current month's calendar on load
+renderCalendar();
 document.addEventListener("DOMContentLoaded", function() {
     const today = new Date();
 
@@ -84,23 +138,3 @@ document.addEventListener("DOMContentLoaded", function() {
         renderCalendar(displayedYear, displayedMonth);
     });
 });
-   // Event listener for calendar navigation buttons
-   prevMonthButton.addEventListener('click', function() {
-    currentMonth -= 1;
-    if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear -= 1;
-    }
-    renderCalendar();
-});
-
-nextMonthButton.addEventListener('click', function() {
-    currentMonth += 1;
-    if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear += 1;
-    }
-    renderCalendar();
-});
-});
-

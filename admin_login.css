@@ -75,7 +75,7 @@ input[type="password"]:focus {
 
 /* Button Styling */
 button {
-    background-color: #007bff;
+    background-color: #ffcba4;
     color: white;
     border: none;
     padding: 12px;
@@ -86,7 +86,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #fd7f1e;
 }
 
 /* Error Message */

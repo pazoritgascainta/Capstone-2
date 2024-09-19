@@ -50,6 +50,22 @@ $stmt_complaints->bind_param("iii", $homeowner_id, $offset, $limit);
 $stmt_complaints->execute();
 $result_complaints = $stmt_complaints->get_result();
 $complaints = $result_complaints->fetch_all(MYSQLI_ASSOC);
+
+if (isset($_POST['delete_id'])) {
+    $delete_id = $_POST['delete_id'];
+
+    // Prepare and execute the delete query
+    $delete_query = "DELETE FROM complaints WHERE complaint_id = ?";
+    $stmt = $conn->prepare($delete_query);
+    $stmt->bind_param("i", $delete_id);
+
+    if ($stmt->execute()) {
+        echo "<script>alert('Complaint deleted successfully.'); window.location.href='view_complaints.php';</script>";
+    } else {
+        echo "<script>alert('Failed to delete the complaint.');</script>";
+    }
+    $stmt->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -89,10 +105,11 @@ $complaints = $result_complaints->fetch_all(MYSQLI_ASSOC);
                             <td><?php echo htmlspecialchars($complaint['status']); ?></td>
                             <td><?php echo htmlspecialchars($complaint['created_at']); ?></td>
                             <td><?php echo htmlspecialchars($complaint['updated_at']); ?></td>
-                            <td>
-                                <a href="edit_complaint.php?id=<?php echo $complaint['complaint_id']; ?>" class="action-buttons">Edit</a>
-                                <a href="cancel_complaint.php?id=<?php echo $complaint['complaint_id']; ?>" class="action-buttons">Cancel</a>
-                            </td>
+                        <td>
+                            <form method="POST" action="view_complaints.php" class="delete-form" style="display:inline; margin-left:10px;">
+                            <input type="hidden" name="delete_id" value="<?php echo htmlspecialchars($complaint['complaint_id']); ?>">
+                            <a href="#" onclick="confirmDelete(event, this)" class="btn">Cancel</a></form>
+                        </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -116,5 +133,16 @@ $complaints = $result_complaints->fetch_all(MYSQLI_ASSOC);
         <a href="usercomplaint.php">Submit a Complaint</a>
     </div>
 </div>
+<script>
+function confirmDelete(event, link) {
+    event.preventDefault(); // Prevent the default link behavior
+
+    var confirmation = confirm('Are you sure you want to delete this complaint?');
+    if (confirmation) {
+        var form = link.closest('form');
+        form.submit(); // Submit the form if confirmed
+    }
+}
+</script>
 </body>
 </html>

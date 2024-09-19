@@ -47,7 +47,7 @@ table th, table td {
 }
 
 table th {
-    background-color: #4CAF50;
+    background-color: #fd8326;
     color: white;
     font-size: 16px;
 }
@@ -96,7 +96,7 @@ table tr:hover {
 }
 
 .action-buttons:hover {
-    background-color: #0056b3;
+    background-color:rgb(250, 65, 65);
 }
 
 /* Message when no complaints are found */

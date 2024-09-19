@@ -267,8 +267,6 @@ $logout_message = isset($_GET['message']) && $_GET['message'] == 'loggedout' ? "
             <h2>Contact Us</h2>
                 <li><i class="fa fa-envelope"></i> Email: saintmoniquev@gmail.com</li>
                 <li><i class="fa fa-phone"></i> Phone: 0917 719 7908</li>
-
-
             </ul>
         </div>
             <div class="location-map">
@@ -281,7 +279,6 @@ $logout_message = isset($_GET['message']) && $_GET['message'] == 'loggedout' ? "
 
     <div class="footer">
         <p>© 2024 St. Monique Valais Homeowners Association. All rights reserved.
-            
         </p>
         
     </div>

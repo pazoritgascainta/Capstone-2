@@ -18,7 +18,7 @@
 /* Calendar box styling */
 #calendar-nav {
     flex-shrink: 0; 
-    background-color: #007BFF;
+    background-color: #fd8326;
     color: #fff;
     padding: 10px;
     display: flex;
@@ -55,7 +55,7 @@
 /* Calendar grid styling */
 #calendar {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* Ensure it still has 7 columns */
+    grid-template-columns: repeat(5, 2fr); /* Ensure it still has 7 columns */
     gap: 5px;
     padding: 5px;
     height: calc(100% - 60px); /* Deduct space for navigation */
@@ -86,7 +86,7 @@
 
 /* Hover effect for calendar cells */
 .calendar-cell:hover {
-    background-color: #007BFF;
+    background-color: peachpuff;
 }
 
 /* Empty date cell styling */
@@ -113,3 +113,4 @@
     background-color: peachpuff;
     color: black;
 }
+
