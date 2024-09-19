@@ -9,8 +9,8 @@
 }
 
 body{
-    background-color: #c9d6ff;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    background-color: #ffe8c9;
+    background: linear-gradient(to right, #e7962b, #c48807);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -19,7 +19,7 @@ body{
 }
 
 .container{ /* optional */
-    background-color: #fff;
+    background-color: #cfb894;
     border-radius: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     position: relative;
@@ -124,7 +124,7 @@ body{
 .toggle{
     background-color: #f1d176;
     height: 100%;
-    background: linear-gradient(to right, #5c6bc0, #512da8);
+    background: linear-gradient(to right, #c99466, #ffdab9);
     color: #fff;
     position: relative;
     left: -100%;
