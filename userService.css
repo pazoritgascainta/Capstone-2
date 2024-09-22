@@ -44,7 +44,7 @@ h1 {
 }
 
 .btn.active, .btn:hover {
-    background-color: #28a745;
+    background-color: #fd8326;
     color: #fff;
 }
 
@@ -67,7 +67,7 @@ input, textarea {
 }
 
 button[type="submit"] {
-    background-color: #28a745;
+    background-color: peachpuff;
     color: #fff;
     border: none;
     padding: 15px; /* Increased padding */
@@ -77,5 +77,5 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #218838;
+    background-color: #fd8326;
 }

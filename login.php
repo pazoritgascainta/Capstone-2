@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn = new mysqli($servername, $username, $dbpassword, $database);
 
     if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+        die("Connection failed: " . $conn->connect_error); 
     }
 
     $sql = "SELECT id, name, password, status FROM homeowners WHERE email = ?";

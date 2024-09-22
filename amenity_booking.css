@@ -55,7 +55,7 @@ td {
 
 /* Table Header Styling */
 th {
-    background-color: #007BFF; /* Blue background for table headers */
+    background-color: #fd8326; /* Blue background for table headers */
     color: #fff; /* White text color for contrast */
     padding: 12px;
     text-align: center; /* Center align text in headers */
@@ -118,7 +118,7 @@ p.no-appointments {
 }
 #pagination a:hover {
     background-color: #f0f0f0; /* Light gray background on hover */
-    color: #007BFF; /* Blue text color */
+    color: #fd8326; /* Blue text color */
 }
 
 #pagination input {
@@ -181,7 +181,7 @@ button {
 
 /* Button Hover Effect */
 button:hover {
-    background-color: #0056b3; /* Darker color on hover */
+    background-color: #fd8326; /* Darker color on hover */
 }
 /* Styles for select elements */
 select {
