@@ -11,6 +11,7 @@ $name = "";
 $email = "";
 $phone = "";
 $address = "";
+$sqm = ""; // Add squaremeters variable
 $password = ""; // Keep track of password field
 
 $errorMessage = "";
@@ -20,7 +21,7 @@ $successMessage = "";
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    // Retrieve the homeowner's data from the database
+    // Retrieve the homeowner's data from the database, including squaremeters
     $sql = "SELECT * FROM homeowners WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $id);
@@ -33,6 +34,7 @@ if (isset($_GET['id'])) {
         $email = $row['email'];
         $phone = $row['phone_number'];
         $address = $row['address'];
+        $sqm = $row['sqm']; // Fetch squaremeters
     } else {
         $errorMessage = "Homeowner not found.";
     }
@@ -44,10 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST["email"];
     $phone = $_POST["phone"];
     $address = $_POST["address"];
+    $sqm = $_POST["sqm"]; // Fetch squaremeters from form
     $password = $_POST["password"];
 
     try {
-        if (empty($name) || empty($email) || empty($phone) || empty($address)) {
+        if (empty($name) || empty($email) || empty($phone) || empty($address) || empty($sqm)) {
             throw new Exception("All fields are required!");
         }
 
@@ -67,14 +70,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             
             // Update with new password
-            $sql = "UPDATE homeowners SET name = ?, email = ?, phone_number = ?, address = ?, password = ? WHERE id = ?";
+            $sql = "UPDATE homeowners SET name = ?, email = ?, phone_number = ?, address = ?, sqm = ?, password = ? WHERE id = ?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("sssssi", $name, $email, $phone, $address, $hashed_password, $id);
+            $stmt->bind_param("ssssssi", $name, $email, $phone, $address, $sqm, $hashed_password, $id);
         } else {
             // Update without changing the password
-            $sql = "UPDATE homeowners SET name = ?, email = ?, phone_number = ?, address = ? WHERE id = ?";
+            $sql = "UPDATE homeowners SET name = ?, email = ?, phone_number = ?, address = ?, sqm = ? WHERE id = ?";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssssi", $name, $email, $phone, $address, $id);
+            $stmt->bind_param("sssssi", $name, $email, $phone, $address, $sqm, $id);
         }
 
         if ($stmt->execute()) {
@@ -96,31 +99,8 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homeowners</title>
+    <title>Edit Homeowner</title>
     <link rel="stylesheet" href="createcss.css">
-    <script>
-    function checkEmail() {
-        var email = document.getElementById("email").value;
-        var emailError = document.getElementById("email-error");
-        emailError.innerHTML = "";
-        try {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    if (this.responseText == "taken") {
-                        emailError.innerHTML = "Email is already taken";
-                    } else {
-                        emailError.innerHTML = "";
-                    }
-                }
-            };
-            xhttp.open("GET", "?action=check_email&email=" + email, true);
-            xhttp.send();
-        } catch (error) {
-            emailError.innerHTML = "An error occurred while checking email availability";
-        }
-    }
-    </script>
 </head>
 <body>
     <div class="container my-5">
@@ -135,7 +115,6 @@ $conn->close();
             exit;
         }
         ?>
-
 
         <form method="post">
             <input type="hidden" name="id" value="<?php echo $id; ?>">
@@ -162,18 +141,23 @@ $conn->close();
                 <div class="col">
                     <input type="text" class="form-control" name="address" value="<?php echo $address; ?>">
                 </div>
-                <div class="row">
+            </div>
+            <div class="row">
+                <label class="col-form-label">Square Meters</label>
+                <div class="col">
+                    <input type="number" class="form-control" name="sqm" value="<?php echo $sqm; ?>">
+                </div>
+            </div>
+            <div class="row">
                 <label class="col-form-label">Password</label>
                 <div class="col">
                     <input type="password" class="form-control" name="password" value="">
                 </div>
             </div>
-            </div>
             <div class="row mt-3">
                 <div class="col">
                     <button type="submit" class="btn btn-primary">Submit</button>
                     <a class="btn btn-outline-primary" href="homeowneradmin.php" role="button">Cancel</a>
-                
                 </div>
             </div>
         </form>

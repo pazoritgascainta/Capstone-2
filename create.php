@@ -10,6 +10,7 @@ $name = "";
 $email = "";
 $phone = "";
 $address = "";
+$sqm = ""; // New field for Square Meters
 $password = "";
 
 $errorMessage = "";
@@ -20,11 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST["email"];
     $phone = $_POST["phone"];
     $address = $_POST["address"];
+    $sqm = $_POST["sqm"]; // Retrieve sqm value
     $password = $_POST["password"];
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
     do {
-        if (empty($name) || empty($email) || empty($phone) || empty($address) || empty($password)) {
+        if (empty($name) || empty($email) || empty($phone) || empty($address) || empty($sqm) || empty($password)) {
             $errorMessage = "All fields are required!";
             break;
         }
@@ -37,9 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             break;
         }
 
-        $sql = "INSERT INTO homeowners (name, email, phone_number, address, password, status) VALUES (?, ?, ?, ?, ?, 'active')";
+        // Insert homeowner data including sqm
+        $sql = "INSERT INTO homeowners (name, email, phone_number, address, sqm, password, status) VALUES (?, ?, ?, ?, ?, ?, 'active')";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssss", $name, $email, $phone, $address, $password_hash);
+        $stmt->bind_param("ssssss", $name, $email, $phone, $address, $sqm, $password_hash);
 
         if ($stmt->execute()) {
             $successMessage = "Homeowner added successfully!";
@@ -48,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $email = "";
             $phone = "";
             $address = "";
+            $sqm = ""; // Reset the sqm field
             $password = "";
 
             header("location: homeowneradmin.php");
@@ -60,6 +64,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     } while (false);
 }
+
+$conn->close();
+?>
 
 $conn->close();
 ?>
@@ -103,45 +110,52 @@ $conn->close();
             echo "<div style='color: red;'>$errorMessage</div>";
         }
         ?>
-        <form method="post" onsubmit="return validateForm()">
-            <div class="row">
-                <label class="col-form-label">Name</label>
-                <div class="col">
-                    <input type="text" class="form-control" name="name" value="<?php echo $name; ?>">
-                </div>
-            </div>
-            <div class="row">
-                <label class="col-form-label">Email</label>
-                <div class="col">
-                    <input type="text" class="form-control" id="email" name="email" value="<?php echo $email; ?>" onblur="checkEmail()">
-                    <span id="email-error" style="color: red;"></span>
-                </div>
-            </div>
-            <div class="row">
-                <label class="col-form-label">Phone</label>
-                <div class="col">
-                    <input type="text" class="form-control" name="phone" value="<?php echo $phone; ?>">
-                </div>
-            </div>
-            <div class="row">
-                <label class="col-form-label">Address</label>
-                <div class="col">
-                    <input type="text" class="form-control" name="address" value="<?php echo $address; ?>">
-                </div>
-            </div>
-            <div class="row">
-                <label class="col-form-label">Password</label>
-                <div class="col">
-                    <input type="password" class="form-control" name="password" value="<?php echo $password; ?>">
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                    <a class="btn btn-outline-primary" href="homeowneradmin.php" role="button">Cancel</a>
-                </div>
-            </div>
-        </form>
+       <form method="post" onsubmit="return validateForm()">
+    <div class="row">
+        <label class="col-form-label">Name</label>
+        <div class="col">
+            <input type="text" class="form-control" name="name" value="<?php echo $name; ?>">
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-form-label">Email</label>
+        <div class="col">
+            <input type="text" class="form-control" id="email" name="email" value="<?php echo $email; ?>" onblur="checkEmail()">
+            <span id="email-error" style="color: red;"></span>
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-form-label">Phone</label>
+        <div class="col">
+            <input type="text" class="form-control" name="phone" value="<?php echo $phone; ?>">
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-form-label">Address</label>
+        <div class="col">
+            <input type="text" class="form-control" name="address" value="<?php echo $address; ?>">
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-form-label">Square Meters</label> <!-- New Square Meters field -->
+        <div class="col">
+            <input type="number" class="form-control" name="sqm" value="<?php echo $sqm; ?>"> <!-- Input for sqm -->
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-form-label">Password</label>
+        <div class="col">
+            <input type="password" class="form-control" name="password" value="<?php echo $password; ?>">
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <a class="btn btn-outline-primary" href="homeowneradmin.php" role="button">Cancel</a>
+        </div>
+    </div>
+</form>
+
     </div>
 </body>
 </html>

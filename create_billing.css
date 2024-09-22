@@ -41,7 +41,7 @@ body {
 
 .form-group input[type="text"],
 .form-group input[type="number"],
-.form-group input[type="datetime-local"],
+.form-group input[type="month"],
 .form-group select {
     width: calc(100% - 20px);
     padding: 10px;

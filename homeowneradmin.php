@@ -59,13 +59,14 @@ $search_condition = !empty($search_query) ? " AND (name LIKE ? OR email LIKE ?)"
 
 // Fetch active homeowners with pagination and search
 $sql_homeowners = "
-    SELECT id, name, email, phone_number, address, created_at, status 
+    SELECT id, name, email, phone_number, address, created_at, status, sqm 
     FROM homeowners 
     WHERE status != 'archived'
     $search_condition
     ORDER BY created_at DESC
     LIMIT $records_per_page OFFSET $offset
 ";
+
 $stmt_homeowners = $conn->prepare($sql_homeowners);
 if (!empty($search_query)) {
     $search_term = "%$search_query%";
@@ -128,39 +129,41 @@ $current_page = min($current_page, $total_pages); // Ensure page is not greater 
 
             <?php if ($result_homeowners->num_rows > 0): ?>
                 <table class="table">
-                    <thead>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Square Meters</th> <!-- New Column -->
+                        <th>Created At</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through homeowners and display their info -->
+                    <?php while ($row = $result_homeowners->fetch_assoc()): ?>
                         <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone</th>
-                            <th>Address</th>
-                            <th>Created At</th>
-                            <th>Action</th>
+                            <td><?php echo htmlspecialchars($row['id']); ?></td>
+                            <td><?php echo htmlspecialchars($row['name']); ?></td>
+                            <td><?php echo htmlspecialchars($row['email']); ?></td>
+                            <td><?php echo htmlspecialchars($row['phone_number']); ?></td>
+                            <td><?php echo htmlspecialchars($row['address']); ?></td>
+                            <td><?php echo htmlspecialchars($row['sqm']); ?></td> <!-- New Column -->
+                            <td><?php echo htmlspecialchars($row['created_at']); ?></td>
+                            <td>
+                                <a class="btn btn-primary btn-sm" href="edit.php?id=<?= $row['id']; ?>">Edit</a>
+                                <form method="POST" action="homeowneradmin.php" style="display:inline;">
+                                    <input type="hidden" name="homeowner_id" value="<?= $row['id']; ?>">
+                                    <input type="hidden" name="new_status" value="archived">
+                                    <button class="btn btn-primary btn-sm archive-btn" type="submit">Archive</button>
+                                </form>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Loop through homeowners and display their info -->
-                        <?php while ($row = $result_homeowners->fetch_assoc()): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($row['id']); ?></td>
-                                <td><?php echo htmlspecialchars($row['name']); ?></td>
-                                <td><?php echo htmlspecialchars($row['email']); ?></td>
-                                <td><?php echo htmlspecialchars($row['phone_number']); ?></td>
-                                <td><?php echo htmlspecialchars($row['address']); ?></td>
-                                <td><?php echo htmlspecialchars($row['created_at']); ?></td>
-                                <td>
-                                    <a class="btn btn-primary btn-sm" href="edit.php?id=<?= $row['id']; ?>">Edit</a>
-                                    <span class="button-margin"></span>
-                                    <form method="POST" action="homeowneradmin.php" style="display:inline;">
-                                        <input type="hidden" name="homeowner_id" value="<?= $row['id']; ?>">
-                                        <input type="hidden" name="new_status" value="archived">
-                                        <button class="btn btn-primary btn-sm archive-btn" type="submit" onclick="return confirm('Are you sure you want to archive this homeowner?');">Archive</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
+                    <?php endwhile; ?>
+                </tbody>
+
                 </table>
 
                 <!-- Pagination controls -->

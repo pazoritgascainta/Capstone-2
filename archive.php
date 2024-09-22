@@ -59,7 +59,7 @@ $offset = ($current_page - 1) * $records_per_page;
 
 // Fetch archived homeowners with search and pagination
 $sql_archived_homeowners = "
-    SELECT id, name, email, phone_number, address, created_at, status 
+    SELECT id, name, email, phone_number, address, created_at, status, sqm 
     FROM homeowners 
     WHERE status = 'archived'
     AND (name LIKE '%$search_query%' OR email LIKE '%$search_query%')
@@ -92,10 +92,9 @@ $total_pages = ceil($total_archived_homeowners / $records_per_page);
     <?php include 'sidebar.php'; ?>
 
     <div class="main-content">
-    <h2>Archived Homeowners</h2>
-    <a class="btn btn-primary" href="homeowneradmin.php" role="button">Back to Homeowners</a>
+        <h2>Archived Homeowners</h2>
+        <a class="btn btn-primary" href="homeowneradmin.php" role="button">Back to Homeowners</a>
         <div class="container">
-
 
             <!-- Search Form -->
             <form method="GET" action="archive.php" class="search-form">
@@ -120,6 +119,7 @@ $total_pages = ceil($total_archived_homeowners / $records_per_page);
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Address</th>
+                            <th>Square Meters</th> <!-- Added sqm column -->
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
@@ -132,6 +132,7 @@ $total_pages = ceil($total_archived_homeowners / $records_per_page);
                                 <td><?php echo htmlspecialchars($row['email']); ?></td>
                                 <td><?php echo htmlspecialchars($row['phone_number']); ?></td>
                                 <td><?php echo htmlspecialchars($row['address']); ?></td>
+                                <td><?php echo htmlspecialchars($row['sqm']); ?></td> <!-- Display sqm value -->
                                 <td><?php echo htmlspecialchars($row['created_at']); ?></td>
                                 <td>
                                     <form method="POST" action="archive.php" style="display: inline;">

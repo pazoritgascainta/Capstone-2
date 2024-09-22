@@ -58,15 +58,45 @@ function handlePostRequest($conn) {
 }
 
 function handlePaidStatus($conn, $billing_id) {
+    // Get the current month's due amount
+    $sql_get_due = "SELECT monthly_due FROM billing WHERE billing_id = ?";
+    if ($stmt_get_due = $conn->prepare($sql_get_due)) {
+        $stmt_get_due->bind_param("i", $billing_id);
+        $stmt_get_due->execute();
+        $stmt_get_due->bind_result($monthly_due);
+        $stmt_get_due->fetch();
+        $stmt_get_due->close();
+    } else {
+        throw new Exception("Prepare statement failed: " . $conn->error);
+    }
+
     // Reset the total amount for the current record and record the paid date
-    $sql_update_total = "UPDATE billing SET total_amount = 0.00, paid_date = ? WHERE billing_id = ?";
+    $sql_update_total = "UPDATE billing SET total_amount = ?, paid_date = ? WHERE billing_id = ?";
     if ($stmt_update_total = $conn->prepare($sql_update_total)) {
         $paid_date = date('Y-m-d');
-        $stmt_update_total->bind_param("si", $paid_date, $billing_id);
+        // Keep the monthly due for the current month in the total amount
+        $stmt_update_total->bind_param("dsi", $monthly_due, $paid_date, $billing_id);
         if (!$stmt_update_total->execute()) {
             throw new Exception("Failed to reset total amount: " . $stmt_update_total->error);
         }
         $stmt_update_total->close();
+    } else {
+        throw new Exception("Prepare statement failed: " . $conn->error);
+    }
+
+    // Update billing date and due date for the next month
+    $sql_update_dates = "UPDATE billing SET billing_date = ?, due_date = ? WHERE billing_id = ?";
+    if ($stmt_update_dates = $conn->prepare($sql_update_dates)) {
+        $next_billing_date = new DateTime($paid_date);
+        $next_billing_date->modify('first day of next month');
+        $next_due_date = clone $next_billing_date;
+        $next_due_date->modify('+1 month');
+
+        $stmt_update_dates->bind_param("ssi", $next_billing_date->format('Y-m-d'), $next_due_date->format('Y-m-d'), $billing_id);
+        if (!$stmt_update_dates->execute()) {
+            throw new Exception("Failed to update billing dates: " . $stmt_update_dates->error);
+        }
+        $stmt_update_dates->close();
     } else {
         throw new Exception("Prepare statement failed: " . $conn->error);
     }
@@ -142,26 +172,37 @@ function updateOverdueAmounts($conn) {
     }
 }
 
-function fetchBillingRecords($conn) {
+function fetchBillingRecords($conn, $offset, $limit) {
     $sql_billing_records = "
         SELECT b.billing_id, b.homeowner_id, h.name AS homeowner_name, h.address, b.total_amount, b.billing_date, b.due_date, b.status, b.monthly_due
         FROM billing b
         JOIN homeowners h ON b.homeowner_id = h.id
+        LIMIT ?, ?
     ";
-    $result_billing = $conn->query($sql_billing_records);
-    if (!$result_billing) {
-        die("Query failed: " . $conn->error);
-    }
-    return $result_billing;
+    $stmt = $conn->prepare($sql_billing_records);
+    $stmt->bind_param("ii", $offset, $limit);
+    $stmt->execute();
+    return $stmt->get_result();
+}
+
+function getTotalPages($conn, $limit) {
+    $sql_count = "SELECT COUNT(*) AS total FROM billing";
+    $result = $conn->query($sql_count);
+    $row = $result->fetch_assoc();
+    return ceil($row['total'] / $limit);
 }
 
 // Main execution
 handlePostRequest($conn);
-updateOverdueAmounts($conn);
-$result_billing = fetchBillingRecords($conn);
+
+// Pagination logic
+$current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$limit = 10; // Number of records per page
+$total_pages = getTotalPages($conn, $limit);
+$offset = ($current_page - 1) * $limit;
+
+$result_billing = fetchBillingRecords($conn, $offset, $limit);
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -252,6 +293,45 @@ $result_billing = fetchBillingRecords($conn);
                         <?php endif; ?>
                     </tbody>
                 </table>
+
+                <!-- Pagination -->
+                <div id="pagination">
+                    <?php
+                    $total_pages = max($total_pages, 1); // Ensure there's at least 1 page
+                    $input_page = $current_page; // Default to the current page for the input
+
+                    // Previous button
+                    if ($current_page > 1): ?>
+                        <form method="GET" action="billingadmin.php" style="display: inline;">
+                            <input type="hidden" name="search" value="<?= htmlspecialchars($search_query); ?>">
+                            <input type="hidden" name="page" value="<?= $current_page - 1 ?>">
+                            <button type="submit">&lt;</button>
+                        </form>
+                    <?php endif; ?>
+
+                    <!-- Page input for user to change the page -->
+                    <form method="GET" action="billingadmin.php" style="display: inline;">
+                        <input type="hidden" name="search" value="<?= htmlspecialchars($search_query); ?>">
+                        <input type="number" name="page" value="<?= $input_page ?>" min="1" max="<?= $total_pages ?>" style="width: 50px;">
+                    </form>
+
+                    <!-- "of" text and last page link -->
+                    <?php if ($total_pages > 1): ?>
+                        <span>of</span>
+                        <a href="?search=<?= urlencode($search_query); ?>&page=<?= $total_pages ?>" class="<?= ($current_page == $total_pages) ? 'active' : '' ?>"><?= $total_pages ?></a>
+                    <?php endif; ?>
+
+                    <!-- Next button -->
+                    <?php if ($current_page < $total_pages): ?>
+                        <form method="GET" action="billingadmin.php" style="display: inline;">
+                            <input type="hidden" name="search" value="<?= htmlspecialchars($search_query); ?>">
+                            <input type="hidden" name="page" value="<?= $current_page + 1 ?>">
+                            <button type="submit">></button>
+                        </form>
+                    <?php endif; ?>
+                </div>
+                <!-- End of Pagination -->
+                
             </section>
         </div>
     </div>

@@ -14,15 +14,16 @@ if ($conn->connect_error) {
 
 $id = intval($_GET['id']);
 
-// Fetch homeowner name by ID
-$sql = "SELECT name FROM homeowners WHERE id = ?";
+// Fetch homeowner name and sqm by ID
+$sql = "SELECT name, sqm FROM homeowners WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
 $stmt->execute();
 $result = $stmt->get_result();
 $homeowner = $result->fetch_assoc();
 
-$conn->close();
+$stmt->close(); // Close the statement
+$conn->close(); // Close the connection
 
 header('Content-Type: application/json');
 echo json_encode($homeowner);
