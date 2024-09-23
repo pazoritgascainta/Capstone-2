@@ -127,6 +127,21 @@ $row_count = $result_count->fetch_assoc();
 $total_appointments = $row_count['total'];
 $total_pages = max(ceil($total_appointments / $limit), 1);
 
+
+// Fetch accepted appointments
+$sql_accepted_appointments = "SELECT a.id, a.date, a.name, a.email, a.purpose, a.status, t.time_start, t.time_end, am.name AS amenity_name, a.amount
+                              FROM accepted_appointments a
+                              JOIN timeslots t ON a.timeslot_id = t.id
+                              JOIN amenities am ON a.amenity_id = am.id
+                              WHERE a.homeowner_id = ? AND a.date >= CURDATE()";
+$stmt_accepted_appointments = $conn->prepare($sql_accepted_appointments);
+$stmt_accepted_appointments->bind_param("i", $_SESSION['homeowner_id']);
+$stmt_accepted_appointments->execute();
+$result_accepted_appointments = $stmt_accepted_appointments->get_result();
+$accepted_appointments = $result_accepted_appointments->fetch_all(MYSQLI_ASSOC);
+
+
+
 // Fetch booked appointments with pagination
 $sql_booked_appointments = "SELECT a.id, a.date, a.name, a.email, a.purpose, a.status, t.time_start, t.time_end, am.name AS amenity_name
                             FROM appointments a
@@ -267,10 +282,14 @@ if (isset($_SESSION['message'])) {
             </div>
     
         </form>
+        <div class="table-toggle">
+        <button id="show-pending" onclick="showTable('pending')"> Pending Appointments</button>
+    <button id="show-accepted" onclick="showTable('accepted')"> Accepted Appointments</button>
 
+</div>
         <!-- Appointments Table -->
-        <h2>Upcoming Appointments</h2>
-        <table id="appointments-table">
+        <h2 id="pending-title">Pending Appointments</h2>
+<table id="pending-appointments-table">
     <thead>
         <tr>
             <th>Date</th>
@@ -279,7 +298,7 @@ if (isset($_SESSION['message'])) {
             <th>Email</th>
             <th>Purpose</th>
             <th>Status</th>
-            <th>Amenity</th> <!-- Added Amenity column header -->
+            <th>Amenity</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -292,7 +311,7 @@ if (isset($_SESSION['message'])) {
                 <td><?php echo htmlspecialchars($appointment['email']); ?></td>
                 <td><?php echo htmlspecialchars($appointment['purpose']); ?></td>
                 <td><?php echo htmlspecialchars($appointment['status']); ?></td>
-                <td><?php echo htmlspecialchars($appointment['amenity_name']); ?></td> <!-- Display Amenity name -->
+                <td><?php echo htmlspecialchars($appointment['amenity_name']); ?></td>
                 <td>
                     <button onclick="cancelAppointment(<?php echo $appointment['id']; ?>)">Cancel</button>
                 </td>
@@ -300,6 +319,43 @@ if (isset($_SESSION['message'])) {
         <?php endforeach; ?>
     </tbody>
 </table>
+
+<!-- Accepted Appointments Table -->
+<h2 style="display:none;" id="accepted-title">Accepted Appointments</h2>
+<table id="accepted-appointments-table" style="display:none;">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Purpose</th>
+            <th>Status</th>
+            <th>Amenity</th>
+            <th>Amount</th> <!-- New column for Amount -->
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($accepted_appointments as $appointment): ?>
+            <tr id="appointment-<?php echo $appointment['id']; ?>">
+                <td><?php echo htmlspecialchars($appointment['date']); ?></td>
+                <td><?php echo htmlspecialchars($appointment['time_start']) . ' - ' . htmlspecialchars($appointment['time_end']); ?></td>
+                <td><?php echo htmlspecialchars($appointment['name']); ?></td>
+                <td><?php echo htmlspecialchars($appointment['email']); ?></td>
+                <td><?php echo htmlspecialchars($appointment['purpose']); ?></td>
+                <td><?php echo htmlspecialchars($appointment['status']); ?></td>
+                <td><?php echo htmlspecialchars($appointment['amenity_name']); ?></td>
+                <td><?php echo htmlspecialchars($appointment['amount']); ?></td> <!-- Amount value -->
+                <td>
+                    <button onclick="cancelAppointment(<?php echo $appointment['id']; ?>)">Cancel</button>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+
 
         <!-- Pagination Controls -->
 <div id="pagination">
@@ -381,6 +437,33 @@ function handleFormSubmit(event) {
 
 
 </script>
+<script>
+function showTable(type) {
+    const pendingTitle = document.getElementById('pending-title');
+    const pendingTable = document.getElementById('pending-appointments-table');
+    const acceptedTable = document.getElementById('accepted-appointments-table');
+    const acceptedTitle = document.getElementById('accepted-title');
+
+    if (type === 'accepted') {
+        pendingTitle.style.display = 'none'; // Hide pending title
+        pendingTable.style.display = 'none';  // Hide pending table
+        acceptedTable.style.display = 'table'; // Show accepted table
+        acceptedTitle.style.display = 'block';  // Show accepted title
+    } else {
+        pendingTitle.style.display = 'block';   // Show pending title
+        pendingTable.style.display = 'table';    // Show pending table
+        acceptedTable.style.display = 'none';     // Hide accepted table
+        acceptedTitle.style.display = 'none';      // Hide accepted title
+    }
+}
+
+// Set the initial table to show
+document.addEventListener("DOMContentLoaded", function() {
+    showTable('pending'); // Show pending by default
+});
+</script>
+
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     // Function to hide the message after a delay

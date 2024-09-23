@@ -110,3 +110,7 @@ th, td {
     border-radius: 5px;
     margin-left: 10px;
 }
+a{
+    color: green;
+    font-weight: bold;
+}
