@@ -38,13 +38,13 @@ header {
     gap: 20px;
 }
 
-.balance, .example {
+.balance, .modues, .appointments {
     background-color: #e9f8e9;
     padding: 10px;
     border-radius: 8px;
 }
 
-.balance h2, .example h2 {
+.balance h2, .modues h2, .appointments h2 {
     color: green;
 }
 
