@@ -1,6 +1,8 @@
+// userservice.js
+
 document.addEventListener("DOMContentLoaded", function() {
     const buttons = document.querySelectorAll(".button-group .btn");
-    const serviceTypeInput = document.getElementById('service_type');
+    const serviceTypeInput = document.getElementById('type');
 
     buttons.forEach(button => {
         button.addEventListener("click", function() {

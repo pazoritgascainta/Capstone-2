@@ -1,11 +1,3 @@
-/* Global styles */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    min-height: 100vh;
-}
 
 /* Sidebar styles */
 .servicesidebar {
@@ -81,15 +73,12 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.approve-btn {
+.view-btn {
     background-color: #4caf50;
     color: white;
 }
 
-.edit-btn {
-    background-color: #2196f3;
-    color: white;
-}
+
 
 .delete-btn {
     background-color: #f44336;

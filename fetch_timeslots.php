@@ -23,21 +23,37 @@ if (isset($_GET['date']) && isset($_GET['amenity_id'])) {
     $date = sanitize_input($_GET['date']);
     $amenity_id = sanitize_input($_GET['amenity_id']);
 
-    $sql = "SELECT * FROM timeslots WHERE amenity_id = ? AND date = ? AND is_available = TRUE";
+    // Debugging: Log input parameters
+    error_log("Date: $date, Amenity ID: $amenity_id");
+
+    // Prepare the SQL statement
+    $sql = "SELECT * FROM timeslots WHERE amenity_id = ? AND date = ? AND is_available = 1";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("is", $amenity_id, $date);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $timeslots = [];
-    while ($row = $result->fetch_assoc()) {
-        $timeslots[] = $row;
-    }
-
-    // Debugging line to check query results
-    // echo "<pre>" . print_r($timeslots, true) . "</pre>";
     
-    echo json_encode($timeslots);
+    if ($stmt) {
+        $stmt->bind_param("is", $amenity_id, $date);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        // Check if any timeslots were returned
+        if ($result->num_rows > 0) {
+            $timeslots = [];
+            while ($row = $result->fetch_assoc()) {
+                $timeslots[] = $row;
+            }
+            // Debugging: Log fetched timeslots
+            error_log("Fetched timeslots: " . print_r($timeslots, true));
+            echo json_encode($timeslots);
+        } else {
+            // No records found
+            error_log("No available timeslots found for the given date and amenity.");
+            echo json_encode([]);
+        }
+    } else {
+        // SQL statement preparation error
+        error_log("SQL statement preparation failed: " . $conn->error);
+        echo json_encode([]);
+    }
 } else {
     echo json_encode([]);
 }

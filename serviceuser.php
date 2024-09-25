@@ -20,6 +20,9 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+// Initialize a variable for the success message
+$success_message = "";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $homeowner_id = $_SESSION['homeowner_id'];
     $details = $conn->real_escape_string($_POST['message']);
@@ -27,13 +30,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $type = $conn->real_escape_string($_POST['type']); // Get service type from hidden input
 
     // Check if service_type is set
-    if (!isset($_POST['type'])) {
+    if (!isset($_POST['type']) || empty($_POST['type'])) {
         echo "Service type is not set.";
     } else {
         $sql = "INSERT INTO serreq (homeowner_id, details, urgency, type) VALUES ('$homeowner_id', '$details', '$urgency', '$type')";
 
         if ($conn->query($sql) === TRUE) {
-            echo "Service request submitted successfully!";
+            $success_message = "Service request submitted successfully!"; // Set success message
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
@@ -42,12 +45,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Dashboard</title>
     <link rel="stylesheet" href="usersidebar.css">
     <link rel="stylesheet" href="userService.css">
+    <script>
+        // Function to show the alert if the PHP variable is set
+        function showAlert(message) {
+            if (message) {
+                alert(message);
+            }
+        }
+    </script>
 </head>
 <body>
     <?php include 'usersidebar.php'; ?>
@@ -55,6 +67,11 @@ $conn->close();
     <div class="main-content">
         <div class="Container">
             <h1>St. Monique User Service Requests</h1>
+
+            <script>
+                // Call the alert function with the success message
+                showAlert(<?php echo json_encode($success_message); ?>);
+            </script>
         </div>
         <div class="service-request-form">
             <div class="form-container">
@@ -68,6 +85,7 @@ $conn->close();
                 </div>
     
                 <form id="serviceForm" method="POST" action="">
+                    <input type="hidden" id="type" name="type" value="Maintenance"> <!-- Hidden input for service type -->
                     <label for="message">Service Request Details:</label>
                     <textarea id="message" name="message" rows="4" required></textarea>
 
@@ -87,31 +105,15 @@ $conn->close();
                     </fieldset>
 
                     <button type="submit">Submit Form</button>
+                    <a href="view_service_requests.php">View Your Service Requests</a>
+
                 </form>
+
             </div>
         </div>
     </div>
 
-    <script >
-        document.addEventListener("DOMContentLoaded", function() {
-    const buttons = document.querySelectorAll(".button-group .btn");
-    const serviceTypeInput = document.getElementById('type');
-
-    buttons.forEach(button => {
-        button.addEventListener("click", function() {
-            // Set the hidden input value to the clicked button's value
-            serviceTypeInput.value = this.value;
-            // Remove active class from other buttons
-            buttons.forEach(btn => btn.classList.remove("active"));
-            // Add active class to the clicked button
-            this.classList.add("active");
-        });
-    });
-
-    // Optionally set the default value for service type on page load
-    serviceTypeInput.value = buttons[0].value; // Set to the first button's value (Maintenance)
-});
-
-    </script>
+    <!-- Include the JavaScript file at the end of the body -->
+    <script src="userservice.js"></script>
 </body>
 </html>

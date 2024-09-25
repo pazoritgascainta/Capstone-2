@@ -22,7 +22,7 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $items_per_page = 10;
 
 // Get the total number of items from your data source (e.g., database)
-$total_items = 100; // Example value, replace with actual query to count items
+$total_items = 1000; // Example value, replace with actual query to count items
 
 // Calculate the total number of pages
 $total_pages = ceil($total_items / $items_per_page);
