@@ -49,7 +49,7 @@ th, td {
 
 /* Table Header Styling */
 th {
-    background-color: #007BFF; /* Light gray background for headers */
+    background-color: #ff8b2c; /* Light gray background for headers */
     color: #fff; /* Darker text color for better contrast */
     font-weight: bold; /* Bold text for headers */
 }
@@ -84,7 +84,7 @@ button:hover {
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
-    background-color: #007BFF;
+    background-color: #ff8b2c;
     color: white;
     text-decoration: none;
     cursor: pointer;
@@ -93,7 +93,7 @@ button:hover {
 }
 
 .btn-manage-timeslots:hover, .btn-view-accepted:hover {
-    background-color: #0056b3;
+    background-color: #ff7300;
 }
 
 /* Pagination Styling */
@@ -101,7 +101,7 @@ button:hover {
     display: none;
 }
 .page-link.active {
-    background-color: #007BFF; /* Primary color for active link */
+    background-color: #f5a869; /* Primary color for active link */
     color: white; /* White text color */
     border: 1px solid #007BFF; /* Match border color with active background */
 }
@@ -157,7 +157,7 @@ button:hover {
 #pagination button:hover {
     background-color: white; /* White background on hover */
     color: #007BFF; /* Blue text on hover */
-    border: 1px solid #007BFF; /* Blue border on hover */
+    border: 1px solid #CDE7FF; /* Blue border on hover */
 }
 
 #pagination button:disabled {
@@ -187,7 +187,7 @@ button:hover {
 .btn-manage-timeslots {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #007BFF;
+    background-color: #ff8b2c;
     color: white;
     text-decoration: none;
     border-radius: 6px;
@@ -196,5 +196,5 @@ button:hover {
 }
 
 .btn-manage-timeslots:hover {
-    background-color: #0056b3;
+    background-color: #ff7403;
 }

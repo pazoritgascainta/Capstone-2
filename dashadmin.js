@@ -82,3 +82,29 @@ const targetChart = new Chart(ctxTarget, {
         ]
     }
 });
+
+document.getElementById('announcementForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const announcementInput = document.getElementById('announcementInput').value;
+    const tableBody = document.getElementById('announcementTableBody');
+
+    if (announcementInput) {
+        const row = document.createElement('tr');
+
+        const announcementCell = document.createElement('td');
+        announcementCell.textContent = announcementInput;
+
+        const dateCell = document.createElement('td');
+        dateCell.textContent = new Date().toLocaleDateString();
+
+        row.appendChild(announcementCell);
+        row.appendChild(dateCell);
+
+        tableBody.appendChild(row);
+
+        // Clear input after submission
+        document.getElementById('announcementInput').value = '';
+    }
+});
+

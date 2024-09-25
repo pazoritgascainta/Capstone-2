@@ -1,0 +1,41 @@
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px; /* Space above the table */
+}
+
+/* Table Headers and Cells */
+th, td {
+    border: 1px solid #ddd; /* Light gray border */
+    padding: 12px; /* Added padding for readability */
+    text-align: left; /* Align text to the left */
+    max-width: 200px; /* Set a max-width for the cells */
+    word-wrap: break-word; /* Allow text to wrap within the cell */
+    white-space: normal; /* Allow text to wrap to the next line */
+}
+
+/* Table Header Styling */
+th {
+    background-color: #007BFF; /* Light gray background for headers */
+    color: #fff; /* Darker text color for better contrast */
+    font-weight: bold; /* Bold text for headers */
+}
+
+/* Button Styling */
+button {
+    margin: 0 6px; /* Slightly increased margin for better spacing */
+    padding: 10px 15px; /* Added padding inside buttons */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #007BFF; /* Primary button color */
+    color: white; /* Text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 16px; /* Larger font size for readability */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+/* Button Hover Effect */
+button:hover {
+    background-color: #0056b3; /* Darker color on hover */
+}

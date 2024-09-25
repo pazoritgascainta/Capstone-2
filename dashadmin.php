@@ -76,6 +76,26 @@ if ($result->num_rows > 0) {
         <div class="container">
             <h1>St. Monique Admin Dashboard</h1>
             <h2>Welcome,  <?php echo htmlspecialchars($admin['username'] ?? 'Admin Name'); ?></h2>
+			<div class="announcement-widget">
+        <h2>Announcement Board</h2>
+        <form id="announcementForm">
+            <label for="announcementInput">New Announcement:</label>
+            <textarea id="announcementInput" placeholder="Write your announcement here..."></textarea>
+            <button type="submit">Submit Announcement</button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Announcements</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="announcementTableBody">
+                <!-- Announcement entries will go here -->
+            </tbody>
+        </table>
+		
+    </div>
             <div class="dashboard">
             <div class="tiles">
 					<article class="tile">

@@ -10,3 +10,64 @@
 margin-left: 80px;
     max-width: 90%; /* Optional: Set a maximum width to prevent it from becoming too wide */
 }
+/* Base styles for the announcement widget */
+.announcement-widget {
+    width: 50%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.announcement-widget h2 {
+    text-align: center;
+}
+
+.announcement-widget form {
+    display: flex;
+    flex-direction: column;
+}
+
+.announcement-widget textarea {
+    padding: 10px;
+    margin-bottom: 10px;
+    resize: none;
+    height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.announcement-widget button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.announcement-widget button:hover {
+    background-color: #45a049;
+}
+
+.announcement-widget table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.announcement-widget th, 
+.announcement-widget td {
+    padding: 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.announcement-widget thead {
+    background-color: #f4f4f4;
+}
+
+.announcement-widget tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}

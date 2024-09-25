@@ -51,7 +51,7 @@ h2 {
     padding: 8px 16px;
     margin-bottom: 10px;
     color: #fff;
-    background-color: #007bff;
+    background-color: #ff8b2c;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -60,7 +60,7 @@ h2 {
 }
 
 .btn:hover {
-    background-color: #0056b3;
+    background-color: #ff7300;
 }
 
 /* Add margin to the right of the "Edit" button */
@@ -167,7 +167,7 @@ h2 {
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
-    background-color: #007bff; /* Bootstrap primary color */
+    background-color: #ff8b2c; /* Bootstrap primary color */
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -175,5 +175,5 @@ h2 {
 }
 
 .search-form button:hover {
-    background-color: #0056b3; /* Darker shade on hover */
+    background-color: #ff7300; /* Darker shade on hover */
 }
