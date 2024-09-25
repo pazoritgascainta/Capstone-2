@@ -91,21 +91,24 @@ $conn->close();
 
                     <label for="urgency">Level of Urgency:</label>
                     <fieldset>
-                        <div class="radio-group">
-                            <label>
-                                <input type="radio" name="urgency" value="High" required> High
-                            </label>
-                            <label>
-                                <input type="radio" name="urgency" value="Medium"> Medium
-                            </label>
-                            <label>
-                                <input type="radio" name="urgency" value="Low"> Low
-                            </label>
-                        </div>
-                    </fieldset>
+                   <div class="radio-group">
+        <label class="radio-label">
+            <input type="radio" name="urgency" value="High" required> 
+            <span>High</span>
+        </label>
+        <label class="radio-label">
+            <input type="radio" name="urgency" value="Medium"> 
+            <span>Medium</span>
+        </label>
+        <label class="radio-label">
+            <input type="radio" name="urgency" value="Low"> 
+            <span>Low</span>
+        </label>
+    </div>
+                   </fieldset>
 
                     <button type="submit">Submit Form</button>
-                    <a href="view_service_requests.php">View Your Service Requests</a>
+                    <a href="view_service_requests.php" class="service-link">View Your Service Requests</a>
 
                 </form>
 

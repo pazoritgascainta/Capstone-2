@@ -2,21 +2,27 @@
 session_name('user_session'); 
 session_start();
 
+// Database connection
+$servername = "localhost";
+$username = "root";
+$dbpassword = "";
+$database = "homeowner";
+
+// Establish connection
+$conn = new mysqli($servername, $username, $dbpassword, $database);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$announcementsQuery = "SELECT * FROM announcements ORDER BY date DESC LIMIT 5";
+$announcementsResult = $conn->query($announcementsQuery);
+
+// Handle login logic
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $password = $_POST['password'];
-
-    $servername = "localhost";
-    $username = "root";
-    $dbpassword = "";
-    $database = "homeowner";
-
-    // Establish connection
-    $conn = new mysqli($servername, $username, $dbpassword, $database);
-
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
 
     $sql = "SELECT id, name, password, status FROM homeowners WHERE email = ?";
     $stmt = $conn->prepare($sql);
@@ -42,12 +48,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $stmt->close();
-    $conn->close();
 }
+
+$conn->close();
 
 // Display logout message if redirected from logout
 $logout_message = isset($_GET['message']) && $_GET['message'] == 'loggedout' ? "You have been logged out successfully." : '';
-?> 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -214,7 +222,7 @@ $logout_message = isset($_GET['message']) && $_GET['message'] == 'loggedout' ? "
         </div>
     </section>
     <h1 style="text-align: center;">St.Monique Valais HOA Drone Fly Over</h1>
-<div class="video-container">
+    <div class="video-container">
 <video autoplay muted controls>
     <source src="StMoniqueValais2.mp4" type="video/mp4">
     Your browser does not support the video tag.
@@ -228,7 +236,7 @@ $logout_message = isset($_GET['message']) && $_GET['message'] == 'loggedout' ? "
                         <img src="https://thumbs.dreamstime.com/b/under-maintenance-detailed-illustration-grungy-maintanance-construction-background-61865170.jpg" alt="Announcement Image 1">
                     </div>
                     <div class="carousel-item">
-                        <img src="Meeting.jpg" alt="Announcement Image 2">
+                        <img src="webinar.jpg" alt="Announcement Image 2">
                     </div>
                     <div class="carousel-item">
                         <img src="basketball-poster.jpg" alt="Announcement Image 3">
@@ -242,17 +250,24 @@ $logout_message = isset($_GET['message']) && $_GET['message'] == 'loggedout' ? "
                 </a>
             </div>
         </div>
+
         <div class="announcement-news">
-            <h3>Latest Announcements</h3>
-            <ul>
-                <li>Annual General Meeting <span>May 22, 2024</span></li>
-                <li>We will be holding our Annual General Meeting on June 15, 2024. All homeowners are encouraged to attend. <span>May 22, 2024</span></li>
-                <li>The community pool will be closed for maintenance from July 1 to July 5, 2024. We apologize for any inconvenience. <span>May 20, 2024</span></li>
-                <li>Our annual Basketball League will start on August 1, 2024. Register your team by July 15, 2024 <span>May 16, 2024</span></li>
-                <li>We are excited to announce a Summer Concert on July 20, 2024. More details will be shared soon.<span>May 14, 2024</span></li>
-            </ul>
+    <h3>Latest Announcements</h3>
+    <ul>
+        <?php if ($announcementsResult->num_rows > 0): ?>
+            <?php while ($row = $announcementsResult->fetch_assoc()): ?>
+                <li>
+                    <strong><?php echo date('F d, Y', strtotime($row['date'])); ?></strong>: 
+                    <?php echo htmlspecialchars($row['content']); ?>
+                </li>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <li>No announcements at the moment.</li>
+        <?php endif; ?>
+    </ul>
         </div>
-    </div>
+</div>
+
     <footer>
         <div class="footer-container">
             <div id="aboutUs">
@@ -280,7 +295,6 @@ $logout_message = isset($_GET['message']) && $_GET['message'] == 'loggedout' ? "
     <div class="footer">
         <p>© 2024 St. Monique Valais Homeowners Association. All rights reserved.
         </p>
-        
     </div>
     <script src="HomepageJS.js"></script>
 </body>

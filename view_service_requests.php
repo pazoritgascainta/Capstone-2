@@ -79,53 +79,56 @@ $conn->close();
         <h2>Your Service Requests</h2>
 
         <?php if (count($service_requests) > 0): ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Service Request ID</th>
-                        <th>Details</th>
-                        <th>Urgency</th>
-                        <th>Type</th>
-                        <th>Status</th>
-                        <th>Actions</th> <!-- Added Actions Column -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($service_requests as $request): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($request['service_req_id']); ?></td>
-                            <td><?php echo htmlspecialchars($request['details']); ?></td>
-                            <td><?php echo htmlspecialchars($request['urgency']); ?></td>
-                            <td><?php echo htmlspecialchars($request['type']); ?></td>
-                            <td><?php echo htmlspecialchars($request['status']); ?></td>
-                            <td>
-                                <form method="POST" style="display:inline;">
-                                    <input type="hidden" name="cancel_request_id" value="<?php echo htmlspecialchars($request['service_req_id']); ?>">
-                                    <button type="submit" onclick="return confirm('Are you sure you want to cancel this request?');">Cancel</button>
-                                </form>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+            <table class="service-requests-table">
+    <thead>
+        <tr>
+            <th>Service Request ID</th>
+            <th>Details</th>
+            <th>Urgency</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($service_requests as $request): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($request['service_req_id']); ?></td>
+                <td><?php echo htmlspecialchars($request['details']); ?></td>
+                <td><?php echo htmlspecialchars($request['urgency']); ?></td>
+                <td><?php echo htmlspecialchars($request['type']); ?></td>
+                <td><?php echo htmlspecialchars($request['status']); ?></td>
+                <td>
+                    <form method="POST" style="display:inline;">
+                        <input type="hidden" name="cancel_request_id" value="<?php echo htmlspecialchars($request['service_req_id']); ?>">
+                        <button type="submit" class="cancel-btn" onclick="return confirm('Are you sure you want to cancel this request?');">Cancel</button>
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
 
-            <!-- Pagination controls -->
-            <div class="pagination">
-                <?php if ($current_page > 1): ?>
-                    <a href="?page=<?php echo $current_page - 1; ?>">Previous</a>
-                <?php endif; ?>
-                <span>Page <?php echo $current_page; ?> of <?php echo $total_pages; ?></span>
-                <?php if ($current_page < $total_pages): ?>
-                    <a href="?page=<?php echo $current_page + 1; ?>">Next</a>
-                <?php endif; ?>
-            </div>
 
-        <?php else: ?>
-            <p>No service requests found.</p>
-        <?php endif; ?>
+<!-- Pagination controls -->
+<div class="pagination">
+    <?php if ($current_page > 1): ?>
+        <a href="?page=<?php echo $current_page - 1; ?>" class="pagination-link">Previous</a>
+    <?php endif; ?>
+    
+    <span class="pagination-info">Page <?php echo $current_page; ?> of <?php echo $total_pages; ?></span>
+    
+    <?php if ($current_page < $total_pages): ?>
+        <a href="?page=<?php echo $current_page + 1; ?>" class="pagination-link">Next</a>
+    <?php endif; ?>
+</div>
 
-        <a href="serviceuser.php">Submit a Service Request</a>
-    </div>
+<?php else: ?>
+    <p>No service requests found.</p>
+<?php endif; ?>
+
+<a href="serviceuser.php" class="submit-link">Submit a Service Request</a>
+
 </div>
 </body>
 </html>

@@ -36,6 +36,7 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $total_complaints = $row['total_complaints'];
 }
+
 $sql = "SELECT COUNT(*) AS total_billing FROM billing";
 $result = $conn->query($sql);
 
@@ -46,6 +47,7 @@ if ($result->num_rows > 0) {
 } else {
     $total_billing = 0;
 }
+
 $sql = "SELECT COUNT(*) AS total FROM accepted_appointments";
 $result = $conn->query($sql);
 
@@ -55,7 +57,51 @@ if ($result->num_rows > 0) {
 } else {
     $totalAppointments = 0;
 }
+
+$sql = "SELECT COUNT(*) AS total_servicereq FROM serreq";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $total_service_requests = $row['total_servicereq'];
+} else {
+    $total_service_requests = 0;
+}
+// Handle form submission for adding new announcements
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_announcement'])) {
+    $content = $_POST['content'];
+    // Limit to max 5 announcements
+    $countQuery = "SELECT COUNT(*) AS total FROM announcements";
+    $countResult = $conn->query($countQuery);
+    $count = $countResult->fetch_assoc()['total'];
+    
+    if ($count < 5) {
+        $stmt = $conn->prepare("INSERT INTO announcements (content) VALUES (?)");
+        $stmt->bind_param("s", $content);
+        $stmt->execute();
+        $stmt->close();
+    } else {
+        $error = "You can only have a maximum of 5 announcements.";
+    }
+}
+
+// Handle deletion of announcements
+if (isset($_GET['delete_id'])) {
+    $id = $_GET['delete_id'];
+    $deleteStmt = $conn->prepare("DELETE FROM announcements WHERE id = ?");
+    $deleteStmt->bind_param("i", $id);
+    $deleteStmt->execute();
+    $deleteStmt->close();
+}
+
+// Fetch all announcements
+$announcementsQuery = "SELECT * FROM announcements ORDER BY date DESC";
+$announcementsResult = $conn->query($announcementsQuery);
+
+$conn->close();
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -77,23 +123,51 @@ if ($result->num_rows > 0) {
             <h1>St. Monique Admin Dashboard</h1>
             <h2>Welcome,  <?php echo htmlspecialchars($admin['username'] ?? 'Admin Name'); ?></h2>
 			<div class="announcement-widget">
-        <h2>Announcement Board</h2>
-        <form id="announcementForm">
-            <label for="announcementInput">New Announcement:</label>
-            <textarea id="announcementInput" placeholder="Write your announcement here..."></textarea>
-            <button type="submit">Submit Announcement</button>
-        </form>
-        <table>
-            <thead>
+			<h2>Manage Announcements</h2>
+
+<!-- Form for adding a new announcement -->
+<form method="POST" action="">
+    <label for="content">New Announcement:</label><br>
+    <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
+    <button type="submit" name="add_announcement">Add Announcement</button>
+</form>
+
+<!-- Show an error if trying to add more than 5 announcements -->
+<?php if (isset($error)): ?>
+    <p class="error"><?php echo $error; ?></p>
+<?php endif; ?>
+
+<h3>Current Announcements</h3>
+<!-- Table showing existing announcements with delete and edit options -->
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Content</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if ($announcementsResult->num_rows > 0): ?>
+            <?php while ($row = $announcementsResult->fetch_assoc()): ?>
                 <tr>
-                    <th>Announcements</th>
-                    <th>Date</th>
+                    <td><?php echo $row['id']; ?></td>
+                    <td><?php echo htmlspecialchars($row['content']); ?></td>
+                    <td><?php echo date('F d, Y', strtotime($row['date'])); ?></td>
+                    <td>
+                        <a href="dashadmin_edit_announcement.php?id=<?php echo $row['id']; ?>">Edit</a>
+                        <a href="?delete_id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this announcement?');">Delete</a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody id="announcementTableBody">
-                <!-- Announcement entries will go here -->
-            </tbody>
-        </table>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="4">No announcements found.</td>
+            </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
 		
     </div>
             <div class="dashboard">
@@ -107,8 +181,8 @@ if ($result->num_rows > 0) {
 							</h3>
 						</div>
                         <div class="tile-content">
-            <span><?php echo $total_homeowners; ?></span>
-        </div>
+                        <span><?php echo $total_homeowners; ?></span>
+                         </div>
 						<a href="homeowneradmin.php">
 							<span>Go to Homeowners</span>
 							<span class="icon-button">
@@ -153,21 +227,7 @@ if ($result->num_rows > 0) {
 							</span>
 						</a>
 					</article>
-                    <article class="tile">
-						<div class="tile-header">
-							<i class="ph-lightning-light"></i>
-							<h3>
-								<span>Recording</span>
-								<span>UrkEnergo LTD.</span>
-							</h3>
-						</div>
-						<a href="recordingadmin.php">
-							<span>Go to Recording</span>
-							<span class="icon-button">
-								<i class="ph-caret-right-bold"></i>
-							</span>
-						</a>
-					</article>
+
 					<article class="tile">
 						<div class="tile-header">
 							<i class="ph-fire-simple-light"></i>
@@ -176,6 +236,7 @@ if ($result->num_rows > 0) {
 								<span>Gazprom UA</span>
 							</h3>
 						</div>
+
                         <div class="tile-content">
                         <span><?php echo $totalAppointments; ?></span> 
                         </div>
@@ -195,6 +256,11 @@ if ($result->num_rows > 0) {
 								<span>Kharkov 62 str.</span>
 							</h3>
 						</div>
+
+						<div class="tile-content">
+                        <span><?php echo $total_service_requests; ?></span> 
+                        </div>
+
 						<a href="serviceadmin.php">
 							<span>Go to Service Requests</span>
 							<span class="icon-button">

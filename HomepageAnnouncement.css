@@ -15,7 +15,7 @@
 
 #announcements ul {
     height: auto;
-    list-style-type: none;
+    list-style-type: none;                                                                   
     padding: 0;
 }
 
@@ -112,7 +112,6 @@
 .carousel-control-next-icon {
     font-size: 2em; /* Ensure icons are visible */
 }
-
 
 .announcement-news {
     width: 50%;

@@ -35,37 +35,43 @@
     overflow-y: auto;
 }
 
-/* Request card styles */
-.request-card {
-    background-color: white;
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: transform 0.2s ease;
+    overflow: hidden;
 }
 
-.request-card:hover {
-    transform: translateY(-5px);
+thead th {
+    background-color: #b67e52;
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-size: 14px;
 }
 
-.request-info h3 {
-    margin: 0;
+tbody td {
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
     color: #333;
 }
 
-.request-info p {
-    margin: 5px 0;
-    color: #777;
+tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+    background-color: #f5f5f5;
 }
 
 /* Button styles */
-.request-actions button {
-    padding: 10px 15px;
-    margin-left: 10px;
+.view-btn, .delete-btn {
+    padding: 8px 12px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -74,39 +80,59 @@
 }
 
 .view-btn {
-    background-color: #4caf50;
+    background-color: #4CAF50;
     color: white;
 }
-
-
 
 .delete-btn {
-    background-color: #f44336;
+    background-color: #F44336;
     color: white;
 }
 
-.request-actions button:hover {
-    opacity: 0.85;
+.view-btn:hover {
+    background-color: #45a049;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .servicesidebar {
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-around;
+.delete-btn:hover {
+    background-color: #e53935;
+}
+
+/* Responsive table - scroll on smaller screens */
+@media screen and (max-width: 768px) {
+    table {
+        display: block;
+        overflow-x: auto;
     }
 
-    .content-area {
-        padding: 15px;
+    thead, tbody, th, td, tr {
+        display: block;
     }
 
-    .request-card {
-        flex-direction: column;
-        align-items: flex-start;
+    thead {
+        float: left;
     }
 
-    .request-actions {
-        margin-top: 10px;
+    tbody {
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    tbody tr {
+        display: table-cell;
+    }
+
+    tbody td {
+        display: block;
+        text-align: right;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    tbody td:before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
     }
 }

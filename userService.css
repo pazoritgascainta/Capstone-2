@@ -10,7 +10,7 @@
 .service-request-form {
     width: 100%;
     max-width: 800px; /* Increased max-width */
-    background-color: #fff;
+    background-color: #ffdab9;
     padding: 30px; /* Increased padding */
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -67,7 +67,7 @@ input, textarea {
 }
 
 button[type="submit"] {
-    background-color: peachpuff;
+    background-color: rgb(255, 141, 41);
     color: #fff;
     border: none;
     padding: 15px; /* Increased padding */
@@ -78,4 +78,91 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
     background-color: #fd8326;
+}
+fieldset {
+    border: none;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+/* Radio group container */
+.radio-group {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+}
+
+/* Label styling */
+.radio-label {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+}
+
+/* Hide the default radio input */
+.radio-label input[type="radio"] {
+    display: none;
+}
+
+/* Custom radio button */
+.radio-label span {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+}
+
+.radio-label span:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgb(255, 119, 0);
+    background-color: white;
+    transition: background-color 0.3s ease;
+}
+
+.radio-label input[type="radio"]:checked + span:before {
+    background-color: rgb(255, 140, 39);
+}
+
+/* Adding a small dot to the center when selected */
+.radio-label input[type="radio"]:checked + span:after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: white;
+}
+.service-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+/* Hover and active effects */
+.service-link:hover {
+    background-color: #45a049;
+    transform: translateY(-3px);
+}
+
+.service-link:active {
+    background-color: #3e8e41;
+    transform: translateY(0);
 }

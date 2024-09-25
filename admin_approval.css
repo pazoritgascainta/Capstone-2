@@ -101,7 +101,7 @@ button:hover {
     display: none;
 }
 .page-link.active {
-    background-color: #f5a869; /* Primary color for active link */
+    background-color: #ff8b2c; /* Primary color for active link */
     color: white; /* White text color */
     border: 1px solid #007BFF; /* Match border color with active background */
 }

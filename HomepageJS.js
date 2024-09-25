@@ -30,32 +30,10 @@ function carousel() {
     setTimeout(carousel, 7000); // Change slide every 7 seconds
 }
 
-//Lightmode/Darkmode Functions
-document.getElementById('modeToggle').addEventListener('click', function() {
-    var body = document.body;
-    if (body.classList.contains('light-mode')) {
-        body.classList.remove('light-mode');
-        body.classList.add('dark-mode');
-    } else {
-        body.classList.remove('dark-mode');
-        body.classList.add('light-mode');
-    }
-});
-
 //Appointment Form
 function showForm() {
     document.getElementById('appointmentForm').style.display = 'block';
 }
-//backdrop
-document.getElementById('loginBtn').addEventListener('click', function() {
-    document.getElementById('backdrop').style.display = 'block';
-    document.getElementById('container').style.display = 'block';
-});
-
-document.getElementById('exitBtn').addEventListener('click', function() {
-    document.getElementById('backdrop').style.display = 'none';
-    document.getElementById('container').style.display = 'none';
-});
 //NewsCarousel
 document.addEventListener('DOMContentLoaded', function () {
     const carouselInner = document.querySelector('.carousel-inner');
@@ -83,7 +61,8 @@ document.addEventListener('DOMContentLoaded', function () {
     nextButton.addEventListener('click', nextSlide);
     prevButton.addEventListener('click', prevSlide);
 
-    setInterval(nextSlide, 5000); // Auto slide every 5 seconds
+    // Auto slide every 5 seconds
+    setInterval(nextSlide, 5000);
 });
 
 

@@ -108,3 +108,9 @@ document.getElementById('announcementForm').addEventListener('submit', function(
     }
 });
 
+function openEditForm(announcementId) {
+    var content = document.querySelector('input[name="content"][value="' + announcementId + '"]').value;
+    document.getElementById('editAnnouncementId').value = announcementId;
+    document.getElementById('editContent').value = content;
+    document.getElementById('editForm').style.display = 'block';
+}
