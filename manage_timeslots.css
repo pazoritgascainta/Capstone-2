@@ -56,7 +56,7 @@ button {
     padding: 10px 15px; /* Added padding inside buttons */
     border: none; /* Remove default border */
     border-radius: 4px; /* Rounded corners */
-    background-color: #007BFF; /* Primary button color */
+    background-color: #ff8b2c; /* Primary button color */
     color: white; /* Text color */
     cursor: pointer; /* Pointer cursor on hover */
     font-size: 16px; /* Larger font size for readability */
@@ -67,14 +67,14 @@ button {
     padding: 10px 20px; /* Add padding for size */
     margin: 10px; /* Add margin between buttons */
     border: none; /* Remove default border */
-    background-color: #007bff; /* Button background color */
+    background-color: #ff8b2c; /* Button background color */
     color: white; /* Button text color */
     font-size: 16px; /* Button text size */
     cursor: pointer; /* Pointer cursor on hover */
 }
 
 #auto_btn:hover, #manual_btn:hover {
-    background-color: #0056b3; /* Darker background on hover */
+    background-color: #fc7100; /* Darker background on hover */
 }
 .button-container {
     text-align: center; /* Center the buttons horizontally */
@@ -84,14 +84,14 @@ button {
     display: inline-block;
     margin: 10px 0;
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #ff8b2c;
     color: #fff;
     border-radius: 4px;
     text-decoration: none;
 }
 
 .btn-admin_approval:hover {
-    background-color: #0056b3;
+    background-color: #fa7000;
 }
 form {
     margin-bottom: 20px;
@@ -133,7 +133,7 @@ th, td {
 
 /* Table Header Styling */
 th {
-    background-color: #007BFF; /* Light gray background for headers */
+    background-color: #ff8b2c; /* Light gray background for headers */
     color: #fff; /* Darker text color for better contrast */
     font-weight: bold; /* Bold text for headers */
 }

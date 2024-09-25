@@ -172,7 +172,7 @@ button {
     padding: 10px 15px; /* Added padding inside buttons */
     border: none; /* Remove default border */
     border-radius: 4px; /* Rounded corners */
-    background-color: #007BFF; /* Primary button color */
+    background-color: #fd8326; /* Primary button color */
     color: white; /* Text color */
     cursor: pointer; /* Pointer cursor on hover */
     font-size: 16px; /* Larger font size for readability */
@@ -181,7 +181,7 @@ button {
 
 /* Button Hover Effect */
 button:hover {
-    background-color: #fd8326; /* Darker color on hover */
+    background-color: #b64f00; /* Darker color on hover */
 }
 /* Styles for select elements */
 select {

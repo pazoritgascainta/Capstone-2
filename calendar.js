@@ -13,7 +13,9 @@ let currentYear = new Date().getFullYear();
 let currentPage = 1;
 const limit = 10;
 let appointmentCounts = {}; // Global variable for appointment counts
+
 function renderCalendar() {
+    const today = new Date();
     calendar.innerHTML = ''; // Clear previous calendar content
 
     // Add days of the week headers
@@ -39,7 +41,7 @@ function renderCalendar() {
         calendar.appendChild(emptyCell);
     }
 
-    // Render days of the month
+    // Render days of the month with appointment counts and color coding
     for (let day = 1; day <= lastDate; day++) {
         const cell = document.createElement('div');
         cell.className = 'calendar-cell';
@@ -47,7 +49,6 @@ function renderCalendar() {
         cell.textContent = day;
         cell.dataset.date = dateStr;
 
-        // Use the counts data directly
         const count = appointmentCounts[dateStr] || {
             Amenity_1: 0,
             Amenity_2: 0,
@@ -60,50 +61,35 @@ function renderCalendar() {
         const colorGrid = document.createElement('div');
         colorGrid.className = 'color-grid';
 
-        if (count.Amenity_1 > 0) {
-            const colorCell = document.createElement('div');
-            colorCell.className = 'color-cell';
-            colorCell.style.backgroundColor = 'blue';
-            colorCell.textContent = count.Amenity_1;
-            colorGrid.appendChild(colorCell);
-        }
-        if (count.Amenity_2 > 0) {
-            const colorCell = document.createElement('div');
-            colorCell.className = 'color-cell';
-            colorCell.style.backgroundColor = 'green';
-            colorCell.textContent = count.Amenity_2;
-            colorGrid.appendChild(colorCell);
-        }
-        if (count.Amenity_3 > 0) {
-            const colorCell = document.createElement('div');
-            colorCell.className = 'color-cell';
-            colorCell.style.backgroundColor = 'coral';
-            colorCell.textContent = count.Amenity_3;
-            colorGrid.appendChild(colorCell);
-        }
-        if (count.Amenity_4 > 0) {
-            const colorCell = document.createElement('div');
-            colorCell.className = 'color-cell';
-            colorCell.style.backgroundColor = 'purple';
-            colorCell.textContent = count.Amenity_4;
-            colorGrid.appendChild(colorCell);
-        }
-        if (count.Amenity_5 > 0) {
-            const colorCell = document.createElement('div');
-            colorCell.className = 'color-cell';
-            colorCell.style.backgroundColor = 'pink';
-            colorCell.textContent = count.Amenity_5;
-            colorGrid.appendChild(colorCell);
-        }
-        if (count.Amenity_6 > 0) {
-            const colorCell = document.createElement('div');
-            colorCell.className = 'color-cell';
-            colorCell.style.backgroundColor = 'gray';
-            colorCell.textContent = count.Amenity_6;
-            colorGrid.appendChild(colorCell);
-        }
+        // Add color cells for each amenity if count > 0
+        const amenityColors = [
+            { key: 'Amenity_1', color: 'blue' },
+            { key: 'Amenity_2', color: 'green' },
+            { key: 'Amenity_3', color: 'coral' },
+            { key: 'Amenity_4', color: 'purple' },
+            { key: 'Amenity_5', color: 'pink' },
+            { key: 'Amenity_6', color: 'gray' }
+        ];
+
+        amenityColors.forEach(amenity => {
+            if (count[amenity.key] > 0) {
+                const colorCell = document.createElement('div');
+                colorCell.className = 'color-cell';
+                colorCell.style.backgroundColor = amenity.color;
+                colorCell.textContent = count[amenity.key];
+                colorGrid.appendChild(colorCell);
+            }
+        });
 
         cell.appendChild(colorGrid);
+
+        // Highlight today's date and past dates
+        const cellDate = new Date(currentYear, currentMonth, day);
+        if (cellDate < today.setHours(0, 0, 0, 0)) {
+            cell.classList.add('past-day');
+        } else if (cellDate.getTime() === today.setHours(0, 0, 0, 0)) {
+            cell.classList.add('today');
+        }
 
         cell.addEventListener('click', function () {
             currentPage = 1;
@@ -112,6 +98,14 @@ function renderCalendar() {
         });
 
         calendar.appendChild(cell);
+    }
+
+    // Fill remaining empty cells for next month's days
+    const remainingCells = (7 - (firstDay + lastDate) % 7) % 7;
+    for (let i = 0; i < remainingCells; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'calendar-cell empty';
+        calendar.appendChild(emptyCell);
     }
 }
 
@@ -213,7 +207,7 @@ prevMonthButton.addEventListener('click', function () {
     } else {
         currentMonth--;
     }
-    fetchAppointmentCounts(currentYear, currentMonth + 1).then(renderCalendar);
+    fetchAppointmentCounts(currentYear, currentMonth + 1);
 });
 
 nextMonthButton.addEventListener('click', function () {
@@ -223,8 +217,8 @@ nextMonthButton.addEventListener('click', function () {
     } else {
         currentMonth++;
     }
-    fetchAppointmentCounts(currentYear, currentMonth + 1).then(renderCalendar);
+    fetchAppointmentCounts(currentYear, currentMonth + 1);
 });
 
 // Initial load
-fetchAppointmentCounts(currentYear, currentMonth + 1).then(renderCalendar);
+fetchAppointmentCounts(currentYear, currentMonth + 1);

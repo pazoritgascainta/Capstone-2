@@ -14,7 +14,7 @@
 /* Calendar navigation styling */
 #calendar-nav {
     flex-shrink: 0; /* Prevent shrinking */
-    background-color: #007BFF; /* Adjust background color */
+    background-color: #ff8b2c; /* Adjust background color */
     color: #fff; /* Adjust text color */
     padding: 10px;
     display: flex;
@@ -84,7 +84,7 @@
 
 /* Hover effect for calendar cells */
 .calendar-cell:hover {
-    background-color: #007BFF; /* Light blue background on hover */
+    background-color: peachpuff; /* Light blue background on hover */
 }
 
 /* Empty date cell styling */
@@ -154,3 +154,14 @@
 #refresh-button:hover {
     background-color: #0056b3;
 }
+
+.past-day {
+    background-color: lightgrey;
+    color: #777;
+}
+
+.today {
+    background-color: peachpuff; /* Peach color for today */
+    color: black;
+}
+

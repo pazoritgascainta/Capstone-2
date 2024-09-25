@@ -10,3 +10,80 @@ body {
     padding: 20px;
     margin-left: 70px;
 }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    margin-left: 70px;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #E9F5FF;
+    padding: 20px;
+  }
+  
+  header .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  header .verify {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .main-section {
+    padding: 20px;
+  }
+  
+  .help-center {
+    display: flex;
+    margin-top: 20px;
+  }
+  
+  .topics {
+    flex-basis: 25%;
+  }
+  
+  .topic {
+    background-color: peachpuff;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .topic:hover {
+    background-color: #CDE7FF;
+  }
+  
+  .faq-content {
+    flex-basis: 70%;
+    margin-left: 20px;
+    background-color: #CDE7FF;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .faq {
+    display: none;
+  }
+  
+  .faq h3 {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+  
+  .faq p {
+    font-size: 16px;
+    line-height: 1.5;
+  }

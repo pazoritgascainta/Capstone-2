@@ -253,7 +253,7 @@ $total_pages = ceil($total_appointments / $records_per_page);
                     <?php endwhile; ?>
                 </table>
                     </div>
-                    <div id="pagination">
+    <div id="pagination">
     <?php
     $total_pages = max($total_pages, 1); // Ensure there's at least 1 page
     $input_page = $current_page; // Default to the current page for the input
