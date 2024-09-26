@@ -168,8 +168,10 @@ $conn->close();
         <?php endif; ?>
     </tbody>
 </table>
-		
     </div>
+
+
+    
             <div class="dashboard">
             <div class="tiles">
 					<article class="tile">
