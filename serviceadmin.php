@@ -21,7 +21,15 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Fetch service requests from the serreq table and join with homeowners table
+// Pagination variables
+$limit = 10; // Set the number of records per page
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($current_page - 1) * $limit;
+
+// Search query
+$search_query = isset($_GET['search']) ? $_GET['search'] : '';
+
+// Base SQL query
 $sql = "
     SELECT 
         sr.service_req_id, 
@@ -37,9 +45,21 @@ $sql = "
     FROM 
         serreq sr
     JOIN 
-        homeowners h ON sr.homeowner_id = h.id  -- Update this line if the column is named differently
+        homeowners h ON sr.homeowner_id = h.id
 ";
 
+// Add search condition if a search query is present
+if (!empty($search_query)) {
+    $sql .= " WHERE sr.homeowner_id = " . intval($search_query); // Use prepared statements for production
+}
+
+// Get the total number of records
+$total_result = $conn->query($sql);
+$total_rows = $total_result->num_rows;
+$total_pages = ceil($total_rows / $limit);
+
+// Add pagination to the query
+$sql .= " LIMIT $limit OFFSET $offset";
 $result = $conn->query($sql);
 
 // Store fetched data
@@ -63,12 +83,15 @@ $conn->close();
 <body>
     <?php include 'sidebar.php'; ?>
     <div class="main-content">
-        <div class="Container">
+        <div class="container">
             <h1>St. Monique Service Requests</h1>
+            
+            <!-- Search Form -->
+            <form method="GET" action="serviceadmin.php" class="search-form">
+                <input type="number" name="search" value="<?= htmlspecialchars($search_query) ?>" placeholder="Search by Homeowner ID...">
+                <button type="submit">Search</button>
+            </form>
         </div>
-        
-        <!-- Sidebar for categories -->
-
 
         <!-- Content Area for displaying requests -->
         <div class="content-area">
@@ -103,8 +126,11 @@ $conn->close();
                                 <td><?php echo $request['type']; ?></td>
                                 <td><?php echo $request['status']; ?></td>
                                 <td>
-                                    <button class="view-btn">View</button>
-                                    <button class="delete-btn">Delete</button>
+                                    <a href="view_admin_service.php?id=<?php echo $request['service_req_id']; ?>" class="view-btn">View</a>
+                                    <form method="POST" action="delete_service.php" style="display:inline;">
+                                        <input type="hidden" name="service_req_id" value="<?php echo $request['service_req_id']; ?>">
+                                        <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this request?');">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -115,6 +141,41 @@ $conn->close();
                     <?php endif; ?>
                 </tbody>
             </table>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination">
+            <?php if ($total_pages > 1): ?>
+                <!-- Previous button -->
+                <?php if ($current_page > 1): ?>
+                    <form method="GET" action="serviceadmin.php" style="display: inline;">
+                        <input type="hidden" name="page" value="<?= $current_page - 1 ?>">
+                        <input type="hidden" name="search" value="<?= htmlspecialchars($search_query) ?>">
+                        <button type="submit" class="btn">&lt;</button>
+                    </form>
+                <?php endif; ?>
+
+                <!-- Page input for user to change the page -->
+                <form method="GET" action="serviceadmin.php" style="display: inline;">
+                    <input type="number" name="page" value="<?= $current_page ?>" min="1" max="<?= $total_pages ?>" class="pagination-input">
+                    <input type="hidden" name="search" value="<?= htmlspecialchars($search_query) ?>">
+                </form>
+
+                <!-- "of" text and last page link -->
+                <?php if ($total_pages > 1): ?>
+                    <span>of</span>
+                    <a href="serviceadmin.php?page=<?= $total_pages ?>&search=<?= htmlspecialchars($search_query) ?>" class="page-link <?= ($current_page == $total_pages) ? 'active' : '' ?>"><?= $total_pages ?></a>
+                <?php endif; ?>
+
+                <!-- Next button -->
+                <?php if ($current_page < $total_pages): ?>
+                    <form method="GET" action="serviceadmin.php" style="display: inline;">
+                        <input type="hidden" name="page" value="<?= $current_page + 1 ?>">
+                        <input type="hidden" name="search" value="<?= htmlspecialchars($search_query) ?>">
+                        <button type="submit" class="btn">&gt;</button>
+                    </form>
+                <?php endif; ?>
+            <?php endif; ?>
         </div>
     </div>
 </body>

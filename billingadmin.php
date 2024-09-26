@@ -12,6 +12,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+$search_query = isset($_GET['search']) ? intval($_GET['search']) : '';
+
 function handlePostRequest($conn) {
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['billing_id'])) {
         $billing_id = intval($_POST['billing_id']);
@@ -172,22 +174,26 @@ function updateOverdueAmounts($conn) {
     }
 }
 
-function fetchBillingRecords($conn, $offset, $limit) {
+function fetchBillingRecords($conn, $offset, $limit, $search_query = '') {
     $sql_billing_records = "
         SELECT b.billing_id, b.homeowner_id, h.name AS homeowner_name, h.address, b.total_amount, b.billing_date, b.due_date, b.status, b.monthly_due
         FROM billing b
         JOIN homeowners h ON b.homeowner_id = h.id
+        WHERE (b.homeowner_id = ? OR ? = '')
         LIMIT ?, ?
     ";
     $stmt = $conn->prepare($sql_billing_records);
-    $stmt->bind_param("ii", $offset, $limit);
+    $stmt->bind_param("iiii", $search_query, $search_query, $offset, $limit);
     $stmt->execute();
     return $stmt->get_result();
 }
 
-function getTotalPages($conn, $limit) {
-    $sql_count = "SELECT COUNT(*) AS total FROM billing";
-    $result = $conn->query($sql_count);
+function getTotalPages($conn, $limit, $search_query = '') {
+    $sql_count = "SELECT COUNT(*) AS total FROM billing WHERE (homeowner_id = ? OR ? = '')";
+    $stmt_count = $conn->prepare($sql_count);
+    $stmt_count->bind_param("ii", $search_query, $search_query);
+    $stmt_count->execute();
+    $result = $stmt_count->get_result();
     $row = $result->fetch_assoc();
     return ceil($row['total'] / $limit);
 }
@@ -198,10 +204,10 @@ handlePostRequest($conn);
 // Pagination logic
 $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $limit = 10; // Number of records per page
-$total_pages = getTotalPages($conn, $limit);
+$total_pages = getTotalPages($conn, $limit, $search_query);
 $offset = ($current_page - 1) * $limit;
 
-$result_billing = fetchBillingRecords($conn, $offset, $limit);
+$result_billing = fetchBillingRecords($conn, $offset, $limit, $search_query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -222,7 +228,10 @@ $result_billing = fetchBillingRecords($conn, $offset, $limit);
                 <a href="create_billing.php" class="btn-action">Create Billing Record</a>
             </section>
         </header>
-
+        <form method="GET" action="billingadmin.php" class="search-form">
+                <input type="number" name="search" value="<?= htmlspecialchars($search_query) ?>" placeholder="Search by Homeowner ID...">
+                <button type="submit">Search</button>
+            </form>
         <div class="container">
             <!-- Display message -->
             <div class="message">

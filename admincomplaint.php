@@ -105,10 +105,13 @@ if (isset($_POST['delete_id'])) {
                     END,
                     updated_at DESC,
                     created_at DESC
-                LIMIT $offset, $results_per_page
+                LIMIT ?, ?
                 ";
 
-                $result = mysqli_query($conn, $query);
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param("ii", $offset, $results_per_page);
+                $stmt->execute();
+                $result = $stmt->get_result();
                 
                 if ($result && mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
@@ -159,19 +162,14 @@ if (isset($_POST['delete_id'])) {
                     </form>
                 <?php endif; ?>
 
-                <!-- Page input for user to change the page -->
                 <form method="GET" action="admincomplaint.php" style="display: inline;">
                     <input type="number" name="page" value="<?= $current_page ?>" min="1" max="<?= $total_pages ?>" class="pagination-input">
                     <input type="hidden" name="search" value="<?= htmlspecialchars($search_query) ?>">
                 </form>
 
-                <!-- "of" text and last page link -->
-                <?php if ($total_pages > 1): ?>
-                    <span>of</span>
-                    <a href="admincomplaint.php?page=<?= $total_pages ?>&search=<?= htmlspecialchars($search_query) ?>" class="page-link <?= ($current_page == $total_pages) ? 'active' : '' ?>"><?= $total_pages ?></a>
-                <?php endif; ?>
+                <span>of</span>
+                <a href="admincomplaint.php?page=<?= $total_pages ?>&search=<?= htmlspecialchars($search_query) ?>" class="page-link <?= ($current_page == $total_pages) ? 'active' : '' ?>"><?= $total_pages ?></a>
 
-                <!-- Next button -->
                 <?php if ($current_page < $total_pages): ?>
                     <form method="GET" action="admincomplaint.php" style="display: inline;">
                         <input type="hidden" name="page" value="<?= $current_page + 1 ?>">
