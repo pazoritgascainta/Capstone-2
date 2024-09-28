@@ -241,6 +241,24 @@ $result_billing = fetchBillingRecords($conn, $offset, $limit, $search_query);
                     <p>No current messages.</p>
                 <?php endif; ?>
             </div>
+            <fieldset> 
+    <legend> Send SMS </legend>
+    <h1>Contact Homeowner</h1>
+    <form method="post" action="send.php"> 
+        <div>
+            <textarea class="phoneNumbers" name="phoneNumbers" required></textarea>
+            <span>Phone Numbers</span>
+        </div>
+        <div>
+            <textarea class="message" name="message" required></textarea>
+            <span>Message</span>
+        </div>
+        <button type="submit">Send</button>
+    </form>
+</fieldset>
+
+
+
 
             <!-- Display Billing Records -->
             <section>
@@ -302,7 +320,7 @@ $result_billing = fetchBillingRecords($conn, $offset, $limit, $search_query);
                         <?php endif; ?>
                     </tbody>
                 </table>
-
+                
                 <!-- Pagination -->
                 <div id="pagination">
                     <?php

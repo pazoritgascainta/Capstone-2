@@ -64,7 +64,7 @@ h1 {
 
 /* Button styles */
 .btn-action {
-    background-color: #ff8b2c;
+    background-color: #007bff;
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
@@ -77,7 +77,7 @@ h1 {
     display: inline-block;
     padding: 10px 20px;
     color: #fff;
-    background-color: #ff8b2c;
+    background-color: #007bff;
     border: none;
     border-radius: 5px;
     text-decoration: none;
@@ -86,7 +86,7 @@ h1 {
 
 
 .btn-action:hover {
-    background-color: #ff8b2c;
+    background-color: #0056b3;
 }
 
 /* Message Styling */
@@ -114,7 +114,7 @@ select {
 input[type="number"]:focus,
 input[type="date"]:focus,
 select:focus {
-    border-color: #ff8b2c;
+    border-color: #007bff;
     outline: none; /* Removes default browser outline */
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Adds a subtle shadow */
 }
@@ -129,7 +129,7 @@ form {
 
 /* Submit Button Styles */
 input[type="submit"] {
-    background-color: #ff8b2c;
+    background-color: #007bff;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -140,7 +140,7 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: #ff8b2c;
+    background-color: #0056b3;
 }
 
 /* Additional Styling for Select Elements */
@@ -152,7 +152,7 @@ select {
 }
 
 select:focus {
-    border-color: #ff8b2c;
+    border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
@@ -161,9 +161,9 @@ select:focus {
     display: none;
 }
 .page-link.active {
-    background-color: #ff8b2c; /* Primary color for active link */
+    background-color: #007BFF; /* Primary color for active link */
     color: white; /* White text color */
-    border: 1px solid #ff8b2c; /* Match border color with active background */
+    border: 1px solid #007BFF; /* Match border color with active background */
 }
 #pagination {
     margin-top: 20px;
@@ -173,34 +173,34 @@ select:focus {
     display: inline-block; /* Ensure pagination links are inline */
     margin: 0 8px; /* Space between pagination links */
     text-decoration: none; /* Remove underline from links */
-    color: #ff8b2c; /* Link color */
+    color: #007BFF; /* Link color */
     padding: 8px 12px; /* Padding inside pagination links */
-    border: 1px solid #ff8b2c; /* Blue border to match theme */
+    border: 1px solid #007BFF; /* Blue border to match theme */
     border-radius: 4px; /* Rounded corners */
     transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
 }
 #pagination a.active {
-    background-color: #ff8b2c; /* Active background color */
+    background-color: #007BFF; /* Active background color */
     color: white; /* White text color */
 }
 #pagination a:hover {
     background-color: #f0f0f0; /* Light gray background on hover */
-    color: #ff8b2c; /* Blue text color */
+    color: #007BFF; /* Blue text color */
 }
 
 #pagination input {
     text-align: center;
     width: 50px;
     padding: 8px;
-    color: #ff8b2c; /* Blue text color */
-    border: 1px solid #ff8b2c; /* Blue border */
+    color: #007BFF; /* Blue text color */
+    border: 1px solid #007BFF; /* Blue border */
     border-radius: 4px; /* Rounded corners */
     margin: 0 8px; /* Space around the input */
 }
 
 /* Button styling */
 #pagination button {
-    background-color: #ff8b2c; /* Blue background */
+    background-color: #007BFF; /* Blue background */
     color: white; /* White text */
     border: none; /* Remove border */
     padding: 8px 12px; /* Add padding */
@@ -216,8 +216,8 @@ select:focus {
 
 #pagination button:hover {
     background-color: white; /* White background on hover */
-    color: #ff8b2c; /* Blue text on hover */
-    border: 1px solid #ff8b2c; /* Blue border on hover */
+    color: #007BFF; /* Blue text on hover */
+    border: 1px solid #007BFF; /* Blue border on hover */
 }
 
 #pagination button:disabled {
@@ -227,38 +227,60 @@ select:focus {
 }
 
 #pagination input[type="number"] {
-    border: 1px solid #ff8b2c; /* Blue border */
+    border: 1px solid #007BFF; /* Blue border */
     border-radius: 4px; /* Rounded corners */
     padding: 5px;
     font-size: 14px;
     width: 60px;
 }
-.search-form {
-    margin-bottom: 20px; /* Space below the search form */
-    display: flex;
-    align-items: center;
+.custom-form-section {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
 }
-
-.search-form input[type="number"] {
-    padding: 8px;
+h1 {
+    text-align: center;
+    color: #333;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 16px;
-    width: 250px; /* Adjust width as needed */
-    margin-right: 10px; /* Space between input and button */
 }
-
-.search-form button {
-    padding: 8px 16px;
+textarea {
+    resize: vertical;
+}
+fieldset {
+    border: none;
+    margin: 15px 0;
+    padding: 0;
+}
+.provider-label {
+    margin-bottom: 10px;
+}
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
     border: none;
     border-radius: 4px;
-    background-color: #ff8b2c; /* Bootstrap primary color */
-    color: white;
-    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
-
-.search-form button:hover {
-    background-color: #ff7300; /* Darker shade on hover */
+button:hover {
+    background-color: #45a049;
 }
