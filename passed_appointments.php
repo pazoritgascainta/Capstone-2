@@ -35,24 +35,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['appointment_id']) && i
                          FROM appointments a
                          WHERE a.id = ?";
             $stmt_move = $conn->prepare($sql_move);
-            if (!$stmt_move) {
-                $status_message = "Prepare statement failed: " . $conn->error;
+            $stmt_move->bind_param("i", $appointment_id);
+            if ($stmt_move->execute()) {
+                // Delete the appointment from the appointments table
+                $sql_delete = "DELETE FROM appointments WHERE id = ?";
+                $stmt_delete = $conn->prepare($sql_delete);
+                $stmt_delete->bind_param("i", $appointment_id);
+                $stmt_delete->execute();
+                $status_message = "Appointment accepted and moved successfully!";
             } else {
-                $stmt_move->bind_param("i", $appointment_id);
-                if ($stmt_move->execute()) {
-                    // Delete the appointment from the appointments table
-                    $sql_delete = "DELETE FROM appointments WHERE id = ?";
-                    $stmt_delete = $conn->prepare($sql_delete);
-                    if ($stmt_delete) {
-                        $stmt_delete->bind_param("i", $appointment_id);
-                        $stmt_delete->execute();
-                        $status_message = "Appointment accepted and moved successfully!";
-                    } else {
-                        $status_message = "Error: " . $stmt_delete->error;
-                    }
-                } else {
-                    $status_message = "Error: " . $stmt_move->error;
-                }
+                $status_message = "Error: " . $stmt_move->error;
             }
         } elseif ($new_status == 'Rejected') {
             // Move the appointment to the rejected_appointments table
@@ -61,24 +53,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['appointment_id']) && i
                          FROM appointments a
                          WHERE a.id = ?";
             $stmt_move = $conn->prepare($sql_move);
-            if (!$stmt_move) {
-                $status_message = "Prepare statement failed: " . $conn->error;
+            $stmt_move->bind_param("i", $appointment_id);
+            if ($stmt_move->execute()) {
+                // Delete the appointment from the appointments table
+                $sql_delete = "DELETE FROM appointments WHERE id = ?";
+                $stmt_delete = $conn->prepare($sql_delete);
+                $stmt_delete->bind_param("i", $appointment_id);
+                $stmt_delete->execute();
+                $status_message = "Appointment rejected and moved successfully!";
             } else {
-                $stmt_move->bind_param("i", $appointment_id);
-                if ($stmt_move->execute()) {
-                    // Delete the appointment from the appointments table
-                    $sql_delete = "DELETE FROM appointments WHERE id = ?";
-                    $stmt_delete = $conn->prepare($sql_delete);
-                    if ($stmt_delete) {
-                        $stmt_delete->bind_param("i", $appointment_id);
-                        $stmt_delete->execute();
-                        $status_message = "Appointment rejected and moved successfully!";
-                    } else {
-                        $status_message = "Error: " . $stmt_delete->error;
-                    }
-                } else {
-                    $status_message = "Error: " . $stmt_move->error;
-                }
+                $status_message = "Error: " . $stmt_move->error;
             }
         }
     }
@@ -97,38 +81,54 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 // Calculate the offset for the SQL LIMIT clause
 $offset = ($current_page - 1) * $records_per_page;
 
-// Fetch passed appointments with pagination
-$sql_passed_appointments = "
-    SELECT id, date, name, email, purpose, homeowner_id, amenity_id, timeslot_id
-    FROM passed_appointments
-    LIMIT $records_per_page OFFSET $offset
-";
+// Capture search query from GET request
+$search_query = isset($_GET['search']) ? trim($_GET['search']) : "";
 
-$result_passed_appointments = $conn->query($sql_passed_appointments);
-
-// Check for SQL errors
-if (!$result_passed_appointments) {
-    die("Query failed: " . $conn->error);
+// Fetch passed appointments with pagination and search filter
+if ($search_query) {
+    $sql_passed_appointments = "
+        SELECT id, date, name, email, purpose, homeowner_id, amenity_id, timeslot_id
+        FROM passed_appointments
+        WHERE name LIKE ? OR email LIKE ?
+        LIMIT ? OFFSET ?";
+    $stmt_passed_appointments = $conn->prepare($sql_passed_appointments);
+    $search_term = "%" . $search_query . "%";
+    $stmt_passed_appointments->bind_param("ssii", $search_term, $search_term, $records_per_page, $offset);
+} else {
+    $sql_passed_appointments = "
+        SELECT id, date, name, email, purpose, homeowner_id, amenity_id, timeslot_id
+        FROM passed_appointments
+        LIMIT ? OFFSET ?";
+    $stmt_passed_appointments = $conn->prepare($sql_passed_appointments);
+    $stmt_passed_appointments->bind_param("ii", $records_per_page, $offset);
 }
 
-// Fetch total number of passed appointments
-$sql_total_passed_appointments = "
-    SELECT COUNT(*) AS total 
-    FROM passed_appointments
-";
+$stmt_passed_appointments->execute();
+$result_passed_appointments = $stmt_passed_appointments->get_result();
 
-$result_total_passed_appointments = $conn->query($sql_total_passed_appointments);
-
-// Check for SQL errors
-if (!$result_total_passed_appointments) {
-    die("Query failed: " . $conn->error);
+// Fetch total number of passed appointments for pagination (with or without search)
+if ($search_query) {
+    $sql_total_passed_appointments = "
+        SELECT COUNT(*) AS total
+        FROM passed_appointments
+        WHERE name LIKE ? OR email LIKE ?";
+    $stmt_total_passed_appointments = $conn->prepare($sql_total_passed_appointments);
+    $stmt_total_passed_appointments->bind_param("ss", $search_term, $search_term);
+} else {
+    $sql_total_passed_appointments = "
+        SELECT COUNT(*) AS total
+        FROM passed_appointments";
+    $stmt_total_passed_appointments = $conn->prepare($sql_total_passed_appointments);
 }
 
+$stmt_total_passed_appointments->execute();
+$result_total_passed_appointments = $stmt_total_passed_appointments->get_result();
 $total_passed_appointments = $result_total_passed_appointments->fetch_assoc()['total'];
 
 // Calculate the total number of pages for passed appointments
 $total_pages_passed = ceil($total_passed_appointments / $records_per_page);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -146,6 +146,11 @@ $total_pages_passed = ceil($total_passed_appointments / $records_per_page);
         <div class="admin_approval">
             <a href="admin_approval.php" class="btn-admin-approval">Go Back to Admin Approval</a>
         </div>
+        <br>
+        <form method="GET" action="passed_appointments.php" class="search-form"> 
+            <input type="text" name="search" placeholder="Search by name or email" value="<?= htmlspecialchars($search_query); ?>">
+            <button type="submit">Search</button>
+        </form>
         <?php if ($result_passed_appointments->num_rows > 0): ?>
             <table>
                 <tr>

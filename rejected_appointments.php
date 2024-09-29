@@ -97,10 +97,19 @@ $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 // Calculate the offset for the SQL LIMIT clause
 $offset = ($current_page - 1) * $records_per_page;
 
-// Fetch rejected appointments with pagination
+// Search functionality
+$search_query = "";
+$search_term = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : "";
+
+if ($search_term) {
+    $search_query = " WHERE name LIKE '%$search_term%' OR email LIKE '%$search_term%' OR purpose LIKE '%$search_term%' ";
+}
+
+// Fetch rejected appointments with pagination and search
 $sql_rejected_appointments = "
     SELECT id, date, name, email, purpose, homeowner_id, amenity_id, timeslot_id
     FROM rejected_appointments
+    $search_query
     LIMIT $records_per_page OFFSET $offset
 ";
 
@@ -111,10 +120,11 @@ if (!$result_rejected_appointments) {
     die("Query failed: " . $conn->error);
 }
 
-// Fetch total number of rejected appointments
+// Fetch total number of rejected appointments with search criteria
 $sql_total_rejected_appointments = "
     SELECT COUNT(*) AS total 
     FROM rejected_appointments
+    $search_query
 ";
 
 $result_total_rejected_appointments = $conn->query($sql_total_rejected_appointments);
@@ -147,6 +157,13 @@ $total_pages_rejected = ceil($total_rejected_appointments / $records_per_page);
         <div class="admin_approval">
             <a href="admin_approval.php" class="btn-admin-approval">Go Back to Admin Approval</a>
         </div>
+        <br>
+        <!-- Search Form -->
+        <form method="GET" action="rejected_appointments.php" class="search-form">
+    <input type="text" name="search" placeholder="Search by name, email, or purpose" value="<?= htmlspecialchars($search_term) ?>" />
+    <button type="submit">Search</button>
+</form>
+
         <?php if ($result_rejected_appointments->num_rows > 0): ?>
             <table>
                 <tr>

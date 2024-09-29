@@ -16,6 +16,9 @@ if ($conn->connect_error) {
 // Initialize status message
 $status_message = "";
 
+// Initialize search query
+$search_query = isset($_GET['search']) ? $_GET['search'] : '';
+
 // Handle approval, rejection, or status update of appointments
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['appointment_id'])) {
     $appointment_id = intval($_POST['appointment_id']);
@@ -128,29 +131,25 @@ $sql_accepted_appointments = "
     FROM accepted_appointments a
     JOIN timeslots t ON a.timeslot_id = t.id
     JOIN amenities am ON t.amenity_id = am.id
+    WHERE a.name LIKE ? OR a.email LIKE ?
     LIMIT $records_per_page OFFSET $offset
 ";
-
-$result_accepted_appointments = $conn->query($sql_accepted_appointments);
-
-// Check for SQL errors
-if (!$result_accepted_appointments) {
-    die("Query failed: " . $conn->error);
-}
+$stmt_accepted_appointments = $conn->prepare($sql_accepted_appointments);
+$search_term = '%' . $search_query . '%';
+$stmt_accepted_appointments->bind_param('ss', $search_term, $search_term);
+$stmt_accepted_appointments->execute();
+$result_accepted_appointments = $stmt_accepted_appointments->get_result();
 
 // Fetch total number of accepted appointments
 $sql_total_accepted_appointments = "
     SELECT COUNT(*) AS total 
     FROM accepted_appointments
+    WHERE name LIKE ? OR email LIKE ?
 ";
-
-$result_total_accepted_appointments = $conn->query($sql_total_accepted_appointments);
-
-// Check for SQL errors
-if (!$result_total_accepted_appointments) {
-    die("Query failed: " . $conn->error);
-}
-
+$stmt_total_accepted_appointments = $conn->prepare($sql_total_accepted_appointments);
+$stmt_total_accepted_appointments->bind_param('ss', $search_term, $search_term);
+$stmt_total_accepted_appointments->execute();
+$result_total_accepted_appointments = $stmt_total_accepted_appointments->get_result();
 $total_accepted_appointments = $result_total_accepted_appointments->fetch_assoc()['total'];
 
 // Calculate the total number of pages for accepted appointments
@@ -172,9 +171,14 @@ $total_pages_accepted = ceil($total_accepted_appointments / $records_per_page);
     <h1>Accepted Appointments</h1>
     <div class="container">
 
+    
         <div class="admin_approval">
             <a href="admin_approval.php" class="btn-admin-approval">Go Back to Admin Approval</a>
-        </div>
+        </div> <br>
+        <form method="GET" action="accepted_appointments.php" class="search-form"> 
+            <input type="text" name="search" placeholder="Search by name or email" value="<?= htmlspecialchars($search_query); ?>">
+            <button type="submit">Search</button>
+        </form>
         <?php if ($result_accepted_appointments->num_rows > 0): ?>
             <table>
                 <tr>
