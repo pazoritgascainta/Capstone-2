@@ -113,7 +113,7 @@
 }
 /* General calendar cell styles */
 .calendar-cell {
-    width: 13.7%; /* Ensure exactly 7 cells per row (100% / 7) */
+    width: 100%;
     padding: 10px;
     box-sizing: border-box;
     text-align: center;
@@ -123,8 +123,7 @@
 .calendar-cell.empty {
     background-color: #f9f9f9; /* Optional: Different background for empty cells */
 }
-
-.past-day {
+.pastday {
     background-color: lightgrey;
     color: #777;
 }
@@ -135,7 +134,6 @@
 }
 
 #calendar {
-    display: flex;
     flex-wrap: wrap;
 }
 

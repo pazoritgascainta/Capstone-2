@@ -61,25 +61,48 @@ function renderCalendar() {
         const colorGrid = document.createElement('div');
         colorGrid.className = 'color-grid';
 
-        // Add color cells for each amenity if count > 0
-        const amenityColors = [
-            { key: 'Amenity_1', color: 'blue' },
-            { key: 'Amenity_2', color: 'green' },
-            { key: 'Amenity_3', color: 'coral' },
-            { key: 'Amenity_4', color: 'purple' },
-            { key: 'Amenity_5', color: 'pink' },
-            { key: 'Amenity_6', color: 'gray' }
-        ];
-
-        amenityColors.forEach(amenity => {
-            if (count[amenity.key] > 0) {
-                const colorCell = document.createElement('div');
-                colorCell.className = 'color-cell';
-                colorCell.style.backgroundColor = amenity.color;
-                colorCell.textContent = count[amenity.key];
-                colorGrid.appendChild(colorCell);
-            }
-        });
+        if (count.Amenity_1 > 0) {
+            const colorCell = document.createElement('div');
+            colorCell.className = 'color-cell';
+            colorCell.style.backgroundColor = 'blue';
+            colorCell.textContent = count.Amenity_1;
+            colorGrid.appendChild(colorCell);
+        }
+        if (count.Amenity_2 > 0) {
+            const colorCell = document.createElement('div');
+            colorCell.className = 'color-cell';
+            colorCell.style.backgroundColor = 'green';
+            colorCell.textContent = count.Amenity_2;
+            colorGrid.appendChild(colorCell);
+        }
+        if (count.Amenity_3 > 0) {
+            const colorCell = document.createElement('div');
+            colorCell.className = 'color-cell';
+            colorCell.style.backgroundColor = 'coral';
+            colorCell.textContent = count.Amenity_3;
+            colorGrid.appendChild(colorCell);
+        }
+        if (count.Amenity_4 > 0) {
+            const colorCell = document.createElement('div');
+            colorCell.className = 'color-cell';
+            colorCell.style.backgroundColor = 'purple';
+            colorCell.textContent = count.Amenity_4;
+            colorGrid.appendChild(colorCell);
+        }
+        if (count.Amenity_5 > 0) {
+            const colorCell = document.createElement('div');
+            colorCell.className = 'color-cell';
+            colorCell.style.backgroundColor = 'pink';
+            colorCell.textContent = count.Amenity_5;
+            colorGrid.appendChild(colorCell);
+        }
+        if (count.Amenity_6 > 0) {
+            const colorCell = document.createElement('div');
+            colorCell.className = 'color-cell';
+            colorCell.style.backgroundColor = 'gray';
+            colorCell.textContent = count.Amenity_6;
+            colorGrid.appendChild(colorCell);
+        }
 
         cell.appendChild(colorGrid);
 

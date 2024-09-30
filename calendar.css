@@ -165,3 +165,23 @@
     color: black;
 }
 
+@media (max-width: 768px) {
+    #calendar-nav {
+        flex-direction: column; /* Stack nav items on smaller screens */
+        align-items: stretch; /* Stretch buttons */
+    }
+
+    #calendar-nav button {
+        font-size: 1.5em; /* Smaller button size */
+        margin: 5px 0; /* Adjust margin for vertical layout */
+    }
+
+    #calendar {
+        grid-template-columns: repeat(3, 1fr); /* Fewer columns for smaller screens */
+    }
+
+    .calendar-cell {
+        height: auto; /* Auto height for flexibility */
+        line-height: normal; /* Normal line height for text */
+    }
+}

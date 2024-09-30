@@ -24,14 +24,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function fetchTimeslots() {
         const amenityId = amenitySelect.value;
         const selectedDate = selectedDateInput.value;
-    
+
         if (!amenityId || !selectedDate) {
             console.log('No amenity or date selected.');
             return;
         }
-    
+
         console.log(`Fetching timeslots for Amenity ID: ${amenityId}, Date: ${selectedDate}`);
-    
+
         fetch(`fetch_timeslots.php?date=${encodeURIComponent(selectedDate)}&amenity_id=${encodeURIComponent(amenityId)}`)
             .then(response => {
                 if (!response.ok) {
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error fetching timeslots:', error);
             });
     }
-    
+
     // Function to handle and display fetched timeslots
     function handleTimeslots(timeslots) {
         if (!timeslotContainer || !noTimeslotsMessage) {
@@ -111,8 +111,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const cell = document.createElement('div');
             cell.className = 'calendar-cell';
             cell.textContent = day;
-            cell.dataset.date = `${currentYear}-${currentMonth + 1}-${day}`;
+            cell.dataset.date = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
             calendar.appendChild(cell);
+
+            // Color the today's date
+            if (cell.dataset.date === `${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}-${new Date().getDate().toString().padStart(2, '0')}`) {
+                cell.classList.add('today');
+            }
         }
     }
 
@@ -165,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.target === backdrop) {
             hideModal();
         }
-    }
+    };
 
     // Attach event listener to amenity select element
     amenitySelect.addEventListener('change', function() {
@@ -182,6 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
             currentYear -= 1;
         }
         renderCalendar();
+        colorToday(); // Call the function again when the month changes
     });
 
     nextMonthButton.addEventListener('click', function() {
@@ -191,6 +197,7 @@ document.addEventListener('DOMContentLoaded', function() {
             currentYear += 1;
         }
         renderCalendar();
+        colorToday(); // Call the function again when the month changes
     });
 
     // Event listener for clicks on the calendar
@@ -217,4 +224,17 @@ document.addEventListener('DOMContentLoaded', function() {
     timeslotForm.onsubmit = validateTimeslotSelection;
 
     renderCalendar(); // Initial render of the calendar
+
 });
+
+function colorToday() {
+    const todayString = `${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}-${new Date().getDate().toString().padStart(2, '0')}`;
+    const calendarCells = document.querySelectorAll('.calendar-cell');
+
+    calendarCells.forEach(cell => {
+        if (cell.dataset.date === todayString) {
+            cell.classList.add('today');
+        }
+    });
+}
+colorToday();
