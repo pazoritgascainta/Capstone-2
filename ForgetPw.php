@@ -58,8 +58,8 @@ $conn->close();
                 <div class="toggle-panel toggle-right">
                     <h1>Find your St. Monique account</h1>
                     <div class="back-btn-container">
-                        <button id="exitBtn" class="exit-btn">Back</button>
-                    </div>
+    <button id="exitBtn" class="exit-btn" onclick="window.location.href='homepage.php';">Back</button>
+</div>
                     <p></p>
                 </div>
             </div>
