@@ -13,7 +13,7 @@ margin-left: 80px;
 /* Base styles for the announcement widget */
 .announcement-widget {
     width: 50%;
-    background-color: #fff;
+    background-color: peachpuff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -120,6 +120,118 @@ tbody tr td[colspan="4"] {
     color: #888;
     padding: 20px;
 }
+.recent-payments {
+    padding: 20px;
+    background-color: peachpuff; /* Change background to pure white for cleaner look */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif; /* Ensure consistent font */
+}
+
+.recent-payments h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+    font-weight: bold; /* Bold text for headings */
+}
+
+.payment {
+    display: flex;
+    align-items: center;
+    background-color: blanchedalmond;
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0; /* Increase padding for better spacing */
+}
+
+.payment img {
+    width: 120px; /* Increased size for a more prominent view */
+    height: 120px; 
+    object-fit: cover;
+    border-radius: 8px;
+    margin-left: 20px;
+    margin-right: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+    cursor: pointer; /* Add cursor pointer for clickable effect */
+
+}
+
+.payment-details {
+    flex: 1;
+}
+
+.payment-details p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.payment-details span {
+    font-weight: bold;
+    color: #333;
+    display: block; /* Ensure each span is on its own line */
+}
+
+/* Parent container for announcements and recent payments */
+.flex-container {
+    display: flex;
+    justify-content: space-between; /* Adjust space between them */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+}
+
+/* Update your existing styles */
+.announcement-widget, .recent-payments {
+    width: 48%; /* Adjust width as needed */
+    margin: 10px; /* Add some margin for spacing */
+}
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000; /* Sit on top */
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+.modal-content, #caption {
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
 
 
 /* Responsive design */

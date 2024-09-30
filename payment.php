@@ -156,10 +156,14 @@ $result_accepted_appointments->data_seek(0); // Move the pointer back to the sta
             </section>
 
             <section class="proof-of-payment">
-                <h3>Proof of Payment</h3>
-                <input type="file" id="upload-file">
-                <button id="upload-button">Upload</button>
-            </section>
+    <h3>Proof of Payment</h3>
+    <form method="POST" enctype="multipart/form-data" action="upload.php">
+        <input type="file" id="upload-file" name="upload-file" required>
+        <input type="hidden" name="homeowner_id" value="<?php echo htmlspecialchars($homeowner_id); ?>">
+        <input type="hidden" name="billing_reference" id="billingReference">
+        <button type="submit" id="upload-button">Upload</button>
+    </form>
+</section>
         </div>
     </div>
 

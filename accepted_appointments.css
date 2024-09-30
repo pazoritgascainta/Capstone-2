@@ -130,3 +130,28 @@
 .search-form button:hover {
     background-color: #f87000; /* Darker shade on hover */
 }
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="number"]:focus {
+    border-color: #fd8326; /* Change border color when focused */
+    outline: none;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none; /* Hide the default spin buttons */
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield; /* Hide spin buttons in Firefox */
+}

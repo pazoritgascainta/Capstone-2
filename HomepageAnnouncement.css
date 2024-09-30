@@ -176,7 +176,7 @@
     #announcements p {
         font-size: 1em;
     }
-        .announcement-container {
+ .announcement-container {
         flex-direction: column;
         align-items: center;
         padding: 20px;

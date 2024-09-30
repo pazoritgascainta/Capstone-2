@@ -114,3 +114,6 @@ function openEditForm(announcementId) {
     document.getElementById('editContent').value = content;
     document.getElementById('editForm').style.display = 'block';
 }
+   
+
+

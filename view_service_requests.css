@@ -6,7 +6,8 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
-    margin-left: 45vh;
+    margin-left: auto; /* Centering the table */
+    margin-right: auto; /* Centering the table */
 }
 
 .service-requests-table th, 
@@ -47,6 +48,7 @@
 .cancel-btn:hover {
     background-color: #e53935;
 }
+
 /* Pagination styles */
 .pagination {
     display: flex;
@@ -59,7 +61,6 @@
 .pagination-link {
     padding: 8px 15px;
     background-color: #4CAF50;
-    
     color: white;
     border-radius: 5px;
     text-decoration: none;
@@ -83,7 +84,6 @@
     margin-top: 20px;
     padding: 10px 20px;
     background-color: #4CAF50;
-    margin-left: 82.5vh;
     color: white;
     text-decoration: none;
     border-radius: 5px;
@@ -96,12 +96,12 @@
     transform: translateY(-3px);
 }
 
-
 /* Responsive design */
 @media screen and (max-width: 768px) {
     .service-requests-table {
         display: block;
         overflow-x: auto;
+        width: 100%; /* Full width for smaller screens */
     }
 
     .service-requests-table thead, 
@@ -130,13 +130,14 @@
         font-weight: bold;
         text-transform: uppercase;
     }
+
     .pagination {
         flex-direction: column;
         gap: 10px;
     }
 
     .submit-link {
-        width: 100%;
+        width: 100%; /* Full width for submit link */
         text-align: center;
     }
 }

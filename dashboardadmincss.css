@@ -15,7 +15,10 @@ body {
 	grid-template-columns: repeat(6, 1fr);
 	column-gap: 1rem;
 	row-gap: 1rem;
+	padding: 10px;
+
 	margin-top: 1.25rem;
+	justify-content: flex-end; /* Align tiles to the right */
 	@media (max-width: 700px) {
 		grid-template-columns: repeat(1, 1fr);
 	}
@@ -23,8 +26,9 @@ body {
 
 .tile {
 	padding: 1rem;
+	
 	border-radius: 8px;
-	background-color: rgb(168, 168, 168);
+	background-color: rgb(236, 174, 2);
 	color: var(--c-gray-900);
 	min-height: 200px;
 	display: flex;
@@ -48,25 +52,19 @@ body {
 		}
 	}
 	&:nth-child(3) {
-		background-color: rgb(244, 248, 10);
+		background-color: rgb(12, 214, 170);
 		&:focus-within {
 			box-shadow: 0 0 0 2px var(--c-gray-800), 0 0 0 4px var(--c-gray-300);
 		}
 	}
     &:nth-child(4) {
-		background-color: rgb(144, 3, 156);
+		background-color: rgb(201, 105, 16);
 		&:focus-within {
 			box-shadow: 0 0 0 2px var(--c-gray-800), 0 0 0 4px var(--c-gray-300);
 		}
 	}
     &:nth-child(5) {
-		background-color: rgb(204, 46, 6);
-		&:focus-within {
-			box-shadow: 0 0 0 2px var(--c-gray-800), 0 0 0 4px var(--c-gray-300);
-		}
-	}
-    &:nth-child(6) {
-		background-color: rgb(7, 240, 182);
+		background-color: rgb(214, 94, 64);
 		&:focus-within {
 			box-shadow: 0 0 0 2px var(--c-gray-800), 0 0 0 4px var(--c-gray-300);
 		}
