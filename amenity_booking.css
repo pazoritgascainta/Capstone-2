@@ -19,6 +19,7 @@
 @media (max-width: 768px) {
     .main-content {
         width: 90%; /* Increase width for smaller screens */
+        margin-left: 0; /* Reset margin for better alignment */
     }
 }
 
@@ -201,4 +202,22 @@ select:focus {
     border-color: #007bff;
     outline: none;
     box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+@media (max-width: 768px) {
+    h2 {
+        font-size: 20px; /* Smaller heading for mobile */
+    }
+
+    table {
+        font-size: 14px; /* Smaller table font */
+    }
+
+    #pagination a,
+    #pagination button {
+        font-size: 14px; /* Smaller pagination controls */
+    }
+
+    #pagination input {
+        width: 40px; /* Smaller input field */
+    }
 }

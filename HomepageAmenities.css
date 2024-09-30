@@ -62,3 +62,34 @@ section ul li img {
 section ul li .text {
     margin-left: 10px;
 }
+@media (max-width: 768px) {
+    .amenities1 {
+        padding: 15px;
+    }
+
+    section h2 {
+        font-size: 20px;
+    }
+
+    section ul {
+        flex-direction: column;
+        height: auto;
+    }
+
+    section ul li {
+        font-size: 16px;
+        margin: 5px 0;
+        padding: 8px;
+        border-radius: 3px;
+    }
+
+    section ul li img {
+        width: 100px;
+        height: 100px;
+        margin-right: 5px;
+    }
+
+    section ul li .text {
+        margin-left: 5px;
+    }
+}

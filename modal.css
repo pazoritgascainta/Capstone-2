@@ -221,3 +221,28 @@
 .form-field button:hover {
     background-color: #0056b3; /* Darker color on hover */
 }
+@media (max-width: 768px) {
+    .modal-content {
+        top: 20%; /* Adjust position for smaller screens */
+        width: 90%; /* Full width */
+        max-width: 90%; /* Ensure it's not too wide */
+        padding: 15px; /* Reduce padding */
+    }
+
+    .close {
+        font-size: 24px; /* Smaller close button */
+    }
+
+    #timeslot-form label {
+        font-size: 14px; /* Smaller font size for labels */
+    }
+
+    #timeslot-form input,
+    #timeslot-form button {
+        font-size: 14px; /* Smaller font size for inputs and buttons */
+    }
+
+    .collapsible {
+        font-size: 14px; /* Smaller font size for collapsibles */
+    }
+}

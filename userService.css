@@ -166,3 +166,36 @@ fieldset {
     background-color: #3e8e41;
     transform: translateY(0);
 }
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        max-width: 100%;
+    }
+
+    .service-request-form {
+        padding: 20px; /* Reduce padding for smaller screens */
+    }
+
+    .form-container {
+        gap: 15px; /* Reduce gap for smaller screens */
+    }
+
+    .button-group {
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px; /* Reduce margin for smaller screens */
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px; /* Add margin to separate buttons */
+    }
+
+    input, textarea {
+        padding: 20px; /* Reduce padding for smaller screens */
+    }
+
+    button[type="submit"] {
+        padding: 10px; /* Reduce padding for smaller screens */
+    }
+}

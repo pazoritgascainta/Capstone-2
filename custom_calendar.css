@@ -146,3 +146,25 @@
     margin-bottom: 10px;
 }
 
+@media (max-width: 768px) {
+    #calendar {
+        grid-template-columns: repeat(3, 1fr); /* Adjust to 3 columns for smaller screens */
+    }
+
+    #calendar-nav button {
+        font-size: 1.5em; /* Smaller font size for navigation buttons */
+    }
+
+    #calendar-nav #month-year {
+        font-size: 1.2em; /* Smaller font size for month/year */
+    }
+
+    .calendar-cell {
+        height: 80px; /* Reduce height for calendar cells */
+        font-size: 1em; /* Smaller font size for cells */
+    }
+
+    .calendar-header-cell {
+        padding: 8px; /* Reduce padding for header cells */
+    }
+}

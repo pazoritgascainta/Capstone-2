@@ -536,4 +536,60 @@ hr.active {
     z-index: 1; 
     margin-left: 10vh;
 }
+@media (max-width: 768px) {
+    nav {
+        padding: 10px 5%;
+        flex-direction: column; /* Stack items vertically on mobile */
+    }
+
+    nav ul {
+        flex-direction: column; /* Stack links vertically */
+        width: 100%;
+    }
+
+    .nav-link {
+        margin: 10px 0; /* Space between links */
+    }
+
+    #logo-img {
+        height: 50px; /* Adjust logo size */
+    }
+
+    .sidebar {
+        width: 60px; /* Default sidebar width for mobile */
+    }
+
+    .sidebar.active {
+        width: 200px; /* Expanded width for mobile */
+    }
+
+    .main-content {
+        width: calc(100% - 60px); /* Adjust for sidebar width */
+    }
+}
+
+/* Adjustments for smaller devices */
+@media (max-width: 480px) {
+    nav {
+        padding: 10px 2%;
+    }
+
+    .user-pic {
+        width: 30px; /* Smaller user pic for mobile */
+        margin-left: 15px;
+    }
+
+    .sidebar {
+        width: 50px; /* Further reduce sidebar width for very small screens */
+    }
+
+    .sidebar.active {
+        width: 180px; /* Adjust active state width */
+    }
+
+    .main-content {
+        width: calc(100% - 50px); /* Adjust for smaller sidebar */
+        padding: 15px; /* Reduce padding for smaller screens */
+    }
+}
 

@@ -531,3 +531,16 @@ hr.active {
     margin-left: 10vh;
 }
 
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px; /* Collapsed sidebar width */
+    }
+
+    .sidebar.active {
+        width: 200px; /* Expanded sidebar width */
+    }
+
+    .main-content {
+        margin-left: 70px; /* Adjust for sidebar */
+    }
+}

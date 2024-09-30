@@ -113,4 +113,39 @@
     background-color: peachpuff;
     color: black;
 }
+@media (max-width: 768px) {
+    #calendar-box {
+        width: 100%; /* Full width on smaller screens */
+        height: auto; /* Allow height to adjust */
+        margin-left: 0; /* Center it on mobile */
+    }
+
+    #calendar {
+        grid-template-columns: repeat(4, 1fr); /* Reduce columns */
+    }
+
+    #calendar-nav button {
+        font-size: 1.5em; /* Smaller button text */
+    }
+
+    #calendar-nav #month-year {
+        font-size: 1.2em; /* Adjust month/year font size */
+    }
+}
+
+@media (max-width: 480px) {
+    #calendar-nav {
+        flex-direction: column; /* Stack navigation items */
+        align-items: flex-start; /* Align to the left */
+    }
+
+    #calendar {
+        grid-template-columns: repeat(3, 1fr); /* Further reduce columns */
+    }
+
+    .calendar-cell {
+        height: 50px; /* Decrease cell height */
+        font-size: 0.8em; /* Smaller text */
+    }
+}
 

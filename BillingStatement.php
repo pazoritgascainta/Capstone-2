@@ -171,7 +171,7 @@ $conn->close();
 
             <div class="px-14 text-sm text-neutral-700">
                 <p class="text-main font-bold">PAYMENT DETAILS</p>
-                <p>Gcash</p>
+                
                 <p>Payment Reference: <span id="paymentReference"></span></p>
             </div>
 

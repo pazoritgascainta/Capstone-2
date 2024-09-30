@@ -41,3 +41,16 @@ select option:hover {
 option[value=""] {
     color: #888; /* Placeholder text color */
 }
+@media (max-width: 768px) {
+    label[for="amenity"] {
+        font-size: 14px; /* Smaller font size for labels */
+    }
+
+    select {
+        font-size: 14px; /* Smaller font size for select */
+    }
+
+    option {
+        font-size: 14px; /* Smaller font size for options */
+    }
+}

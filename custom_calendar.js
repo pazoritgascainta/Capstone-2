@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const monthYearSpan = document.getElementById('month-year');
     const prevMonthButton = document.getElementById('prev-month');
     const nextMonthButton = document.getElementById('next-month');
-    const timeslotContainer = document.getElementById('timeslot-container'); // Container for checkboxes
+    const timeslotContainer = document.getElementById('timeslot-container');
     const amenitySelect = document.getElementById('amenity');
     const selectedDateInput = document.getElementById('selected-date');
     const noTimeslotsMessage = document.getElementById('no-timeslots');
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Modal elements
     const modal = document.getElementById('timeslot-modal');
-    const backdrop = document.querySelector('.modal-backdrop'); // Modal backdrop
+    const backdrop = document.querySelector('.modal-backdrop');
     const closeModal = document.querySelector('.modal .close');
     const timeslotForm = document.getElementById('timeslot-form');
     const timeslotErrorMessage = document.getElementById('timeslot-error-message');
@@ -123,11 +123,12 @@ document.addEventListener('DOMContentLoaded', function() {
             selectedDateInput.value = selectedDate; // Set hidden input value
         }
 
+        // Check if amenity is selected before showing the modal
         if (amenitySelect.value) {
             fetchTimeslots(); // Fetch timeslots when a date is clicked
             showModal(); // Show the modal
         } else {
-            alert('Please select an amenity first.'); // Alert if no amenity is selected
+            alert('Please select an amenity first.'); // Alert user to select an amenity
         }
     }
 
@@ -141,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return false; // Prevent form submission
         }
 
-        timeslotErrorMessage.style.display = 'none'; // Hide error message
+        timeslotErrorMessage.style.display = 'none'; // Hide error message if valid
         return true; // Allow form submission
     }
 
@@ -166,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Event listener for changes in the amenity select element
+    // Attach event listener to amenity select element
     amenitySelect.addEventListener('change', function() {
         console.log('Amenity selected:', this.value);
         document.getElementById('hidden-amenity-id').value = this.value; // Update hidden input
@@ -216,85 +217,4 @@ document.addEventListener('DOMContentLoaded', function() {
     timeslotForm.onsubmit = validateTimeslotSelection;
 
     renderCalendar(); // Initial render of the calendar
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-    const today = new Date();
-
-    // Render calendar logic here
-    function renderCalendar(year, month) {
-        const calendar = document.getElementById('calendar');
-        calendar.innerHTML = ''; // Clear previous calendar
-
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-        // Get the number of days in the previous month
-        const daysInPrevMonth = new Date(year, month, 0).getDate();
-
-        // Add empty cells for the days of the previous month
-        for (let i = firstDay; i > 0; i--) {
-            const emptyCell = document.createElement('div');
-            emptyCell.classList.add('calendar-cell', 'empty');
-            emptyCell.innerText = daysInPrevMonth - i + 1; // Optionally show previous month's days
-            calendar.appendChild(emptyCell);
-        }
-
-        // Fill in days of the current month
-        for (let day = 1; day <= daysInMonth; day++) {
-            const date = new Date(year, month, day);
-            const dayCell = document.createElement('div');
-            dayCell.classList.add('calendar-cell');
-
-            // Compare the current day with today's date
-            if (date < today.setHours(0, 0, 0, 0)) {
-                // Past dates (before today)
-                dayCell.classList.add('past-day');
-            } else if (date.getTime() === today.setHours(0, 0, 0, 0)) {
-                // Today's date
-                dayCell.classList.add('today');
-            }
-
-            dayCell.innerText = day;
-            calendar.appendChild(dayCell);
-        }
-
-        // Fill remaining empty cells for next month's days to keep grid aligned
-        const remainingCells = (7 - (firstDay + daysInMonth) % 7) % 7;
-        for (let i = 1; i <= remainingCells; i++) {
-            const emptyCell = document.createElement('div');
-            emptyCell.classList.add('calendar-cell', 'empty');
-            emptyCell.innerText = i; // Optionally show next month's days
-            calendar.appendChild(emptyCell);
-        }
-    }
-
-    // Initial render
-    const currentYear = today.getFullYear();
-    const currentMonth = today.getMonth();
-    renderCalendar(currentYear, currentMonth);
-
-    // Navigation buttons
-    const prevButton = document.getElementById('prev-month');
-    const nextButton = document.getElementById('next-month');
-    let displayedYear = currentYear;
-    let displayedMonth = currentMonth;
-
-    prevButton.addEventListener('click', function() {
-        displayedMonth--;
-        if (displayedMonth < 0) {
-            displayedMonth = 11;
-            displayedYear--;
-        }
-        renderCalendar(displayedYear, displayedMonth);
-    });
-
-    nextButton.addEventListener('click', function() {
-        displayedMonth++;
-        if (displayedMonth > 11) {
-            displayedMonth = 0;
-            displayedYear++;
-        }
-        renderCalendar(displayedYear, displayedMonth);
-    });
 });

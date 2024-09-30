@@ -159,3 +159,33 @@ body{
     right: 10px; /* Adjust the right position as needed */
 
 }
+
+@media screen and (max-width: 768px) {
+    .container {
+        width: 90%; /* Adjust width for mobile */
+        padding: 20px; /* Add padding for mobile */
+    }
+
+    .container p, .container span, .container a, .container button, .container input {
+        font-size: 16px; /* Adjust font size for readability */
+        margin: 10px 0; /* Adjust margins */
+    }
+
+    .container button {
+        padding: 10px 20px; /* Adjust button padding */
+    }
+
+    .toggle-container {
+        width: 100%; /* Full width for toggle on mobile */
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center; /* Center social icons */
+    }
+
+    .back-btn-container {
+        top: 5px; /* Adjust top position for mobile */
+        right: 5px; /* Adjust right position for mobile */
+    }
+}

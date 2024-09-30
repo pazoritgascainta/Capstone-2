@@ -42,3 +42,17 @@ a:hover {
 a + br {
     margin-bottom: 10px;
 }
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    a {
+        font-size: 1rem;
+        padding: 10px;
+    }
+}

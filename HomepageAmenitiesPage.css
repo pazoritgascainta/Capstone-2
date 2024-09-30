@@ -190,3 +190,28 @@ aside {
 aside p {
 	margin-bottom: 1em;
 }
+@media (max-width: 768px) {
+    :root {
+        --card-height: 80vw; /* Increase card height on smaller screens */
+    }
+
+    body {
+        font-size: calc(1em + 1vw); /* Adjust font size for readability */
+    }
+
+    header,
+    main {
+        width: 90vw; /* Full width with some margin */
+    }
+
+    .card__content {
+        grid-template-areas:
+            "img"
+            "text"; /* Stack image and text vertically */
+        grid-template-columns: 1fr;
+    }
+
+    #cards {
+        gap: var(--card-margin) 2vw; /* Less gap on smaller screens */
+    }
+}

@@ -18,3 +18,12 @@
     padding: 13px 20px;
     text-decoration: none;
 }
+@media (max-width: 768px) {
+    .HomeLogo .logoo img {
+        width: 100px; /* Adjust the width of the logo for smaller screens */
+    }
+
+    .HomeLogo a {
+        padding: 10px 15px; /* Adjust the padding for smaller screens */
+    }
+}

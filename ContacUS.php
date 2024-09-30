@@ -59,7 +59,7 @@
     <div class="form-row submit-btn">
         <div class="input-data">
 		   <div class="inner"></div>
-            <button type="submit">Submit Form</button>
+            <button type="submit">Submit</button>
         </div>
     </div>
 </form>

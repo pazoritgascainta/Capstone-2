@@ -77,17 +77,17 @@ margin-left: 80px;
 }
 
 .status.pending {
-  background-color: #7c63ef;
+  background-color: #d86d26;
   color: white;
 }
 
-.status.completed {
-  background-color: #6a2c5f;
+.status.paid {
+  background-color: #5ac739;
   color: white;
 }
 
-.status.failed {
-  background-color: #46b4a4;
+.status.overdue {
+  background-color: #ec4224;
   color: white;
 }
 
@@ -120,38 +120,68 @@ margin-left: 80px;
   color: black;
 }
 
-.transfer {
-  background-color: #513ccf;
-  color: white;
+
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Or use center if needed */
+  gap: 20px; /* Space between buttons */
 }
 
-.appointments{
-  grid-column: 2 / 3;
-  display: flex;
-}
-.services {
-  grid-column: 2 / 3;
+.appointments, .services {
   display: flex;
 }
 
-.appointments button{
-  width: 167%;
+.appointments button, .services button {
+  width: 100%; /* Makes the button take up its container width */
   height: 100%;
-  padding: 15px;
+  padding: 70px;
   background-color: #ffbb00e7;
   border: none;
   border-radius: 8px;
   cursor: pointer;
 }
-.services button{
-  width: 176%;
-  height: 462%;
-  padding: 15px;
+
+.services button {
   background-color: #d88d01cb;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  top: -25.2vh;
-  position: relative;
-  left: 30vh;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 10px; /* Remove left margin for mobile */
+    padding: 0 10px; /* Add padding to sides */
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr; /* Stack columns vertically */
+  }
+
+  .payment-history,
+  .payment-summary {
+    grid-column: auto; /* Reset column position for mobile */
+  }
+
+  .appointments button, 
+  .services button {
+    padding: 30px; /* Reduce padding on buttons */
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-history img {
+    width: 30px; /* Smaller images for mobile */
+    height: 30px;
+  }
+
+  .payment-summary h2 {
+    font-size: 20px; /* Reduce font size */
+  }
+
+  .view-toggle button {
+    padding: 4px 8px; /* Smaller button sizes */
+  }
+
+  .appointments button, 
+  .services button {
+    padding: 20px; /* Further reduce padding for smaller screens */
+  }
 }

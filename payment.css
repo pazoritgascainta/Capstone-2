@@ -17,8 +17,6 @@ body {
 
 }
 
-
-
 header {
     display: flex;
     justify-content: space-between;
@@ -113,4 +111,37 @@ th, td {
 a{
     color: green;
     font-weight: bold;
+}
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 10px; /* Reduce margin on smaller screens */
+        margin-right: 10px; /* Add right margin for better spacing */
+    }
+
+    header {
+        flex-direction: column; /* Stack header elements */
+        align-items: flex-start; /* Align items to the start */
+    }
+
+    .balance-section {
+        flex-direction: column; /* Stack balance sections */
+        gap: 10px; /* Reduce gap */
+    }
+
+    .payment-schedule input {
+        width: 100%; /* Full width on smaller screens */
+    }
+
+    #refresh-button {
+        width: 100%; /* Full width button */
+        margin-top: 10px; /* Add space above button */
+    }
+
+    table {
+        font-size: 14px; /* Smaller font size for tables */
+    }
+    
+    th, td {
+        padding: 8px; /* Reduce padding in table cells */
+    }
 }
