@@ -1,0 +1,304 @@
+.container {
+    background-color: #ffffff;  
+    border: 1px solid #ccc; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    padding: 10px; 
+    margin-top: 10px; 
+  }
+  
+  /* Main Content Styling */
+  .main-content {
+    margin: 0 auto; /* Center the content horizontally */
+  margin-left: 80px;
+    max-width: 90%; /* Optional: Set a maximum width to prevent it from becoming too wide */
+  }
+body {
+    font-family: Arial, sans-serif;
+
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    background-color: #f7f9ff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.date-section h1 {
+    color: #333;
+}
+
+.balance-section {
+    display: flex;
+    gap: 20px;
+}
+
+.balance, .modues, .appointments {
+    background-color: #e9f8e9;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.balance h2, .modues h2, .appointments h2 {
+    color: green;
+}
+
+.payment-schedule {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.payment-schedule input {
+    width: 40%;
+    padding: 8px;
+    margin-bottom: 20px;
+}
+
+#refresh-button {
+    background-color: #ff5f5f;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.paid {
+    color: green;
+    font-weight: bold;
+}
+
+.unpaid {
+    color: red;
+    font-weight: bold;
+}
+
+.proof-of-payment {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+#upload-file {
+    padding: 10px;
+}
+
+#upload-button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+a{
+    color: green;
+    font-weight: bold;
+}
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 10px; /* Reduce margin on smaller screens */
+        margin-right: 10px; /* Add right margin for better spacing */
+    }
+
+    header {
+        flex-direction: column; /* Stack header elements */
+        align-items: flex-start; /* Align items to the start */
+    }
+
+    .balance-section {
+        flex-direction: column; /* Stack balance sections */
+        gap: 10px; /* Reduce gap */
+    }
+
+    .payment-schedule input {
+        width: 100%; /* Full width on smaller screens */
+    }
+
+    #refresh-button {
+        width: 100%; /* Full width button */
+        margin-top: 10px; /* Add space above button */
+    }
+
+    table {
+        font-size: 14px; /* Smaller font size for tables */
+    }
+    
+    th, td {
+        padding: 8px; /* Reduce padding in table cells */
+    }
+}
+/* Pagination Styling */
+.page-link {
+    display: none;
+}
+.page-link.active {
+    background-color: #ff8b2c; /* Primary color for active link */
+    color: white; /* White text color */
+    border: 1px solid #ff8b2c; /* Match border color with active background */
+}
+#pagination {
+    margin-top: 20px;
+    text-align: center; /* Center align pagination controls */
+}
+#pagination a {
+    display: inline-block; /* Ensure pagination links are inline */
+    margin: 0 8px; /* Space between pagination links */
+    text-decoration: none; /* Remove underline from links */
+    color: #ff8b2c; /* Link color */
+    padding: 8px 12px; /* Padding inside pagination links */
+    border: 1px solid #ff8b2c; /* Blue border to match theme */
+    border-radius: 4px; /* Rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+}
+#pagination a.active {
+    background-color: #ff8b2c; /* Active background color */
+    color: white; /* White text color */
+}
+#pagination a:hover {
+    background-color: #f0f0f0; /* Light gray background on hover */
+    color: #ff8b2c; /* Blue text color */
+}
+
+#pagination input {
+    text-align: center;
+    width: 50px;
+    padding: 8px;
+    color: #ff8b2c; /* Blue text color */
+    border: 1px solid #ff8b2c; /* Blue border */
+    border-radius: 4px; /* Rounded corners */
+    margin: 0 8px; /* Space around the input */
+}
+
+/* Button styling */
+#pagination button {
+    background-color: #ff8b2c; /* Blue background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    padding: 8px 12px; /* Add padding */
+    text-align: center; /* Center text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Display inline */
+    font-size: 16px; /* Font size */
+    margin: 4px 2px; /* Add margin */
+    cursor: pointer; /* Add pointer cursor on hover */
+    border-radius: 4px; /* Rounded corners */
+    transition-duration: 0.4s; /* Add transition effect */
+}
+
+#pagination button:hover {
+    background-color: white; /* White background on hover */
+    color: #ff8b2c; /* Blue text on hover */
+    border: 1px solid #ff8b2c; /* Blue border on hover */
+}
+
+#pagination button:disabled {
+    background-color: #ddd; /* Grey background for disabled buttons */
+    color: #999; /* Grey text for disabled buttons */
+    cursor: not-allowed; /* No pointer cursor for disabled buttons */
+}
+
+#pagination input[type="number"] {
+    border: 1px solid #ff8b2c; /* Blue border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 5px;
+    font-size: 14px;
+    width: 60px;
+}
+
+
+.search-form {
+    margin-bottom: 20px; /* Space below the search form */
+    display: flex;
+    align-items: center;
+}
+
+.search-form input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 250px; /* Adjust width as needed */
+    margin-right: 10px; /* Space between input and button */
+}
+
+.search-form button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #ff8b2c; /* Primary color */
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-form button:hover {
+    background-color: #f87000; /* Darker shade on hover */
+}
+.recent-payments {
+    padding: 20px;
+    background-color: peachpuff; /* Change background to pure white for cleaner look */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif; /* Ensure consistent font */
+}
+
+.recent-payments h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+    font-weight: bold; /* Bold text for headings */
+}
+
+.payment {
+    display: flex;
+    align-items: center;
+    background-color: blanchedalmond;
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0; /* Increase padding for better spacing */
+}
+
+.payment img {
+    width: 120px; /* Increased size for a more prominent view */
+    height: 120px; 
+    object-fit: cover;
+    border-radius: 8px;
+    margin-left: 20px;
+    margin-right: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+    cursor: pointer; /* Add cursor pointer for clickable effect */
+}
+
+.payment-details {
+    flex: 1;
+}
+
+.payment-details p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.payment-details span {
+    font-weight: bold;
+    color: #333;
+    display: block; /* Ensure each span is on its own line */
+}
