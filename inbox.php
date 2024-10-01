@@ -16,7 +16,7 @@ session_start();
 </head>
 <body>
 
-        <?php include 'usersidebar.php'; ?>
+        <?php include 'sidebar.php'; ?>
         <div class="main-content">
             <h1></h1>
 <div>

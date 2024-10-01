@@ -180,3 +180,30 @@ h2 {
 .search-form button:hover {
     background-color: #f87000; /* Darker shade on hover */
 }
+.suggestions {
+    position: relative;
+}
+
+.suggestions ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    display: none; /* Initially hidden */
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.suggestions ul li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.suggestions ul li:hover {
+    background-color: #f0f0f0;
+}
+
+/* Show suggestions when there are results */
+.suggestions ul {
+    display: block; /* Show the suggestions */
+}

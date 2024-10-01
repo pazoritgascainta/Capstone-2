@@ -96,8 +96,7 @@ $user_name = $_SESSION['homeowner_name'];
 
     <div class="main-content">
         <div class="container">
-            <h1>St. Monique User Dashboard</h1>
-            <h2>Welcome, <?php echo htmlspecialchars($homeowner['name']); ?></h2>
+
             <div class="dashboard">
             <section class="payment-history">
                     <h2>Upcoming Payment</h2>
@@ -109,8 +108,10 @@ $user_name = $_SESSION['homeowner_name'];
                                     <div class="payment-info">
                                         <p><strong><?php echo htmlspecialchars(date('F Y', strtotime($row['billing_date']))); ?></strong></p>
                                         <p>Due Date: <?php echo htmlspecialchars(date('F d, Y', strtotime($row['due_date']))); ?></p>
-                                        <p>Monthly Due: ₱<?php echo number_format($row['monthly_due'], 2); ?></p>
+                                        <p>Monthly Due: ₱<?php echo number_format($total_balance, 2); ?></p>
+                                        <p>Other Fees: ₱<?php echo number_format($total_appointments_amount, 2); ?></p>
                                         <p>Total Amount: ₱<?php echo number_format($row['total_amount'], 2); ?></p>
+
                                     </div>
                                     <span class="status <?php echo strtolower($row['status']); ?>">
                                         <?php echo ucfirst($row['status']); ?>
@@ -120,7 +121,13 @@ $user_name = $_SESSION['homeowner_name'];
                         <?php } else { ?>
                             <li>No payment records found.</li>
                         <?php } ?>
-                    </ul>
+                    </ul>    <div class="payment-summary">
+                    <p>To be paid:</p>
+                    <h2>₱<?php echo number_format($total_balance + $total_appointments_amount, 2); ?></h2>
+                    <p>For the month of <?php echo date('F'); ?></p> <!-- Display current month -->
+                    <a href="payment.php">
+                        <button class="pay-now">Pay now</button>
+                    </a>
                 </section>
         <div id="calendar-box">
                 <div id="calendar-container">
@@ -141,13 +148,7 @@ $user_name = $_SESSION['homeowner_name'];
                     </div>
                 </div>
             </div>
-            <div class="payment-summary">
-                    <p>To be paid:</p>
-                    <h2>₱<?php echo number_format($total_balance + $total_appointments_amount, 2); ?></h2>
-                    <p>For the month of <?php echo date('F'); ?></p> <!-- Display current month -->
-                    <a href="payment.php">
-                        <button class="pay-now">Pay now</button>
-                    </a>
+
             </div>
 
         <div class="button-container">

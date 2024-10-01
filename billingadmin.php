@@ -60,12 +60,12 @@ function handlePostRequest($conn) {
 }
 
 function handlePaidStatus($conn, $billing_id) {
-    // Get the current month's due amount
-    $sql_get_due = "SELECT monthly_due FROM billing WHERE billing_id = ?";
+    // Get the current month's due amount and other details
+    $sql_get_due = "SELECT homeowner_id, monthly_due, billing_date, due_date FROM billing WHERE billing_id = ?";
     if ($stmt_get_due = $conn->prepare($sql_get_due)) {
         $stmt_get_due->bind_param("i", $billing_id);
         $stmt_get_due->execute();
-        $stmt_get_due->bind_result($monthly_due);
+        $stmt_get_due->bind_result($homeowner_id, $monthly_due, $billing_date, $due_date);
         $stmt_get_due->fetch();
         $stmt_get_due->close();
     } else {
@@ -87,13 +87,14 @@ function handlePaidStatus($conn, $billing_id) {
     }
 
     // Update billing date and due date for the next month
+    $next_billing_date = new DateTime($paid_date);
+    $next_billing_date->modify('first day of next month'); // First day of next month
+    $next_due_date = clone $next_billing_date;
+    $next_due_date->modify('+1 month'); // Next due date is one month after the next billing date
+
+    // Update billing details with the new dates
     $sql_update_dates = "UPDATE billing SET billing_date = ?, due_date = ? WHERE billing_id = ?";
     if ($stmt_update_dates = $conn->prepare($sql_update_dates)) {
-        $next_billing_date = new DateTime($paid_date);
-        $next_billing_date->modify('first day of next month');
-        $next_due_date = clone $next_billing_date;
-        $next_due_date->modify('+1 month');
-
         $stmt_update_dates->bind_param("ssi", $next_billing_date->format('Y-m-d'), $next_due_date->format('Y-m-d'), $billing_id);
         if (!$stmt_update_dates->execute()) {
             throw new Exception("Failed to update billing dates: " . $stmt_update_dates->error);
@@ -102,7 +103,47 @@ function handlePaidStatus($conn, $billing_id) {
     } else {
         throw new Exception("Prepare statement failed: " . $conn->error);
     }
+
+    // Optionally update the status of the billing record to 'Paid'
+    $sql_update_status = "UPDATE billing SET status = 'Paid' WHERE billing_id = ?";
+    if ($stmt_update_status = $conn->prepare($sql_update_status)) {
+        $stmt_update_status->bind_param("i", $billing_id);
+        if (!$stmt_update_status->execute()) {
+            throw new Exception("Failed to update billing record status: " . $stmt_update_status->error);
+        }
+        $stmt_update_status->close();
+    } else {
+        throw new Exception("Prepare statement failed: " . $conn->error);
+    }
+
+    // Calculate the number of months from billing date to today
+    $billing_date_obj = new DateTime($billing_date);
+    $current_date = new DateTime();
+    $interval = $billing_date_obj->diff($current_date);
+    $months_passed = $interval->m + ($interval->y * 12); // Total months from billing date to today
+
+    // Insert monthly records into billing_history
+    for ($i = 0; $i <= $months_passed; $i++) {
+        $month_record_date = clone $billing_date_obj; // Clone the billing date object
+        $month_record_date->modify("+$i month"); // Move forward by $i months
+        $formatted_date = $month_record_date->format('Y-m-d');
+
+        // Insert the record into billing_history
+        $sql_insert_history = "INSERT INTO billing_history (homeowner_id, monthly_due, billing_date, due_date, status, total_amount, paid_date) 
+                               VALUES (?, ?, ?, ?, 'Paid', ?, ?)";
+        if ($stmt_insert_history = $conn->prepare($sql_insert_history)) {
+            $total_amount = $monthly_due; // Assuming total amount is the same as monthly due
+            $stmt_insert_history->bind_param("idssds", $homeowner_id, $monthly_due, $formatted_date, $due_date, $total_amount, $paid_date);
+            if (!$stmt_insert_history->execute()) {
+                throw new Exception("Failed to insert billing record into history: " . $stmt_insert_history->error);
+            }
+            $stmt_insert_history->close();
+        } else {
+            throw new Exception("Prepare statement failed: " . $conn->error);
+        }
+    }
 }
+
 
 function handlePendingStatus($conn, $billing_id, $monthly_due) {
     // Check if the record is overdue
