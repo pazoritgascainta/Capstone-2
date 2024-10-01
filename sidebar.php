@@ -74,7 +74,7 @@ $profile_image = isset($admin['profile_image']) && !empty($admin['profile_image'
                     <a href="#" class="nav-link notifications-link">Notifications</a>
                     <div class="sub-menu-wrap" id="notificationsMenu">
                         <div class="sub-menu">
-                            <a href="inbox.php" class="sub-menu-link">
+                            <a href="admininbox.php" class="sub-menu-link">
                                 <img src="inbox.png" alt="">
                                 <p>Inbox</p>
                                 <span>></span>

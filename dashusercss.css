@@ -14,15 +14,15 @@ margin-left: 80px;
 }
 .dashboard {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr;
   gap: 20px;
   padding: 20px;
 }
 
 .payment-history {
   grid-column: 1 / 2;
-  background-color: white;
-  padding: 20px;
+  background-color:peachpuff;
+  padding: 10px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -122,27 +122,51 @@ margin-left: 80px;
 
 
 .button-container {
+  grid-column: 2 / 2;
   display: flex;
   justify-content: space-between; /* Or use center if needed */
   gap: 20px; /* Space between buttons */
 }
 
-.appointments, .services {
+.appointments {
   display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  gap: 20px; /* Space between buttons */
 }
 
-.appointments button, .services button {
-  width: 100%; /* Makes the button take up its container width */
-  height: 100%;
-  padding: 70px;
-  background-color: #ffbb00e7;
+.appointments button {
+  padding: 30px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  height: 15vh;
+  width: 15vh;
+
+}
+.button-title {
+  width: 20px;
+  font-size: 15px; /* Adjust font size */
+  font-weight: bold; /* Make text bold */
+  color: #fff; /* Text color */
+  text-align: center; /* Center text */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Add subtle shadow for better readability */
+}
+.appointments button img {
+  width: 70px;
+  height: 64px;
+  margin-right: 10px;
+  margin-top: -20px;
+}
+.appointment-button {
+  background-color: #ffbb00e7;
 }
 
-.services button {
+.service-button {
   background-color: #d88d01cb;
+}
+
+.complaint-button{
+  background-color: #c0613b;
 }
 
 @media (max-width: 768px) {

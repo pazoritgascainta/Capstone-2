@@ -27,7 +27,18 @@ nav {
 }
 
 .notifications-link {
+    position: relative;
     /* Additional styling for Notifications link if needed */
+}
+.notification-dot {
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    display: none; /* Hide by default */
 }
 nav ul {
     display: flex; /* Align items horizontally */
@@ -170,6 +181,8 @@ nav li a {
 #notificationsMenu .sub-menu a:hover p {
     font-weight: 600;
 }
+
+
 
 .user-pic {
     width: 40px;

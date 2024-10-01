@@ -2,18 +2,18 @@
 #calendar-box {
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
-    background-color: #fff;
+    background-color: #ffffffbe;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    width: 555px; /* Set width */
-    height: 565px; /* Set height */
+    width: 60vh;
+    height: 49vh; /* Set height */
     position: relative; /* Positioning to allow for flexible layout */
     margin-left: auto; /* Adjust positioning */
-  
-    right: 0vh;
+    margin-right: auto;
+    grid-column: 3 / 4;
+    
 }
 /* Calendar box styling */
 #calendar-nav {
@@ -55,7 +55,7 @@
 /* Calendar grid styling */
 #calendar {
     display: grid;
-    grid-template-columns: repeat(5, 2fr); /* Ensure it still has 7 columns */
+    grid-template-columns: repeat(6, 2fr); /* Ensure it still has 7 columns */
     gap: 5px;
     padding: 5px;
     height: calc(100% - 60px); /* Deduct space for navigation */

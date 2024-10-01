@@ -287,7 +287,6 @@ $logout_message = isset($_GET['message']) && $_GET['message'] == 'loggedout' ? "
             <div class="location-map">
                 <h2>Our Location</h2>
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.2986102152097!2d121.18476209999999!3d14.509480000000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c16a37b4ca23%3A0x747fd5298859a7a7!2sSaint%20Monique%20Valais!5e0!3m2!1sen!2suk!4v1631086053421!5m2!1sen!2suk" width="850" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-
             </div>
         </div>
     </footer>

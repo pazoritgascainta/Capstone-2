@@ -57,22 +57,26 @@ $profile_image = $homeowner['profile_image'] ? $homeowner['profile_image'] : $de
             <img src="monique logo.png" alt="logo" id="logo-img">
         </a>
         <div class="nav-links-wrapper">
-            <ul>
-                <li><a href="dashuser.php" class="nav-link home-link">Home</a></li>
-                <li>
-                    <a href="#" class="nav-link notifications-link">Notifications</a>
-                    <div class="sub-menu-wrap" id="notificationsMenu">
-                        <div class="sub-menu">
-                            <a href="userinbox.php" class="sub-menu-link">
-                                <img src="inbox.png" alt="">
-                                <p>Inbox</p>
-                                <span>></span>
-                            </a>
-                            <!-- Add more links if needed -->
-                        </div>
-                    </div>
-                </li>
-            </ul>
+        <ul>
+    <li><a href="dashuser.php" class="nav-link home-link">Home</a></li>
+    <li>
+        <a href="#" class="nav-link notifications-link">Notifications 
+            <div class="notification-dot" id="inboxNotificationDot"></div> <!-- Notification dot -->
+        </a>
+        <div class="sub-menu-wrap" id="notificationsMenu">
+            <div class="sub-menu">
+                <a href="userinbox.php" class="sub-menu-link">
+                    <img src="inbox.png" alt="">
+                    <p>Inbox</p>
+                    <span>></span>
+                </a>
+            </div>
+        </div>
+    </li>
+</ul>
+<audio id="notificationSound" src="Notificationsound.mp3" preload="auto"></audio>
+
+
             
             <a href="#" class="nav-link user-profile-link" onclick="toggleProfileMenu()">
                 <img src="<?php echo htmlspecialchars($profile_image); ?>" class="user-pic" alt="profile picture">

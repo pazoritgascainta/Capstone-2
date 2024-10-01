@@ -221,50 +221,61 @@ $conn->close();
             </article>
         </div>
         <div class="flex-container">
-    <div class="announcement-widget">
-        <h2>Manage Announcements</h2>
-        <!-- Form for adding a new announcement -->
-        <form method="POST" action="">
-            <label for="content">New Announcement:</label><br>
-            <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
-            <button type="submit" name="add_announcement">Add Announcement</button>
-        </form>
+        <div class="announcement-widget">
+    <h2>Manage Announcements</h2>
+    <!-- Form for adding a new announcement -->
+    <form method="POST" action="dashadmin_add_announcement.php">
+        <label for="content">New Announcement:</label><br>
+        <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
+        <button type="submit" name="add_announcement">Add Announcement</button>
+    </form>
 
-        <?php if (isset($error)): ?>
-            <p class="error"><?php echo $error; ?></p>
-        <?php endif; ?>
+    <?php if (isset($error)): ?>
+        <p class="error"><?php echo $error; ?></p>
+    <?php endif; ?>
 
-        <h3>Current Announcements</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Content</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if ($announcementsResult->num_rows > 0): ?>
-                    <?php while ($row = $announcementsResult->fetch_assoc()): ?>
-                        <tr>
-                            <td><?php echo $row['id']; ?></td>
-                            <td><?php echo htmlspecialchars($row['content']); ?></td>
-                            <td><?php echo date('F d, Y', strtotime($row['date'])); ?></td>
-                            <td>
-                                <a href="dashadmin_edit_announcement.php?id=<?php echo $row['id']; ?>">Edit</a>
-                                <a href="?delete_id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this announcement?');">Delete</a>
-                            </td>
-                        </tr>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="4">No announcements found.</td>
+    <h3>Current Announcements</h3>
+    <table id="announcementTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Content</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if ($announcementsResult->num_rows > 0): ?>
+                <?php 
+                $count = 0; 
+                while ($row = $announcementsResult->fetch_assoc()): 
+                    $count++; 
+                ?>
+                    <tr class="announcement-row <?php echo $count > 5 ? 'hidden-row' : ''; ?>">
+                        <td><?php echo $row['id']; ?></td>
+                        <td><?php echo htmlspecialchars($row['content']); ?></td>
+                        <td><?php echo date('F d, Y', strtotime($row['date'])); ?></td>
+                        <td>
+                            <a href="dashadmin_edit_announcement.php?id=<?php echo $row['id']; ?>">Edit</a>
+                            <a href="?delete_id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this announcement?');">Delete</a>
+                        </td>
                     </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="4">No announcements found.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+
+    <?php if ($announcementsResult->num_rows > 5): ?>
+    <button id="seeAllBtn" onclick="toggleAnnouncements()">See All</button>
+<?php endif; ?>
+
+</div>
+
+
 
     <div class="recent-payments">
         <h2>Recent Payments</h2>
@@ -325,7 +336,34 @@ $conn->close();
                 modal.style.display = 'none';
             }
         }
+        
     </script>
+
+<script>
+function toggleAnnouncements() {
+    var hiddenRows = document.querySelectorAll('.hidden-row');
+    var seeAllBtn = document.getElementById('seeAllBtn');
+
+    // Check the current state (whether hidden or shown)
+    if (hiddenRows[0].style.display === 'none' || hiddenRows[0].style.display === '') {
+        // If hidden, show the rows
+        hiddenRows.forEach(function(row) {
+            row.style.display = 'table-row';
+        });
+        // Update button text to "Show Less"
+        seeAllBtn.textContent = 'Show Less';
+    } else {
+        // If shown, hide the rows again
+        hiddenRows.forEach(function(row) {
+            row.style.display = 'none';
+        });
+        // Update button text to "See All"
+        seeAllBtn.textContent = 'See All';
+    }
+}
+</script>
+
+
 <script src="dashadmin.js"></script>
 
     

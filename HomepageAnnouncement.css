@@ -48,6 +48,7 @@
     background-image: url('Announcement.jpg');
     background-size: cover; /* Ensures background image covers the entire container */
     background-position: center;
+    width: 100%;
 }
 
 .announcement-main {

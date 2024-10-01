@@ -70,4 +70,34 @@ document.addEventListener('DOMContentLoaded', function() {
             notificationsMenu.classList.remove("open-menu");
         }
     });
+    // NEW MESSAGE NOTIFICATION FUNCTIONALITY
+    let notified = false; // Flag to track notification status
+
+    function checkForNewMessages() {
+        fetch('check_new_messages.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.newMessages && !notified) {
+                    console.log("New message detected!");
+                    inboxNotificationDot.style.display = 'block';
+                    notificationSound.play(); // Play notification sound
+                    notified = true; // Set flag to true after notification
+                } else if (!data.newMessages && notified) {
+                    inboxNotificationDot.style.display = 'none'; // Hide the notification dot if there are no new messages
+                    notified = false; // Reset the flag if no new messages
+                }
+            })
+            .catch(error => console.error('Error checking messages:', error));
+    }
+
+    const inboxNotificationDot = document.getElementById('inboxNotificationDot');
+    const notificationSound = document.getElementById('notificationSound');
+
+    // Check for new messages on page load
+    checkForNewMessages();
+
+    // Periodically check for new messages (every 5 seconds)
+    setInterval(() => {
+        checkForNewMessages();
+    }, 5000);
 });
