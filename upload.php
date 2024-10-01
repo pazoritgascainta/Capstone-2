@@ -45,17 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['upload-file'])) {
             $sql = "INSERT INTO payments (homeowner_id, date, billing_reference, file_path) 
                     VALUES ('$homeowner_id', '$date', '$billing_reference', '$targetFile')";
             if (mysqli_query($conn, $sql)) {
-                // After successful insert
-                $homeownerQuery = "SELECT name FROM homeowners WHERE id = '$homeowner_id'";
-                $homeownerResult = mysqli_query($conn, $homeownerQuery);
-
-                if ($homeownerResult && mysqli_num_rows($homeownerResult) > 0) {
-                    $homeownerRow = mysqli_fetch_assoc($homeownerResult);
-                    $homeownerName = htmlspecialchars($homeownerRow['name']);
-                    echo "Payment recorded for: " . $homeownerName;
-                } else {
-                    echo "Homeowner not found.";
-                }
+                // After successful insert, redirect back with a success message
+                header("Location: payment.php?success=1"); // Change 'previous_page.php' to your actual page
+                exit();
             } else {
                 echo "Error: " . mysqli_error($conn);
             }

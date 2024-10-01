@@ -92,6 +92,7 @@ $result_accepted_appointments->data_seek(0); // Move the pointer back to the sta
 
             <section class="combined-schedule">
                 <h2>Payments</h2>
+                <a href="payment_history_user.php">View Payment History</a>
                 <table>
                     <thead>
                         <tr>
