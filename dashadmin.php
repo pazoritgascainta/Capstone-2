@@ -251,7 +251,7 @@ $conn->close();
                 while ($row = $announcementsResult->fetch_assoc()): 
                     $count++; 
                 ?>
-                    <tr class="announcement-row <?php echo $count > 5 ? 'hidden-row' : ''; ?>">
+               
                         <td><?php echo $row['id']; ?></td>
                         <td><?php echo htmlspecialchars($row['content']); ?></td>
                         <td><?php echo date('F d, Y', strtotime($row['date'])); ?></td>
@@ -269,97 +269,137 @@ $conn->close();
         </tbody>
     </table>
 
-    <?php if ($announcementsResult->num_rows > 5): ?>
-    <button id="seeAllBtn" onclick="toggleAnnouncements()">See All</button>
-<?php endif; ?>
+  
 
 </div>
 
-    <div class="recent-payments">
-        <h2>Recent Payments</h2>
-        <?php
-        // Assuming you have a valid database connection in $conn
-        $result = mysqli_query($conn, "SELECT p.file_path, p.date, p.billing_reference, h.name AS homeowner_name 
-                                        FROM payments p 
-                                        JOIN homeowners h ON p.homeowner_id = h.id 
-                                        ORDER BY p.date DESC"); // Fetch recent payments
+<div class="recent-payments">
+    <h2>Recent Payments</h2>
+    <?php
+    // Fetch the 5 most recent payments ordered by ID in descending order
+    $result = mysqli_query($conn, "SELECT p.id, p.file_path, p.date, p.billing_reference, h.name AS homeowner_name, p.viewed
+                                    FROM payments p 
+                                    JOIN homeowners h ON p.homeowner_id = h.id 
+                                    ORDER BY p.id DESC 
+                                    LIMIT 5"); // Order by highest ID first
 
-        if ($result && mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo '<div class="payment">';
-                echo '<img src="' . htmlspecialchars($row['file_path']) . '" alt="Proof of Payment" class="zoomable">';
-                echo '<div class="payment-details">';
-                echo '<p>Homeowner: <span>' . htmlspecialchars($row['homeowner_name']) . '</span></p>';
-                echo '<p>Date: <span>' . htmlspecialchars($row['date']) . '</span></p>';
-                echo '<p>Billing Reference: <span>' . htmlspecialchars($row['billing_reference']) . '</span></p>';
-                echo '</div>';
-                echo '</div>';
+    $currentDate = new DateTime(); // Get the current date and time
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $paymentDate = new DateTime($row['date']); // Convert payment date to DateTime object
+
+            // Check if the payment is within the last 24 hours
+            $interval = $currentDate->diff($paymentDate);
+            $isNew = $interval->days == 0 && $interval->h < 24; // If less than 24 hours
+
+            echo '<div class="payment" onclick="markAsViewed(' . $row['id'] . ', this)">';
+            echo '<img src="' . htmlspecialchars($row['file_path']) . '" alt="Proof of Payment" class="zoomable">';
+            echo '<div class="payment-details">';
+            echo '<p>Homeowner: <span>' . htmlspecialchars($row['homeowner_name']) . '</span>';
+            
+            // Show red dot only if the payment is new and hasn't been viewed
+            if ($isNew && !$row['viewed']) {
+                echo ' <span class="red-dot"></span>';
             }
-        } else {
-            echo '<p>No recent payments found.</p>';
+
+            echo '</p>';
+            echo '<p>Date: <span>' . htmlspecialchars($row['date']) . '</span></p>';
+            echo '</div>';
+            echo '</div>';
         }
-        ?>
+    } else {
+        echo '<p>No recent payments found.</p>';
+    }
+    ?>
+</div>
+
+
+
 
 <div id="myModal" class="modal">
-        <span class="close">&times;</span>
-        <img class="modal-content" id="img01">
-        <div id="caption"></div>
-    </div>
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
 </div>
 
 <script>
-        // JavaScript for Modal Image Zoom
-        const modal = document.getElementById('myModal');
-        const modalImg = document.getElementById('img01');
-        const captionText = document.getElementById('caption');
-        const zoomableImages = document.querySelectorAll('.zoomable');
-
-        zoomableImages.forEach(img => {
-            img.onclick = function () {
-                modal.style.display = 'block';
-                modalImg.src = this.src;
-                captionText.innerHTML = this.alt;
-            }
-        });
-
-        // Close the modal when the user clicks on <span> (x)
-        const span = document.getElementsByClassName('close')[0];
-        span.onclick = function () {
-            modal.style.display = 'none';
-        }
-
-        // Also close the modal when the user clicks anywhere outside of the image
-        modal.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = 'none';
+function markAsViewed(paymentId, paymentElement) {
+    // AJAX request to mark the payment as viewed
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "mark_as_viewed.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Assuming the server returns a success message
+            // Remove the red dot after marking as viewed
+            var dot = paymentElement.querySelector('.red-dot');
+            if (dot) {
+                dot.remove();
             }
         }
-        
-    </script>
-
-<script>
-function toggleAnnouncements() {
-    var hiddenRows = document.querySelectorAll('.hidden-row');
-    var seeAllBtn = document.getElementById('seeAllBtn');
-
-    // Check the current state (whether hidden or shown)
-    if (hiddenRows[0].style.display === 'none' || hiddenRows[0].style.display === '') {
-        // If hidden, show the rows
-        hiddenRows.forEach(function(row) {
-            row.style.display = 'table-row';
-        });
-        // Update button text to "Show Less"
-        seeAllBtn.textContent = 'Show Less';
-    } else {
-        // If shown, hide the rows again
-        hiddenRows.forEach(function(row) {
-            row.style.display = 'none';
-        });
-        // Update button text to "See All"
-        seeAllBtn.textContent = 'See All';
-    }
+    };
+    xhr.send("id=" + paymentId);
 }
 </script>
+<script>
+    // JavaScript for Modal Image Zoom
+    const modal = document.getElementById('myModal');
+    const modalImg = document.getElementById('img01');
+    const captionText = document.getElementById('caption');
+    const zoomableImages = document.querySelectorAll('.zoomable');
+
+    // Get viewed payment IDs from cookies
+    let viewedPayments = getCookie('viewed_payments') ? getCookie('viewed_payments').split(',') : [];
+
+    zoomableImages.forEach(img => {
+        const paymentId = img.getAttribute('data-payment-id');
+
+        img.onclick = function () {
+            // Open modal logic
+            modal.style.display = 'block';
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
+
+            // Store viewed payment in cookies
+            if (!viewedPayments.includes(paymentId)) {
+                viewedPayments.push(paymentId);
+                document.cookie = "viewed_payments=" + viewedPayments.join(',') + "; path=/; max-age=" + (365 * 24 * 60 * 60); // 1 year expiry
+            }
+
+            // Remove red dot
+            const paymentDetails = this.parentElement.querySelector('.payment-details p');
+            const redDot = paymentDetails.querySelector('.red-dot');
+            if (redDot) {
+                redDot.remove();
+            }
+        }
+    });
+
+    // Close the modal when the user clicks on <span> (x)
+    const span = document.getElementsByClassName('close')[0];
+    span.onclick = function () {
+        modal.style.display = 'none';
+    }
+
+    // Also close the modal when the user clicks anywhere outside of the image
+    modal.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    // Function to get a cookie by name
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+</script>
+
+
+
+
 
 
 <script src="dashadmin.js"></script>

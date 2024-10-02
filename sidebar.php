@@ -99,11 +99,6 @@ $profile_image = isset($admin['profile_image']) && !empty($admin['profile_image'
                         <p>Settings</p>
                         <span>></span>
                     </a>
-                    <a href="help.php" class="sub-menu-link">
-                        <img src="help.png" alt="">
-                        <p>Help</p>
-                        <span>></span>
-                    </a>
                     <a href="adminlogout.php" class="sub-menu-link">
                         <img src="logawt.png" alt="">
                         <p>Logout</p>

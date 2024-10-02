@@ -10,15 +10,28 @@
 margin-left: 80px;
     max-width: 90%; /* Optional: Set a maximum width to prevent it from becoming too wide */
 }
+   /* CSS for the red dot */
+   .red-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    margin-left: 10px;
+}
 /* Base styles for the announcement widget */
 .announcement-widget {
-    width: 50%;
+    max-width: 50%;
+    max-height: 600px;
     background-color: peachpuff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
+    overflow-y: auto;
+    box-sizing: border-box; /* Ensures padding is included in the height */
 }
+
 
 .announcement-widget h2 {
     text-align: center;
@@ -124,8 +137,11 @@ tbody tr td[colspan="4"] {
     padding: 20px;
     background-color: peachpuff; /* Change background to pure white for cleaner look */
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
     font-family: 'Arial', sans-serif; /* Ensure consistent font */
+    max-height: 600px; /* Optional: Add height limit */
+    overflow-y: auto; /* Add scroll if content exceeds the height */
+    box-sizing: border-box; /* Include padding and border in the height */
 }
 
 .recent-payments h2 {

@@ -282,6 +282,7 @@ if (isset($_SESSION['message'])) {
             </div>
     
         </form>
+        <br>
         <div class="table-toggle">
         <button id="show-pending" onclick="showTable('pending')"> Pending Appointments</button>
     <button id="show-accepted" onclick="showTable('accepted')"> Accepted Appointments</button>
