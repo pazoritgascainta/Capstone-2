@@ -2,11 +2,13 @@
 session_name('user_session'); 
 session_start();
 
+// Check if homeowner is logged in
 if (!isset($_SESSION['homeowner_id'])) {
     header("Location: login.php");
     exit;
 }
 
+// Database connection details
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -41,7 +43,8 @@ $stmt_billing->execute();
 $result_billing = $stmt_billing->get_result();
 
 // Query to fetch accepted appointments for the homeowner
-$sql_accepted_appointments = "SELECT date, amount, status FROM accepted_appointments WHERE homeowner_id = ?";
+$sql_accepted_appointments = "SELECT date, amount, status, purpose, amenity_id FROM accepted_appointments WHERE homeowner_id = ?";
+
 $stmt_accepted_appointments = $conn->prepare($sql_accepted_appointments);
 $stmt_accepted_appointments->bind_param("i", $homeowner_id);
 $stmt_accepted_appointments->execute();
@@ -55,8 +58,19 @@ while ($row = $result_accepted_appointments->fetch_assoc()) {
     $total_appointments_amount += $row['amount'];
 }
 
+
 // Reset the pointer of the result set to use it again for displaying in the table
 $result_accepted_appointments->data_seek(0); // Move the pointer back to the start
+
+// Define an associative array to map amenity IDs to names
+$amenity_names = [
+    1 => 'Clubhouse Court',
+    2 => 'Townhouse Court',
+    3 => 'Clubhouse Swimming Pool',
+    4 => 'Townhouse Swimming Pool',
+    5 => 'Consultation',
+    6 => 'Bluehouse Court'
+];
 ?>
 
 <!DOCTYPE html>
@@ -84,9 +98,9 @@ $result_accepted_appointments->data_seek(0); // Move the pointer back to the sta
                         <h2>₱<?php echo number_format($total_balance, 2); ?></h2>
                     </div>
                     <div class="appointments">
-            <span>Other Fees</span>
-            <h2>₱<?php echo number_format($total_appointments_amount, 2); ?></h2>
-        </div>
+                        <span>Other Fees</span>
+                        <h2>₱<?php echo number_format($total_appointments_amount, 2); ?></h2>
+                    </div>
                 </div>
             </header>
 
@@ -94,7 +108,7 @@ $result_accepted_appointments->data_seek(0); // Move the pointer back to the sta
                 <h2>Payments</h2>
                 <a href="payment_history_user.php">View Payment History</a>
                 <table>
-                    <thead>
+                <thead>
                         <tr>
                             <th colspan="5">Payment Schedule</th>
                         </tr>
@@ -118,7 +132,7 @@ $result_accepted_appointments->data_seek(0); // Move the pointer back to the sta
                             echo "<td>₱" . number_format($row['total_amount'], 2) . "</td>";
                             echo "</tr>";
                         }
-                        ?>
+                        ?>    
                     </tbody>
                     <thead>
                         <tr>
@@ -127,28 +141,66 @@ $result_accepted_appointments->data_seek(0); // Move the pointer back to the sta
                         </tr>
                         <tr>
                             <th>Date</th>
+                            <th>Amenity</th>
+                            <th>Purpose</th>
                             <th>Amount</th>
                             <th>Status</th>
-                            <th></th>
-                            <th></th>
+
+
                         </tr>
                     </thead>
                     <tbody>
-                        <?php 
-                        // Loop through each accepted appointment record and display it in the table
+                        <?php
+                        // Initialize an array to store the grouped appointments by date
+                        $appointments_by_date = [];
+                        $grand_total_amount = 0; // Variable to hold the grand total amount
+
+                        // Loop through each accepted appointment and group by date
                         while ($row = $result_accepted_appointments->fetch_assoc()) {
+                            $date = $row['date'];
+
+                            // Initialize an array for this date if not already set
+                            if (!isset($appointments_by_date[$date])) {
+                                $appointments_by_date[$date] = [
+                                    'amount' => 0,
+                                    'status' => ucfirst($row['status']), // Capture the status
+                                    'purpose' => $row['purpose'], // Capture the purpose
+                                    'amenity_id' => $row['amenity_id'] // Capture the amenity_id
+                                ];
+                            }
+
+                            // Add the amount to the total for this date
+                            $appointments_by_date[$date]['amount'] += $row['amount'];
+                        }
+
+                        // Now loop through the grouped data and display it
+                        foreach ($appointments_by_date as $date => $data) {
                             echo "<tr>";
-                            echo "<td>" . htmlspecialchars($row['date']) . "</td>";
-                            echo "<td>₱" . number_format($row['amount'], 2) . "</td>";
-                            echo "<td>" . ucfirst($row['status']) . "</td>";
-                            echo "<td></td>";
-                            echo "<td></td>";
+                            echo "<td>" . htmlspecialchars($date) . "</td>"; // Display the grouped date
+                            $amenity_id = $data['amenity_id'];
+                            $amenity_name = isset($amenity_names[$amenity_id]) ? $amenity_names[$amenity_id] : 'Unknown Amenity';
+                            
+                            echo "<td>" . htmlspecialchars($amenity_name) . "</td>"; // Display the amenity name
+                            echo "<td>" . htmlspecialchars($data['purpose']) . "</td>"; // Display the purpose
+                            echo "<td>₱" . number_format($data['amount'], 2) . "</td>"; // Display the total amount for this date
+                            echo "<td>" . $data['status'] . "</td>"; // Display the status (same for all records of the same date)
+                         
                             echo "</tr>";
+
+                            // Add to the grand total amount
+                            $grand_total_amount += $data['amount'];
                         }
                         ?>
+                        <!-- Total Row -->
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td><strong>₱<?php echo number_format($grand_total_amount, 2); ?></strong></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
-         
             </section>
 
             <section class="proof-of-payment">
@@ -157,17 +209,22 @@ $result_accepted_appointments->data_seek(0); // Move the pointer back to the sta
             </section>
 
             <section class="proof-of-payment">
-    <h3>Proof of Payment</h3>
-    <form method="POST" enctype="multipart/form-data" action="upload.php">
-        <input type="file" id="upload-file" name="upload-file" required>
-        <input type="hidden" name="homeowner_id" value="<?php echo htmlspecialchars($homeowner_id); ?>">
-        <input type="hidden" name="billing_reference" id="billingReference">
-        <button type="submit" id="upload-button">Upload</button>
-    </form>
-</section>
+                <h3>Proof of Payment</h3>
+                <form method="POST" enctype="multipart/form-data" action="upload.php">
+                    <input type="file" id="upload-file" name="upload-file" required>
+                    <input type="hidden" name="homeowner_id" value="<?php echo htmlspecialchars($homeowner_id); ?>">
+                    <input type="hidden" name="billing_reference" id="billingReference">
+                    <button type="submit" id="upload-button">Upload</button>
+                </form>
+            </section>
         </div>
     </div>
 
     <script src="payment.js"></script>
 </body>
 </html>
+
+<?php
+// Close the database connection
+$conn->close();
+?>

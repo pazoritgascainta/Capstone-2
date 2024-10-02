@@ -28,12 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['upload-file'])) {
         $uploadOk = 0;
     }
 
-    // Check if file already exists
-    if (file_exists($targetFile)) {
-        echo "Sorry, file already exists.";
-        $uploadOk = 0;
-    }
-
+    // Removed the file exists check
     // Attempt to upload the file
     if ($uploadOk === 1) {
         if (move_uploaded_file($_FILES['upload-file']['tmp_name'], $targetFile)) {

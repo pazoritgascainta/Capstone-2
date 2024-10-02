@@ -23,183 +23,171 @@ if ($conn->connect_error) {
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Function to check if a history record exists for the homeowner_id and billing_date
-function historyRecordExists($conn, $homeowner_id, $billing_date) {
-    $sql_check = "SELECT COUNT(*) FROM billing_history WHERE homeowner_id = ? AND billing_date = ?";
-    $stmt_check = $conn->prepare($sql_check);
-    if ($stmt_check) {
-        $stmt_check->bind_param("is", $homeowner_id, $billing_date);
-        $stmt_check->execute();
-        $stmt_check->bind_result($count);
-        $stmt_check->fetch();
-        $stmt_check->close();
-        return $count > 0; // Returns true if record exists
-    } else {
-        $_SESSION['message'] = "Prepare statement failed: " . $conn->error;
-        return false;
-    }
+// Check if homeowner_id is set (you can also use a session variable if needed)
+$homeowner_id = isset($_GET['homeowner_id']) ? intval($_GET['homeowner_id']) : 0;
+
+if ($homeowner_id <= 0) {
+    die("Invalid homeowner ID.");
 }
 
-// Initialize homeowner ID from GET request or default to 0
-$homeowner_id = isset($_GET['homeowner_id']) ? intval($_GET['homeowner_id']) : 0; 
+// Pagination settings
+$images_per_page = 5; // Number of images per page
+$current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$offset = ($current_page - 1) * $images_per_page;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['homeowner_id'])) {
-    $homeowner_id = intval($_POST['homeowner_id']); // Get homeowner ID from POST
-    $billing_date = $_POST['billing_date'] . '-01'; // Set to the first of the selected month
-    $paid_date = $_POST['paid_date'] . '-01';
-    $status = 'Paid'; // Only 'Paid' status for this table
+// Get the total number of images for the specific homeowner
+$sql_total_images = "SELECT COUNT(*) AS total FROM payments WHERE homeowner_id = ?";
+$stmt_total_images = $conn->prepare($sql_total_images);
+$stmt_total_images->bind_param("i", $homeowner_id);
+$stmt_total_images->execute();
+$result_total_images = $stmt_total_images->get_result();
+$row_total_images = $result_total_images->fetch_assoc();
+$total_images = intval($row_total_images['total']);
 
-    // Convert dates for processing
-    $billingDate = new DateTime($billing_date);
-    $paidDate = new DateTime($paid_date);
+// Calculate total pages
+$total_pages = ceil($total_images / $images_per_page);
 
-    // Check if history records exist and insert records for each month
-    while ($billingDate <= $paidDate) {
-        $currentBillingDate = $billingDate->format('Y-m-d');
-
-        if (historyRecordExists($conn, $homeowner_id, $currentBillingDate)) {
-            $_SESSION['message'] = "Billing record for $currentBillingDate already exists for this homeowner.";
-        } else {
-            // Fetch sqm value based on homeowner_id
-            $sql = "SELECT sqm FROM homeowners WHERE id = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("i", $homeowner_id);
-            $stmt->execute();
-            $stmt->bind_result($sqm);
-            $stmt->fetch();
-            $stmt->close();
-
-            // Calculate monthly due
-            $monthly_due = $sqm * 5;
-            $due_date = (clone $billingDate)->modify('first day of next month')->format('Y-m-d');
-            $total_amount = $monthly_due;
-
-            // Insert new billing history record
-            $sql_insert = "INSERT INTO billing_history (homeowner_id, monthly_due, billing_date, due_date, status, total_amount, paid_date) 
-                           VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $stmt_insert = $conn->prepare($sql_insert);
-            if ($stmt_insert) {
-                $stmt_insert->bind_param("issssds", $homeowner_id, $monthly_due, $currentBillingDate, $due_date, $status, $total_amount, $paid_date);
-                if (!$stmt_insert->execute()) {
-                    $_SESSION['message'] = "Failed to create billing history record for $currentBillingDate: " . $stmt_insert->error; // Improved error reporting
-                    error_log("Insert error: " . $stmt_insert->error); // Log the error for further analysis
-                }
-                $stmt_insert->close();
-            } else {
-                $_SESSION['message'] = "Prepare statement failed: " . $conn->error;
-                error_log("Prepare error: " . $conn->error); // Log the error
-            }
-        }
-
-        // Move to the next month
-        $billingDate->modify('+1 month');
-    }
-
-    // Always redirect to the input_billing.php page with the homeowner_id
-    header("Location: input_billing.php?homeowner_id=" . $homeowner_id);
-    exit(); // Ensure exit after header to stop script execution
-}
+// Fetch images and their dates for the specific homeowner (with pagination)
+$sql_images = "SELECT date, file_path FROM payments WHERE homeowner_id = ? LIMIT ? OFFSET ?";
+$stmt_images = $conn->prepare($sql_images);
+$stmt_images->bind_param("iii", $homeowner_id, $images_per_page, $offset);
+$stmt_images->execute();
+$result_images = $stmt_images->get_result();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Create Billing History Record</title>
-    <link rel="stylesheet" href="create_billing.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uploaded Images - Admin</title>
+    <link rel="stylesheet" href="uploaded_payment.css">
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .payment {
+            display: flex;
+            align-items: center;
+            background-color: blanchedalmond;
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+
+        .payment img {
+            width: 120px;
+            height: 120px; 
+            object-fit: cover;
+            border-radius: 8px;
+            margin-left: 20px;
+            margin-right: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <?php include 'sidebar.php'; ?>
 
     <div class="main-content">
-        <div class="container">
-            <h1>Create Billing History Record</h1>
-            <form method="POST" action="">
-                <div class="form-group">
-                    <label for="homeowner_id">Homeowner ID:</label>
-                    <input type="number" id="homeowner_id" name="homeowner_id" value="<?php echo htmlspecialchars($homeowner_id); ?>" oninput="fetchHomeownerData()" required>
-                </div>
+    <h2>Uploaded Images of Homeowner ID: <?php echo htmlspecialchars($homeowner_id); ?></h2> <!-- Add this line -->
 
-                <div class="form-group">
-                    <label for="homeowner_name">Homeowner Name:</label>
-                    <input type="text" id="homeowner_name" name="homeowner_name" readonly>
-                </div>
+        <div class="recent-payments">
+            <?php if ($result_images->num_rows > 0): ?>
+                <?php while ($row = $result_images->fetch_assoc()): ?>
+                    <div class="payment">
+                        <div class="payment-details">
+                            <span>Date: <?php echo htmlspecialchars($row['date']); ?></span>
+                        </div>
+                        <div class="payment-image">
+                            <?php if (!empty($row['file_path'])): ?>
+                                <img src="<?php echo htmlspecialchars($row['file_path']); ?>" alt="Image" class="zoomable">
+                            <?php else: ?>
+                                <p>No image available</p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p>No images found for this homeowner.</p>
+            <?php endif; ?>
+        </div>
 
-                <div class="form-group">
-                    <label for="sqm">Square Meters:</label>
-                    <input type="text" id="sqm" name="sqm" readonly>
-                </div>
+        <!-- Pagination controls -->
+        <div id="pagination">
+            <?php if ($total_pages > 1): ?>
+                <?php if ($current_page > 1): ?>
+                    <form method="GET" action="admin_uploaded_payment.php" style="display: inline;">
+                        <input type="hidden" name="homeowner_id" value="<?php echo $homeowner_id; ?>">
+                        <input type="hidden" name="page" value="<?php echo $current_page - 1; ?>">
+                        <button type="submit">&lt;</button>
+                    </form>
+                <?php endif; ?>
 
-                <div class="form-group">
-                    <label for="billing_date">Billing Month:</label>
-                    <input type="month" id="billing_date" name="billing_date" required>
-                </div>
+                <form method="GET" action="admin_uploaded_payment.php" style="display: inline;">
+                    <input type="hidden" name="homeowner_id" value="<?php echo $homeowner_id; ?>">
+                    <input type="number" name="page" value="<?php echo $current_page; ?>" min="1" max="<?php echo $total_pages; ?>" style="width: 50px;">
+                </form>
 
-                <div class="form-group">
-                    <label for="due_date">Due Date:</label>
-                    <input type="text" id="due_date" name="due_date" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label for="paid_date">Paid Month:</label>
-                    <input type="month" id="paid_date" name="paid_date" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="status">Status:</label>
-                    <input type="text" id="status" name="status" value="Paid" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label for="monthly_due">Monthly Due:</label>
-                    <input type="number" step="0.01" id="monthly_due" name="monthly_due" value="" readonly>
-                </div>
-
-                <button type="submit" class="submit-btn" name="create_billing">Create Billing History Record</button>
-            </form>
+                <?php if ($current_page < $total_pages): ?>
+                    <form method="GET" action="admin_uploaded_payment.php" style="display: inline;">
+                        <input type="hidden" name="homeowner_id" value="<?php echo $homeowner_id; ?>">
+                        <input type="hidden" name="page" value="<?php echo $current_page + 1; ?>">
+                        <button type="submit">&gt;</button>
+                    </form>
+                <?php endif; ?>
+            <?php endif; ?>
         </div>
     </div>
 
-    <script>
-        let fetchedNames = {};
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+        <div id="caption"></div>
+    </div>
 
-        function fetchHomeownerData() {
-            const homeownerId = document.getElementById('homeowner_id').value;
-            if (homeownerId) {
-                if (!fetchedNames[homeownerId]) {
-                    fetch(`get_homeowner.php?id=${homeownerId}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.name) {
-                                document.getElementById('homeowner_name').value = data.name;
-                                document.getElementById('sqm').value = data.sqm; // Set sqm value
-                                document.getElementById('monthly_due').value = (data.sqm * 5).toFixed(2); // Calculate monthly due
-                                fetchedNames[homeownerId] = { name: data.name, sqm: data.sqm };
-                            } else {
-                                document.getElementById('homeowner_name').value = '';
-                                document.getElementById('sqm').value = ''; // Clear sqm if no name found
-                                document.getElementById('monthly_due').value = ''; // Clear monthly due if no homeowner found
-                            }
-                        });
-                } else {
-                    document.getElementById('homeowner_name').value = fetchedNames[homeownerId].name;
-                    document.getElementById('sqm').value = fetchedNames[homeownerId].sqm; // Set sqm value
-                    document.getElementById('monthly_due').value = (fetchedNames[homeownerId].sqm * 5).toFixed(2); // Calculate monthly due
-                }
-            } else {
-                document.getElementById('homeowner_name').value = '';
-                document.getElementById('sqm').value = ''; // Clear sqm if no ID
-                document.getElementById('monthly_due').value = ''; // Clear monthly due if no ID
+    <script>      const modal = document.getElementById('myModal');
+        const modalImg = document.getElementById('img01');
+        const captionText = document.getElementById('caption');
+        const zoomableImages = document.querySelectorAll('.zoomable');
+
+        zoomableImages.forEach(img => {
+            img.onclick = function () {
+                modal.style.display = 'block';
+                modalImg.src = this.src;
+                captionText.innerHTML = this.alt;
             }
+        });
+
+        // Close the modal when the user clicks on <span> (x)
+        const span = document.getElementsByClassName('close')[0];
+        span.onclick = function () {
+            modal.style.display = 'none';
         }
 
-        // Automatically set the due_date when billing_date changes
-        document.getElementById('billing_date').addEventListener('change', function() {
-            const selectedMonth = this.value; // Get the selected month (YYYY-MM)
-            const billingDate = new Date(selectedMonth + '-01'); // Always set to the first day of the month
-            billingDate.setMonth(billingDate.getMonth() + 1); // Set the due date to the first of the next month
-            const dueDate = billingDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
-            document.getElementById('due_date').value = dueDate;
-        });
+        // Also close the modal when the user clicks anywhere outside of the image
+        modal.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
     </script>
+
 </body>
 </html>

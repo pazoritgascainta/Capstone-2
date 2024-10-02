@@ -347,13 +347,15 @@ $result_billing = fetchBillingRecords($conn, $offset, $limit, $search_query);
                                             <input type="hidden" name="billing_id" value="<?php echo htmlspecialchars($row['billing_id']); ?>">
                                     </td>
                                     <td>
-                                        <input type="submit" value="Update" class="btn-action" aria-label="Update Billing Record">
-                                        </form>
-                                        <form method="GET" action="BillingStatement.php" style="display:inline;">
-                                            <input type="hidden" name="billing_id" value="<?php echo htmlspecialchars($row['billing_id']); ?>">
-                                            <input type="submit" value="View" class="btn-action" aria-label="View Billing for <?php echo htmlspecialchars($row['homeowner_name']); ?>">
-                                        </form>
-                                    </td>
+    <input type="submit" value="Update" class="btn-action" aria-label="Update Billing Record">
+    </form>
+    <form method="GET" action="payment_history_admin.php" style="display:inline;">
+        <input type="hidden" name="billing_id" value="<?php echo htmlspecialchars($row['billing_id']); ?>">
+        <input type="hidden" name="homeowner_id" value="<?php echo htmlspecialchars($row['homeowner_id']); ?>"> <!-- Add this line -->
+        <input type="submit" value="View" class="btn-action" aria-label="View Billing for <?php echo htmlspecialchars($row['homeowner_name']); ?>">
+    </form>
+</td>
+
                                 </tr>
                             <?php endwhile; ?>
                         <?php else: ?>

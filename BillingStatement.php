@@ -1,4 +1,3 @@
-<!-- THIS PRINT IS FOR USER, GAWA PA NG ADMIN SIDE WHICH ALMOST THE SAME AS THIS, IBAHIN PA SI ADDRESS, pati other information -->
 <?php
 session_name('user_session');
 session_start();
@@ -73,12 +72,7 @@ $conn->close();
                                                         <p class="whitespace-nowrap font-bold text-main text-right" id="currentDate"></p>
                                                     </div>
                                                 </td>
-                                                <td class="pl-4">
-                                                    <div>
-                                                        <p class="whitespace-nowrap text-slate-400 text-right">Invoice #</p>
-                                                        <p class="whitespace-nowrap font-bold text-main text-right" id="invoiceNumber"></p>
-                                                    </div>
-                                                </td>
+                                        
                                             </tr>
                                         </tbody>
                                     </table>
@@ -95,17 +89,14 @@ $conn->close();
                         <tr>
                             <td class="w-1/2 align-top">
                                 <div class="text-sm text-neutral-600">
-                                    <p class="font-bold">St Monique Valais</p>
-                                    <p>Number: 23456789</p>
-                                    <p>6622 Abshire Mills</p>
+                                    <p class="font-bold"><?php echo htmlspecialchars($billing_data['address']); ?></p>
                                     <p>Binangonan, Rizal</p>
                                     <p>Philippines</p>
                                 </div>
                             </td>
                             <td class="w-1/2 align-top text-right">
                                 <div class="text-sm text-neutral-600">
-                                    <p class="font-bold"><?php echo $billing_data['homeowner_name']; ?></p>
-                                    <p><?php echo $billing_data['address']; ?></p>
+                                    <p class="font-bold"><?php echo htmlspecialchars($billing_data['homeowner_name']); ?></p>                                  
                                 </div>
                             </td>
                         </tr>
@@ -116,22 +107,27 @@ $conn->close();
             <div class="px-14 py-10 text-sm text-neutral-700">
                 <table class="w-full border-collapse border-spacing-0">
                     <thead>
-                        <tr>
-                            <td class="border-b-2 border-main pb-3 pl-3 font-bold text-main">#</td>
-                            <td class="border-b-2 border-main pb-3 pl-2 font-bold text-main">Product details</td>
-                            <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Price</td>
-                            <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main"># of Months</td>
-                            <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Subtotal</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="border-b py-3 pl-3">1.</td>
-                            <td class="border-b py-3 pl-2">Monthly Dues</td>
-                            <td class="border-b py-3 pl-2 text-right">₱ <?php echo number_format($billing_data['monthly_due'], 2); ?></td>
-                            <td class="border-b py-3 pl-2 text-center">1</td>
-                            <td class="border-b py-3 pl-2 text-right">₱ <?php echo number_format($billing_data['total_amount'], 2); ?></td>
-                        </tr>
+                    <thead>
+    <tr>
+        <td class="border-b-2 border-main pb-3 pl-3 font-bold text-main">Details</td>
+        <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Billing Date</td>
+        <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Due Date</td>
+        <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Price</td>
+        <td class="border-b-2 border-main pb-3 pl-2 text-center font-bold text-main"># of Months</td>
+        <td class="border-b-2 border-main pb-3 pl-2 text-right font-bold text-main">Subtotal</td>
+    </tr>
+</thead>
+<tbody>
+    <tr>
+        <td class="border-b py-3 pl-2">Monthly Dues</td>
+        <td class="border-b py-3 pl-2 text-right"><?php echo htmlspecialchars($billing_data['billing_date']); ?></td>
+        <td class="border-b py-3 pl-2 text-right"><?php echo htmlspecialchars($billing_data['due_date']); ?></td>
+        <td class="border-b py-3 pl-2 text-right">₱ <?php echo number_format($billing_data['monthly_due'], 2); ?></td>
+        <td class="border-b py-3 pl-2 text-center">1</td>
+        <td class="border-b py-3 pl-2 text-right">₱ <?php echo number_format($billing_data['total_amount'], 2); ?></td>
+    </tr>
+</tbody>
+
                         <tr>
                             <td colspan="7">
                                 <table class="w-full border-collapse border-spacing-0">
@@ -169,12 +165,6 @@ $conn->close();
                 </table>
             </div>
 
-            <div class="px-14 text-sm text-neutral-700">
-                <p class="text-main font-bold">PAYMENT DETAILS</p>
-                
-                <p>Payment Reference: <span id="paymentReference"></span></p>
-            </div>
-
             <div class="px-14 py-10 text-sm text-neutral-700">
                 <p class="text-main font-bold">Notes</p>
                 <p class="italic">DISREGARD THIS BILLING IF PAYMENT HAS BEEN MADE</p>
@@ -195,13 +185,12 @@ $conn->close();
         // Set Current Date
         document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
 
-        // Generate Random Invoice and Payment Reference Numbers
+        // Generate Random Payment Reference Numbers
         function generateRandomNumber(prefix, length) {
             let randomNum = Math.floor(Math.random() * Math.pow(10, length));
             return prefix + randomNum.toString().padStart(length, '0');
         }
 
-        document.getElementById('invoiceNumber').textContent = generateRandomNumber('GCH-', 5);
         document.getElementById('paymentReference').textContent = generateRandomNumber('GCH-', 5);
     </script>
 </body>

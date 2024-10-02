@@ -26,10 +26,27 @@ ini_set('display_errors', 1);
 // Initialize homeowner ID from session
 $homeowner_id = intval($_SESSION['homeowner_id']);
 
-// Fetch images and their dates from the payments table
-$sql_images = "SELECT date, file_path FROM payments WHERE homeowner_id = ?";
+// Pagination settings
+$images_per_page = 5; // Number of images per page
+$current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$offset = ($current_page - 1) * $images_per_page;
+
+// Get the total number of images
+$sql_total_images = "SELECT COUNT(*) AS total FROM payments WHERE homeowner_id = ?";
+$stmt_total_images = $conn->prepare($sql_total_images);
+$stmt_total_images->bind_param("i", $homeowner_id);
+$stmt_total_images->execute();
+$result_total_images = $stmt_total_images->get_result();
+$row_total_images = $result_total_images->fetch_assoc();
+$total_images = intval($row_total_images['total']);
+
+// Calculate total pages
+$total_pages = ceil($total_images / $images_per_page);
+
+// Fetch images and their dates from the payments table (with pagination)
+$sql_images = "SELECT date, file_path FROM payments WHERE homeowner_id = ? LIMIT ? OFFSET ?";
 $stmt_images = $conn->prepare($sql_images);
-$stmt_images->bind_param("i", $homeowner_id);
+$stmt_images->bind_param("iii", $homeowner_id, $images_per_page, $offset);
 $stmt_images->execute();
 $result_images = $stmt_images->get_result();
 ?>
@@ -135,6 +152,32 @@ $result_images = $stmt_images->get_result();
                 <p>No images found.</p>
             <?php endif; ?>
         </div>
+
+        <!-- Pagination controls -->
+        <div id="pagination">
+            <?php if ($total_pages > 1): ?>
+                <!-- Previous Button -->
+                <?php if ($current_page > 1): ?>
+                    <form method="GET" action="uploaded_payment.php" style="display: inline;">
+                        <input type="hidden" name="page" value="<?php echo $current_page - 1; ?>">
+                        <button type="submit">&lt;</button>
+                    </form>
+                <?php endif; ?>
+
+                <!-- Page Input Field -->
+                <form method="GET" action="uploaded_payment.php" style="display: inline;">
+                    <input type="number" name="page" value="<?php echo $current_page; ?>" min="1" max="<?php echo $total_pages; ?>" style="width: 50px;">
+                </form>
+
+                <!-- Next Button -->
+                <?php if ($current_page < $total_pages): ?>
+                    <form method="GET" action="uploaded_payment.php" style="display: inline;">
+                        <input type="hidden" name="page" value="<?php echo $current_page + 1; ?>">
+                        <button type="submit">&gt;</button>
+                    </form>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>
     </div>
 
     <div id="myModal" class="modal">
@@ -144,8 +187,7 @@ $result_images = $stmt_images->get_result();
     </div>
 
     <script>
-        // JavaScript for Modal Image Zoom
-        const modal = document.getElementById('myModal');
+              const modal = document.getElementById('myModal');
         const modalImg = document.getElementById('img01');
         const captionText = document.getElementById('caption');
         const zoomableImages = document.querySelectorAll('.zoomable');
@@ -171,9 +213,6 @@ $result_images = $stmt_images->get_result();
             }
         }
     </script>
-    <?php
-    // Close the connection
-    $conn->close();
-    ?>
+
 </body>
 </html>
