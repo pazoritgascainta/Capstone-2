@@ -105,9 +105,10 @@ while ($row = $result_recent_paid->fetch_assoc()) {
         <div class="container">
             <section>
                 <h2>Billing Records</h2>
-                <a href="recent_paid.php">View Recently Paid Records</a>
-                <a href="deliquents.php">View Deliquents</a>
-                <a href="pending.php">View Pending Payments</a>
+                <a href="recent_paid.php" class="btn">View Recently Paid Records</a>
+                <a href="deliquents.php" class="btn">View Deliquents</a>
+                <a href="pending.php" class="btn">View Pending Payments</a>
+
 
                 <!-- Search form -->
                 <form method="GET" action="recordingadmin.php" class="search-form">

@@ -71,18 +71,20 @@ $profile_image = isset($admin['profile_image']) && !empty($admin['profile_image'
             <ul>
                 <li><a href="dashadmin.php" class="nav-link home-link">Home</a></li>
                 <li>
-                    <a href="#" class="nav-link notifications-link">Notifications</a>
-                    <div class="sub-menu-wrap" id="notificationsMenu">
-                        <div class="sub-menu">
-                            <a href="admininbox.php" class="sub-menu-link">
-                                <img src="inbox.png" alt="">
-                                <p>Inbox</p>
-                                <span>></span>
-                            </a>
-                            <!-- Add more submenu items as needed -->
-                        </div>
-                    </div>
-                </li>
+        <a href="#" class="nav-link notifications-link">Notifications 
+            <div class="notification-dot" id="inboxNotificationDot"></div> <!-- Notification dot -->
+        </a>
+        <div class="sub-menu-wrap" id="notificationsMenu">
+            <div class="sub-menu">
+                <a href="inbox.php" class="sub-menu-link">
+                    <img src="inbox.png" alt="">
+                    <p>Inbox</p>
+                    <span>></span>
+                </a>
+            </div>
+        </div>
+    </li>
+                <audio id="notificationSound" src="Notificationsound.mp3" preload="auto"></audio>
             </ul>
             <img src="<?php echo htmlspecialchars($admin['profile_image'] ?? 'profile.png'); ?>" class="user-pic" onclick="toggleProfileMenu()" alt="profile picture">
             <div class="sub-menu-wrap" id="profileMenu">

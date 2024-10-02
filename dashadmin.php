@@ -275,8 +275,6 @@ $conn->close();
 
 </div>
 
-
-
     <div class="recent-payments">
         <h2>Recent Payments</h2>
         <?php
