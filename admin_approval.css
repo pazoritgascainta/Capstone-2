@@ -13,9 +13,54 @@
 margin-left: 80px;
     max-width: 90%; /* Optional: Set a maximum width to prevent it from becoming too wide */
 }
+.legend-container {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
 
+.legend-container h4 {
+    margin: 0;
+}
 
-/* Responsive Design */
+.legend-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.legend-container li {
+    margin: 5px 0;
+}
+
+.legend-color {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.clubhousecourt {
+    background-color: blue; /* Green */
+}
+
+.townhousecourt {
+    background-color: green; /* Blue */
+}
+
+.clubhouseswimmingpool {
+    background-color: coral; /* Red */
+}
+
+.townhouseswimmingpool {
+    background-color: purple; /* Yellow */
+}
+.consultation {
+    background-color: pink; /* Yellow */
+}
+.bluehousecourt {
+    background-color: gray; /* Yellow */
+}
 @media (max-width: 768px) {
     .main-content {
         width: 90%; /* Increase width for medium-sized screens */

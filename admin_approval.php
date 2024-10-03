@@ -186,6 +186,17 @@ $total_pages = ceil($total_appointments / $records_per_page);
     </div>
 </div>
 
+<div class="legend-container">
+    <h4>Amenity Appointments Legend</h4>
+    <ul>
+        <li><span class="legend-color clubhousecourt"></span> Clubhouse Court </li>
+        <li><span class="legend-color townhousecourt"></span> Townhouse Court </li>
+        <li><span class="legend-color clubhouseswimmingpool"></span> Clubhouse Swimming Pool </li>
+        <li><span class="legend-color townhouseswimmingpool"></span> Townhouse Swimming Pool </li>
+        <li><span class="legend-color consultation"></span>  Consultation </li>
+        <li><span class="legend-color bluehousecourt"></span> Bluehouse Court </li>
+    </ul>
+</div>
 
            <!-- Calendar section -->
 <div id="calendar-box">
