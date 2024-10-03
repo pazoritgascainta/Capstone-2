@@ -5,7 +5,7 @@ body {
 }
 
 .container {
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
     padding: 20px;
     margin-left: 70px;
@@ -29,10 +29,11 @@ h1 {
 
 .inbox-item {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 15px;
     border-bottom: 1px solid #ddd;
     cursor: pointer;
+    word-wrap: break-word; /* Ensure long text wraps to the next line */
 }
 
 .inbox-item:hover {

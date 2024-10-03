@@ -2,43 +2,54 @@
 session_name('user_session'); 
 session_start();
 
+// Ensure homeowner_id is set in the session
 if (!isset($_SESSION['homeowner_id'])) {
-    header("Location: login.php");
-    exit;
+    header('Location: login.php');
+    exit();
 }
 
+// Establish the connection
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "homeowner";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Initialize a variable for the success message
 $success_message = "";
 
+// Ensure homeowner_id is set before using it
+$homeowner_id = $_SESSION['homeowner_id'];
+$user_name = $_SESSION['homeowner_name']; // Get homeowner's name from session
+
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $homeowner_id = $_SESSION['homeowner_id'];
     $details = $conn->real_escape_string($_POST['message']);
     $urgency = $conn->real_escape_string($_POST['urgency']);
     $type = $conn->real_escape_string($_POST['type']); // Get service type from hidden input
 
-    // Check if service_type is set
     if (!isset($_POST['type']) || empty($_POST['type'])) {
         echo "Service type is not set.";
     } else {
-        $sql = "INSERT INTO serreq (homeowner_id, details, urgency, type) VALUES ('$homeowner_id', '$details', '$urgency', '$type')";
+        $sql = "INSERT INTO serreq (homeowner_id, details, urgency, type, status, created_at) VALUES (?, ?, ?, ?, 'Pending', NOW())";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("isss", $homeowner_id, $details, $urgency, $type);
 
-        if ($conn->query($sql) === TRUE) {
+        if ($stmt->execute()) {
+            // Notify admin about the new service request
+            $admins_result = $conn->query("SELECT id FROM admin");
+            while ($admin_row = $admins_result->fetch_assoc()) {
+                $admin_id = $admin_row['id'];
+                $conn->query("INSERT INTO admin_inbox (admin_id, message, date) VALUES ('$admin_id', 'New service request from homeowner ID $homeowner_id:$user_name: $type - $details', NOW())");
+            }
+
             $success_message = "Service request submitted successfully!"; // Set success message
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            echo "Error: " . $stmt->error;
         }
     }
 }

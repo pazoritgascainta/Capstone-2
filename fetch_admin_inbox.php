@@ -37,7 +37,12 @@ while ($row = $result->fetch_assoc()) {
     $messages[] = $row;
 }
 
-echo json_encode(['messages' => $messages, 'totalPages' => $totalPages]);
+// Return the messages, total pages, and current page
+echo json_encode([
+    'messages' => $messages, 
+    'totalPages' => $totalPages, 
+    'currentPage' => $page
+]);
 
 $conn->close();
 ?>

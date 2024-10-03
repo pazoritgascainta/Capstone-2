@@ -43,6 +43,17 @@ nav ul {
     right: 10px; /* Adjust as needed */
     display: none; /* Hide by default */
 }
+#inboxNotificationDot {
+    display: none;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
 /* Move the "Home" and "Notifications" links to the right */
 .nav-links-wrapper {
     display: flex;
