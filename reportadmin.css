@@ -1,0 +1,180 @@
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa; /* Light background for better contrast */
+}
+
+
+.side-container {
+    display: flex; /* Arrange widgets horizontally */
+    flex-wrap: nowrap; /* Prevent wrapping to the next line */
+    justify-content: space-between; /* Space widgets evenly */
+}
+.main-content {
+    margin: 0 auto; /* Center the content */
+    margin-left: 20px; /* Reduce left margin to free up more space */
+    max-width: 95%; /* Increase the maximum width to use more space */
+    padding: 0 10px; /* Add some padding for space around the content */
+}
+
+/* Widget Styles */
+.widget {
+    flex: 1 1 30%; /* Allow widgets to take 30% of the container width */
+    margin: 20px;
+    min-width: 250px; 
+    max-width: 500px; /* Adjust max width to keep widgets reasonable */
+    text-align: center;
+    padding: 60px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.widget {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px; /* Internal padding for content */
+    margin-bottom: 20px; /* Space between widgets */
+    width: 100%; /* Ensure widgets take full width of container */
+    padding: 60px;
+}
+
+.widget h2 {
+    margin: 0 0 10px; /* Margin below heading */
+}
+
+.widget canvas {
+    width: 100%; /* Ensure canvas fills the widget */
+    height: auto;
+}
+
+
+/* Select styling for earnings period */
+.earnings-select {
+    margin-bottom: 10px; /* Space below the select element */
+}
+
+.earnings-select select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px; /* Adjust size for better visibility */
+}
+
+/* Headings and Paragraph Styles */
+h2 {
+    font-size: 20px; /* Font size for section headers */
+    margin: 0 0 10px; /* Spacing for headers */
+    color: #ff8b2c; /* Primary color for headers */
+}
+
+p {
+    font-size: 16px; /* Font size for paragraph text */
+    margin: 0; /* Remove margin for paragraphs */
+}
+
+/* Canvas Styling */
+canvas {
+    margin-top: 10px; /* Reduced space above canvas elements */
+    width: 90% !important; /* Make canvas take full width of the parent */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Separator Styles */
+.separator {
+    width: 100%; /* Take full width inside the container */
+    padding: 20px; /* Add some padding for spacing */
+    background-color: #f7f7f7; /* Optional background color */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+}
+
+.reports {
+    display: flex;
+    justify-content: center; /* Center the reports section horizontally */
+    width: 100%; /* Take full width of the available space */
+}
+.chart {
+    width: 100% !important; /* Ensures the chart takes full width */
+    max-width: 80%; /* Set a maximum width for the chart */
+    height: 450px !important; /* Set a fixed height for the chart */
+    margin: auto; /* Center the chart */
+    display: block; /* Ensures block display */
+}
+.reports p,
+.side-container p {
+    font-weight: bold; /* Makes all <p> elements in both sections bold */
+}
+
+.report-selector {
+    margin-bottom: 20px; /* Space below the dropdown */
+    max-width: 300px; /* Set a maximum width for the dropdown */
+    width: 100%; /* Ensure the dropdown uses available space */
+}
+.report-selector select,
+#timePeriodSelect { /* Targeting the time period select */
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+#timePeriod {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Report Section Styling */
+.report-section {
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
+    padding: 20px; /* Maintain consistent padding */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+    width: 100%; /* Set width to 100% to take full available space */
+    max-width: none; /* Remove any max-width constraint */
+    height: auto; /* Allow height to be auto for other sections */
+}
+.report-section h2 {
+    margin-bottom: 10px; /* Space below headings */
+    color: #333; /* Dark color for headings */
+}
+
+.report-section p {
+    font-size: 18px; /* Make the text more readable */
+    color: #555;
+}
+
+
+.report-wrapper {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space out items */
+    width: 100%; /* Ensure the wrapper takes full width */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .side-container {
+        flex-direction: column; /* Stack widgets vertically on smaller screens */
+    }
+
+    .separator {
+        padding: 20px; /* Reduce padding on smaller screens */
+    }
+
+    .report-selector {
+        max-width: 100%; /* Full width for dropdown on small screens */
+    }
+
+    .report-section {
+        padding: 20px; /* Adjust padding for smaller screens */
+    }
+}
