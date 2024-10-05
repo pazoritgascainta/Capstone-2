@@ -34,6 +34,15 @@ function carousel() {
 function showForm() {
     document.getElementById('appointmentForm').style.display = 'block';
 }
+
+const burgerMenu = document.getElementById('burgerMenu');
+const navLinks = document.getElementById('navLinks');
+
+burgerMenu.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+});
+
+
 //NewsCarousel
 document.addEventListener('DOMContentLoaded', function () {
     const carouselInner = document.querySelector('.carousel-inner');

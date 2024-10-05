@@ -16,7 +16,7 @@ body, html {
 
 .ImageSlider1{
     margin:0;
-    padding: 10;
+    padding: 10px; /* Ensure padding is in px */
 }
 .ImageSlider1 .ImageSlider body {
     background-color: #ffffff;
@@ -138,6 +138,7 @@ body, html {
     transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
     opacity: 1;
     overflow: hidden;
+    clip-path: inset(0 0 0 0); /* Ensures content fits within boundaries */
 }
 
 .ImageSlider1 .ImageSlider input:checked ~ .slide {
@@ -159,17 +160,14 @@ body, html {
 
 .ImageSlider1 .ImageSlider .bg2 {
     background-image: url(stmonqschool.jpg);
-
 }
 
 .ImageSlider1 .ImageSlider .bg3 {
     background-image: url(stmoniquechurch.jpg);
-
 }
 
 .ImageSlider1 .ImageSlider .bg4 {
     background-image: url(clubhouse.jpg);
-
 }
 
 .ImageSlider1 .ImageSlider .bg5 {
@@ -198,34 +196,83 @@ body, html {
     transform: translateY(0);
     overflow: hidden;
 }
+/* Handle the overflow and hide peaking images */
+.ImageSlider1 .ImageSlider {
+    overflow: hidden; /* This ensures no images outside the container are visible */
+}
 
-@media (max-width: 768px) {
-    .ImageSlider input {
-        margin-top: calc(50vh - 5px);
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+    .ImageSlider1 .ImageSlider {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        padding-bottom: 90px; /* Space from bottom */
+        position: relative; /* Add this to ensure dots stay inside */
     }
 
-    .ImageSlider label {
-        width: 10px;
-        height: 10px;
-        margin: 5px;
-        margin-top: calc(45vh - 3px);
+    .ImageSlider1 .ImageSlider label {
+        width: 8px;
+        height: 8px;
+        margin-left: 5px;
+        margin-right: 5px;
+        position: relative; /* Remove extra positioning */
+        display: inline-block;
     }
 
-    .ImageSlider input + label::after {
-        background-size: 60px 60px;
-        height: calc(50vh - 8px);
-        width: 50px;
+    .ImageSlider1 .ImageSlider input + label {
+        bottom: 0px; /* Ensure dots stay at the bottom */
+        margin-left: 0;
+        display: inline-block;
     }
 
-    .ImageSlider input + label:hover::after {
-        background-size: 70px 70px;
+    .ImageSlider1 .ImageSlider input:checked + label + .slide {
+        display: block;
     }
 
-    .ImageSlider .slide {
-        height: 50vh;
+    .ImageSlider1 .ImageSlider input:checked + label + .slide + input + label + .slide {
+        display: none;
     }
-    
-    .ImageSlider .slide .description {
+
+    /* Adjust description for smaller screens */
+    .ImageSlider1 .ImageSlider .description {
         padding: 10px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .ImageSlider1 .ImageSlider {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        padding-bottom: 90px; /* Space from bottom */
+        position: relative; /* Add this to ensure dots stay inside */
+    }
+
+    .ImageSlider1 .ImageSlider label {
+        width: 6px;
+        height: 6px;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+    .ImageSlider1 .ImageSlider input + label {
+        bottom: 0px; /* Adjust vertical position for smaller screens */
+        margin-left: 0;
+        display: inline-block;
+    }
+
+    .ImageSlider1 .ImageSlider input:checked + label + .slide {
+        display: block;
+    }
+
+    .ImageSlider1 .ImageSlider input:checked + label + .slide + input + label + .slide {
+        display: none;
+    }
+
+    .ImageSlider1 .ImageSlider .description {
+        padding: 5px;
+        font-size: 10px;
     }
 }

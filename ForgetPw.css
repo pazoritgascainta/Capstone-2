@@ -160,32 +160,45 @@ body{
 
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
     .container {
-        width: 90%; /* Adjust width for mobile */
-        padding: 20px; /* Add padding for mobile */
+        width: 90%; /* Smaller width for mobile */
+        min-height: 300px; /* Smaller height for mobile */
     }
 
-    .container p, .container span, .container a, .container button, .container input {
-        font-size: 16px; /* Adjust font size for readability */
-        margin: 10px 0; /* Adjust margins */
+    .container p {
+        font-size: 10px; /* Smaller font size for mobile */
+    }
+
+    .container span {
+        font-size: 8px; /* Smaller span font size for mobile */
+    }
+
+    .container a {
+        font-size: 9px; /* Smaller link font size for mobile */
     }
 
     .container button {
-        padding: 10px 20px; /* Adjust button padding */
+        font-size: 8px; /* Smaller button font size for mobile */
     }
 
-    .toggle-container {
-        width: 100%; /* Full width for toggle on mobile */
+    .container input {
+        font-size: 9px; /* Smaller input font size for mobile */
+    }
+      /* Toggle Container Adjustments */
+      .toggle-panel {
+        padding: 0 15px; /* Reduce padding for mobile */
     }
 
-    .social-icons {
-        display: flex;
-        justify-content: center; /* Center social icons */
+    .toggle-panel h2, .toggle-panel p {
+        font-size: 10px; /* Smaller font size for toggle panel headings and paragraphs */
     }
 
-    .back-btn-container {
-        top: 5px; /* Adjust top position for mobile */
-        right: 5px; /* Adjust right position for mobile */
+    .toggle-panel a {
+        font-size: 9px; /* Smaller font size for toggle panel links */
+    }
+
+    .toggle-panel button {
+        font-size: 8px; /* Smaller button font size for toggle panel */
     }
 }

@@ -85,18 +85,23 @@ $logout_message = isset($_GET['message']) && $_GET['message'] == 'loggedout' ? "
     </div>
     </section>
     <header>
-        <nav>
-            <ul>
-                <!-- Updated navigation items -->
-                <li><a href="Homepage.php">Home</a></li>
-                <li><a href="#" id="loginBtn">Login</a></li>
-                <li><a href="ContacUS.php">Contact</a></li>
-                <li><a href="Amenities.php">Amenities</a></li>
-                <!-- New login button -->
-                <div>
-                </div>
-        </nav>
-    </header>
+    <nav>
+        <!-- Burger icon for mobile -->
+        <div class="burger-menu" id="burgerMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <ul id="navLinks">
+            <li><a href="Homepage.php">Home</a></li>
+            <li><a href="#" id="loginBtn">Login</a></li>
+            <li><a href="ContacUS.php">Contact</a></li>
+            <li><a href="Amenities.php">Amenities</a></li>
+        </ul>
+    </nav>
+</header>
+
     
     <div id="backdrop" style="display: none;"></div>
 

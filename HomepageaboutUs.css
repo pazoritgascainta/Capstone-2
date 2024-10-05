@@ -6,12 +6,13 @@
     color: rgb(0, 0, 0);
     padding: 20px;
 }
-/*About us CSS Section*/
 
+/*About Us CSS Section*/
 #aboutUs, .location-map {
     flex: 1;
     max-width: 45%;
 }
+
 .contact-info {
     margin-top: 20px;
 }
@@ -43,17 +44,22 @@
 .social-links a:hover {
     color: #ffcc00;
 }
+
 #aboutUs {
     background-color: #ffdab9;
     padding: 20px;
 }
+
+/* Responsive Logo */
 #aboutUs img {
     display: block; 
     margin: 0 auto; 
+    max-width: 100%; /* Make the logo responsive */
+    height: auto; /* Maintain aspect ratio */
 }
 
 #aboutUs h2, .location-map h2 {
-    color: #000000; /* Yellow color for headings */
+    color: #000000; /* Color for headings */
     text-align: center;
 }
 
@@ -62,8 +68,6 @@
     line-height: 1.6;
     text-align: center;
 }
-
-
 
 .more-link {
     display: block;
@@ -85,7 +89,7 @@
     }
 
     #aboutUs, .location-map {
-        max-width: 100%;
+        max-width: 90%;
         width: 90%;
         margin-bottom: 20px;
     }
