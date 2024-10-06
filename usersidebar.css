@@ -579,6 +579,12 @@ hr.active {
     .main-content {
         width: calc(100% - 60px); /* Adjust for sidebar width */
     }
+    .main-content {
+        margin-top: 40px; /* Reduce top margin on mobile */
+        width: 100%; /* Full width for mobile */
+        padding: 15px; /* Reduce padding for mobile */
+    }
+
 }
 
 /* Adjustments for smaller devices */
@@ -602,7 +608,11 @@ hr.active {
 
     .main-content {
         width: calc(100% - 50px); /* Adjust for smaller sidebar */
-        padding: 15px; /* Reduce padding for smaller screens */
+    }
+    .main-content {
+        margin-top: 20px; /* Further reduce top margin for small screens */
+        padding: 10px; /* Further reduce padding for smaller screens */
+        font-size: 14px; /* Adjust font size if there’s text content */
     }
 }
 

@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const notificationsMenu = document.getElementById("notificationsMenu");
 
         if (!profileMenu.contains(event.target) && profileMenu.classList.contains("open-menu")) {
-            profileMenu.classList.remove("open-menu");
+            profileMenu.classList.remove("open-menu");        
         }
 
         if (!notificationsMenu.contains(event.target) && notificationsMenu.classList.contains("open-menu")) {

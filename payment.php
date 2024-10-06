@@ -76,6 +76,8 @@ $amenity_names = [
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Dashboard</title>
     <link rel="stylesheet" href="payment.css">
 </head>
@@ -223,8 +225,3 @@ $amenity_names = [
     <script src="payment.js"></script>
 </body>
 </html>
-
-<?php
-// Close the database connection
-$conn->close();
-?>

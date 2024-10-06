@@ -75,8 +75,6 @@ $profile_image = $homeowner['profile_image'] ? $homeowner['profile_image'] : $de
     </li>
 </ul>
 <audio id="notificationSound" src="Notificationsound.mp3" preload="auto"></audio>
-
-
             
             <a href="#" class="nav-link user-profile-link" onclick="toggleProfileMenu()">
                 <img src="<?php echo htmlspecialchars($profile_image); ?>" class="user-pic" alt="profile picture">

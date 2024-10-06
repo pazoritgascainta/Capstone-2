@@ -1,17 +1,21 @@
-
+/* Existing styles */
 .container {
     width: 90%;
     max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
     text-align: center;
+    display: flex;
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically if there's enough height */
+    flex-direction: column; /* Ensures items stack in a column */
 }
 
 .service-request-form {
     width: 100%;
-    max-width: 800px; /* Increased max-width */
+    max-width: 800px;
     background-color: #ffdab9;
-    padding: 30px; /* Increased padding */
+    padding: 30px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
@@ -25,7 +29,7 @@ h1 {
 .form-container {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Increased gap */
+    gap: 20px;
 }
 
 .button-group {
@@ -37,7 +41,7 @@ h1 {
 .btn {
     background-color: #e0e0e0;
     border: none;
-    padding: 10px 20px; /* Increased padding */
+    padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -51,7 +55,7 @@ h1 {
 form {
     display: flex;
     flex-direction: column;
-    gap: 30px; /* Increased gap */
+    gap: 30px;
 }
 
 label {
@@ -59,7 +63,7 @@ label {
 }
 
 input, textarea {
-    padding: 30px; /* Increased padding */
+    padding: 30px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 100%;
@@ -70,7 +74,7 @@ button[type="submit"] {
     background-color: rgb(255, 141, 41);
     color: #fff;
     border: none;
-    padding: 15px; /* Increased padding */
+    padding: 15px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
@@ -79,13 +83,13 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #fd8326;
 }
+
 fieldset {
     border: none;
     padding: 15px;
     margin-bottom: 20px;
 }
 
-/* Radio group container */
 .radio-group {
     display: flex;
     justify-content: space-around;
@@ -93,7 +97,6 @@ fieldset {
     padding: 10px 0;
 }
 
-/* Label styling */
 .radio-label {
     display: flex;
     align-items: center;
@@ -102,12 +105,10 @@ fieldset {
     cursor: pointer;
 }
 
-/* Hide the default radio input */
 .radio-label input[type="radio"] {
     display: none;
 }
 
-/* Custom radio button */
 .radio-label span {
     position: relative;
     padding-left: 30px;
@@ -132,7 +133,6 @@ fieldset {
     background-color: rgb(255, 140, 39);
 }
 
-/* Adding a small dot to the center when selected */
 .radio-label input[type="radio"]:checked + span:after {
     content: '';
     position: absolute;
@@ -144,6 +144,7 @@ fieldset {
     border-radius: 50%;
     background-color: white;
 }
+
 .service-link {
     display: inline-block;
     padding: 10px 20px;
@@ -156,7 +157,6 @@ fieldset {
     text-align: center;
 }
 
-/* Hover and active effects */
 .service-link:hover {
     background-color: #45a049;
     transform: translateY(-3px);
@@ -166,36 +166,77 @@ fieldset {
     background-color: #3e8e41;
     transform: translateY(0);
 }
+
+/* Responsive Styles */
 @media (max-width: 768px) {
     .container {
-        width: 95%;
-        max-width: 100%;
+        width: 100%;
+        padding: 15px;
     }
 
     .service-request-form {
-        padding: 20px; /* Reduce padding for smaller screens */
+        padding: 20px;
     }
 
     .form-container {
-        gap: 15px; /* Reduce gap for smaller screens */
+        gap: 15px;
     }
 
     .button-group {
         flex-direction: column;
-        align-items: center;
-        margin-bottom: 10px; /* Reduce margin for smaller screens */
+        gap: 15px;
     }
 
     .btn {
         width: 100%;
-        margin-bottom: 10px; /* Add margin to separate buttons */
+        padding: 10px;
     }
 
     input, textarea {
-        padding: 20px; /* Reduce padding for smaller screens */
+        padding: 15px;
     }
 
     button[type="submit"] {
-        padding: 10px; /* Reduce padding for smaller screens */
+        width: 100%;
+        padding: 12px;
+    }
+
+    .radio-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .radio-label {
+        font-size: 14px;
+    }
+
+    .service-link {
+        width: 100%;
+        padding: 10px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+
+    .service-request-form {
+        padding: 15px;
+        max-width: 90%; /* Slightly smaller max-width on mobile */
+
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    input, textarea {
+        padding: 10px;
+    }
+
+    button[type="submit"] {
+        padding: 10px;
     }
 }
